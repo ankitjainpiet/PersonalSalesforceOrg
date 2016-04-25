@@ -1,0 +1,92 @@
+<apex:component controller="CricketTeamController">
+<script>
+            var myApp = angular.module('MyApp', []);
+			           
+             myApp.service('myService',function ($q) {
+                this.submitteam = function(players) {
+                       var deferred = $q.defer();
+                      
+                       Visualforce.remoting.Manager.invokeAction(
+                           '{!$RemoteAction.CricketTeamController.submitmyTeam}',angular.toJson(players),
+                           function (result, event) {
+                           if (event.type == 'exception') {
+                               deferred.reject(JSON.parse('[]'));
+                           } else {
+                           			$(".success").html("<strong>Record inserted successfully</strong>");
+                                  return  result;
+                           }
+                       }, {
+                           escape : false
+                       });
+                       return deferred.promise;
+                   }
+       
+            });
+              myApp.controller('mycontroller' ,['$scope','$http','myService',function($scope,$http,myService){
+              $scope.players=[];
+         	  $scope.copyplayers=[];
+         	   var myEvent = window.attachEvent || window.addEventListener;
+		          var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compatable
+		
+		          myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
+		              var confirmationMessage = '';  // a space
+		              (e || window.event).returnValue = confirmationMessage;
+		              return confirmationMessage;
+		          });
+         	  $scope.specialityTypes=['Batting','Bowling','Fielding'];
+         	   $scope.player1= {"name" : "","dob" : "" ,"city" : "","speciality" : "","playedinternational" : "","lastplayedstadiumname": ""};
+              $scope.players.push($scope.player1);
+              $scope.addNewPlayer=function(){
+              	if($scope.players.length <= 11 ){
+              	$scope.players.push({"name" : "","dob" : "" ,"city" : "","speciality" : "","playedinternational" : "","lastplayedstadiumname": ""});
+              	}
+              	else{
+              	alert("Players in a team can not be more than 11");
+              	
+              	}
+              };
+              
+              $scope.removePlayer = function(idx){
+				 if(idx == 0){
+				 alert("Minimum one player is required");
+				 }
+				  if(idx !== -1 && idx !== 0) {
+				  console.log(JSON.stringify($scope.players));
+				    $scope.players.splice(idx,1);
+				 console.log("again");
+				  console.log(JSON.stringify($scope.players));
+				 
+				  }
+			 
+                  
+                }
+                $scope.submitTeam = function(){
+                $scope.playersCopy= angular.copy($scope.players);
+               	 var flag=true;
+               	 angular.forEach($scope.playersCopy,function(player){
+               		if(!angular.isUndefined(player.dob) && player.dob !='' )
+               		{
+               		console.log(player.dob);
+               		player.dob = player.dob.toISOString().substring(0, 10); 
+              	 	}
+              	 	else{
+              	 	flag=false;
+              	 	$("#errors").html("<div class='has-error'>Please enter player date of birth</div>");
+              	 	}
+              	 	if(player.firstname == '' || player.lastname == '' ){
+              	 		$("#errors").html("<div class='has-error'>Please enter player first name and lastname</div>");
+              	 		flag=false;
+              	 	}
+              	 } )
+                	if(flag){
+              		  myService.submitteam($scope.playersCopy);
+                	}
+                	else{
+                		$("#errors").html("<div class='has-error'>Please enter player first name and lastname</div>");
+              	 	}
+                } 
+           	 
+              }]);
+
+</script>
+</apex:component>

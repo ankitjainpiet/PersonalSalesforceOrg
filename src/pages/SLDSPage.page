@@ -1,0 +1,370 @@
+<apex:page controller="CricketTeamController" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+   <html xmlns="http://www.w3.org/2000/svg"    xmlns:xlink="http://www.w3.org/1999/xlink">
+      <apex:stylesheet value="{!URLFOR($Resource.salesforcelight, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+      <script
+         src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	
+	<body>
+	<script>	var myApp = angular.module('MyApp', []);
+
+myApp.service('myService', function($q) {
+    this.getAllPlayers = function(typeofList) {
+        var deferred = $q.defer();
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.CricketTeamController.getPlayersList}',
+            function(result, event) {
+                if (event.type == 'exception') {
+                    deferred.reject(JSON.parse('[]'));
+                } else {
+                    //$(".success").html("<strong>Record inserted successfully</strong>");
+                    deferred.resolve(result);
+
+                }
+            }, {
+                escape: false
+            });
+        return deferred.promise;
+
+
+    }
+    this.submitmyteam = function(allist, selecteditems) {
+        var deferred = $q.defer();
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.CricketTeamController.reviewMyTeam}', angular.toJson(allist), angular.toJson(selecteditems),
+            function(result, event) {
+                if (event.type == 'exception') {
+                    deferred.reject(JSON.parse('[]'));
+                } else {
+                    //$(".success").html("<strong>Record inserted successfully</strong>");
+                    deferred.resolve(result);
+
+                }
+            }, {
+                escape: false
+            });
+        return deferred.promise;
+
+
+    }
+
+
+    this.getSelectedPlayers = function($q) {
+        var deferred = $q.defer();
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.CricketTeamController.getPlayersList}',
+            function(result, event) {
+                if (event.type == 'exception') {
+                    deferred.reject(JSON.parse('[]'));
+                } else {
+                    //$(".success").html("<strong>Record inserted successfully</strong>");
+                    return result;
+                }
+            }, {
+                escape: false
+            });
+        return deferred.promise;
+
+
+    }
+
+});
+myApp.controller('mycontroller', ['$scope', '$http', 'myService', function($scope, $http, myService) {
+    $scope.players = [];
+    $scope.playerselected = [];
+    $scope.selectedplayer =[];
+    $scope.playerjson = {
+        "Name": "",
+        "isSelected": false,
+        "seqno": 0
+    };
+    $scope.selectedpplayers = [];
+    $scope.setInitialValue = function() {
+        var players = ['1', '2', '3'];
+        var selectedpplayers = ['11', '12', '13', '14'];
+        $scope.players = [];
+        $scope.selectedpplayers = [];
+        angular.forEach(players, function(value, index) {
+            $scope.players.push({
+                "Name": value + "",
+                "isSelected": false,
+                "seqno": index
+            })
+
+        })
+        angular.forEach(selectedpplayers, function(value, index) {
+            $scope.selectedpplayers.push({
+                "Name": value + "",
+                "isSelected": false,
+                "seqno": index
+            })
+
+        })
+
+    }
+
+    $scope.getAllPlayers = function() {
+        myService.getAllPlayers().then(function(data) {
+            console.log(data);
+            angular.forEach(data, function(value, index) {
+                $scope.players.push({
+                    "id": value.Id,
+                    "Name": " " + value.Name,
+                    "isSelected": false,
+                    "seqno": index
+                });
+            });
+        });
+        $scope.players = [];
+    }
+	$scope.getSelectedPlayerByName= function(name,array){
+	 	console.log("call hua");
+		for(var v  =0 ;v < array.length ; v++ ){
+			var p = array[v];
+			if(p.Name == name ){
+				console.log(JSON.stringify(p) + "element muil gaya");
+				return p;
+			}
+		}
+		
+	}
+	
+	/* $scope.addSelectedPlayers = function() {
+	  var tempcopy = angular.copy($scope.playerselected);
+	 for(var v=$scope.playerselected.length -1  ; v >= 0 ;v--){
+	 	var playername = $scope.playerselected[v];
+	 	var player =   $scope.getSelectedPlayerByName(playername,$scope.players);
+	 	var seqno  =  $scope.selectedpplayers.length;
+		console.log("Going to add " + playername +  "                seqno   " + player.seqno );
+	   	$scope.players.splice(player.seqno, 1);
+	 	$scope.selectedpplayers.unshift({"Name" : playername,"isSelected" : false ,"seqno" : seqno});
+	  	console.log("Going to remove" + player.Name +  "                   " + JSON.stringify(player));
+	 	console.log(player.seqno + "seqno------------");
+	 }		
+   } */
+   $scope.setselectedseqno = function(arr){
+	
+	 for (var idx = 0; idx < arr.length;idx++){
+		 var player = arr[idx];
+	 		player.seqno  = idx;
+	 }
+	}
+   $scope.addSelectedPlayers = function() {
+   /*      //contains selected elements from 2nd list
+     $scope.selectedplayer
+     //contains selected value from 1st list
+     $scope.playerselected.
+     // all options for 1st list
+     $scope.players
+     // all options of 1st list
+     $scope.selectedpplayers */
+    var t=[];
+   		   for(var i = $scope.playerselected.length-1;i>=0 ;i--){
+			     var playerobj =  $scope.getSelectedPlayerByName($scope.playerselected[i],$scope.players);
+      				t.push($scope.playerselected[i]);
+			        $scope.players.splice(playerobj.seqno,1);
+			         $scope.setselectedseqno($scope.players);
+	
+				}
+
+				
+		
+   			 for(var j=0 ; j<=t.length -1 ; j++){
+   			 	$scope.selectedpplayers.unshift({"Name" : t[j],"isSelected" : false ,"seqno" : $scope.selectedpplayers.length})
+   			   $scope.setselectedseqno($scope.selectedpplayers);
+   			 }
+   
+   }
+   $scope.removeSelectedPlayers = function() {
+/*      //contains selected elements from 2nd list
+     $scope.selectedplayer
+     // all options for 1st list
+     $scope.players
+     // all options of 1st list
+     $scope.selectedpplayers */
+     
+    //  console.log($scope.selectedplayer);
+       console.log('******************');	
+       var t=[];
+			   for(var i = $scope.selectedplayer.length-1;i>=0 ;i--){
+			     var playerobj =  $scope.getSelectedPlayerByName($scope.selectedplayer[i],$scope.selectedpplayers);
+      				t.push($scope.selectedplayer[i]);
+			        $scope.selectedpplayers.splice(playerobj.seqno,1);
+					$scope.setselectedseqno($scope.selectedpplayers);
+				}
+				
+		
+   			 for(var j=0 ; j<=t.length -1 ; j++){
+   			 	$scope.players.unshift({"Name" : t[j],"isSelected" : false ,"seqno" : $scope.players.length})
+   			 $scope.setselectedseqno($scope.players);
+   			 }
+   
+   
+   
+   }
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   /* $scope.removeSelectedPlayers = function() {
+   var tempcopy = angular.copy($scope.selectedpplayers)
+   for(var v=$scope.selectedplayer.length-1 ; v>=0 ;v--){
+	 	var playername = $scope.selectedplayer[v];
+	 	console.log("selected p players json" + JSON.stringify($scope.selectedpplayers));
+	 	var player =   $scope.getSelectedPlayerByName(playername,tempcopy);
+		console.log("players" +	JSON.stringify($scope.players));
+	 	console.log("actual i9ndex" + JSON.stringify(player));
+	 	var seqno  =  $scope.players.length;
+   	 	
+   		$scope.players.unshift({"Name" : playername,"isSelected" : false ,"seqno" : seqno});
+  		 var baz = [];
+		
+		angular.forEach($scope.players, function(key) {
+		    if (-1 === $scope.selectedpplayers.indexOf(key)) {
+		        baz.push(key);
+		    }
+		});
+  		
+  		console.log(JSON.stringify(baz) + "baz array");	
+  		
+  		
+  		
+  		
+  		$scope.selectedpplayers = angular.copy(baz);
+   			
+ 	}
+   } */
+/*     $scope.addSelectedPlayers = function() {
+        var playercopy = [];
+        playercopy = angular.copy($scope.players);
+        var i = 0;
+   	     for (i = 0; i < $scope.playerselected.length; i++) {
+         	console.log($scope.playerselected + "--9----");
+            var player = $scope.playerselected[i];
+        	 player.isSelected = true;
+        	 player.seqno = $scope.players.length + 1;
+        	  $scope.selectedpplayers.unshift(player);
+        }
+        for (i = 0; i < $scope.players.length; i++) {
+            var player = $scope.players[i];
+            if (player.isSelected) {
+                player.isSelected = false;
+                player.seqno = $scope.players.length + 1;
+                $scope.selectedpplayers.unshift(player);
+                $scope.players.splice(i, 1);
+                i--;
+
+        }
+        $scope.playerselected += 1;
+		console.log($scope.playerselected + "999999----");
+        console.log(JSON.stringify($scope.selectedpplayers));
+    }
+ */
+ 	$scope.setselectedvalues = function(arr){
+	
+	 for (var idx = 0; idx < arr.length;idx++){
+		 var player = arr[idx];
+	 		player.isSelected = true;
+	 }
+	}
+	
+   /*  $scope.removeSelectedPlayers = function() {
+        var playerscopy = [];
+        var playerscopy = angular.copy($scope.selectedpplayers);
+        var idx = -9;
+        for (idx = 0; idx < $scope.selectedpplayers.length; idx++) {
+            var player = $scope.selectedpplayers[idx];
+
+            if (player.isSelected) {
+                player.isSelected = false;
+                $scope.players.unshift(player);
+                console.log(JSON.stringify($scope.selectedpplayers) + "after");
+                console.log(player.Name + "selected player")
+
+                $scope.selectedpplayers.splice(idx, 1);
+                idx--;
+                console.log($scope.selectedpplayers.indexOf(player) + "after111");
+				
+            }
+
+        }
+        $scope.selectedplayers=1;
+    } */
+
+   
+
+    $scope.move = function(from, to, arr) {
+        if (to <= arr.length && to >= 0 && from >= 0 && from <= arr.length) {
+            arr.splice(to, 0, arr.splice(from, 1)[0]);
+        }
+    };
+
+     $scope.reorderingUp = function() {
+        for (i = 0; i < $scope.selectedplayer.length; i++) {
+             var playerobj =  $scope.getSelectedPlayerByName($scope.selectedplayer[i],$scope.selectedpplayers);
+               $scope.move(playerobj.seqno,playerobj.seqno-1,$scope.selectedpplayers);
+			  playerobj.isSelected = false;
+			        
+
+        }
+         $scope.setselectedseqno($scope.selectedpplayers);
+    }
+
+/* 
+     $scope.reorderingUp = function() {
+        for (i = 0; i < $scope.selectedpplayers.length; i++) {
+            var player = $scope.selectedpplayers[i];
+                 $scope.move(i,i-1,$scope.selectedpplayers);
+                player.isSelected = false;
+             
+
+        }
+         $scope.setselectedseqno($scope.selectedpplayers);
+    }
+  */
+	 	 $scope.setSelectedItemPos = function(selectedpplayers,pos){
+			 selectedpplayers.seqno = pos;
+	 }
+	$scope.setPlayerItemPos = function(players,pos){
+		 players.seqno = pos;
+	 }
+  
+    $scope.reorderingdown = function(){
+ 			  for (i = 0; i < $scope.selectedplayer.length; i++) {
+	  	           var playerobj =  $scope.getSelectedPlayerByName($scope.selectedplayer[i],$scope.selectedpplayers);
+	               $scope.move(playerobj.seqno,playerobj.seqno+1,$scope.selectedpplayers);
+				  playerobj.isSelected = false;
+			   }
+     		   $scope.setselectedseqno($scope.selectedpplayers);
+	 	
+	}
+	$scope.getInitialData = function() {
+	    $scope.getAllPlayers();
+	    $scope.getSelectedPlayers();
+	}
+	$scope.submitTeam = function() {
+	    myService.submitmyteam($scope.players, $scope.selectedpplayers);
+
+	}
+}]);
+
+</script>
+	<c:MultiPicklistSLDS firstcolumntext="FirstCategory"  secondcolumntext="Second Category"/> 
+	
+	</body>
+
+	</html>
+</apex:page>

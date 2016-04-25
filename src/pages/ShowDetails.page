@@ -1,0 +1,61 @@
+<apex:page controller="HeaderComponentController"  showHeader="false" sidebar="false" standardStylesheets="false" >
+<apex:stylesheet value="{!URLFOR($Resource.customcss)}"/>
+    <c:CustomHeader />
+    <script>
+    $(document).ready(function(){
+    $("#discussionstab").click(function(){ 
+    	$(".myhide").css({"display" : "block"});
+        $(".myactive").addClass("myhide");
+        $(".active").removeClass('active');
+       $("#discussionstab").addClass("active");
+    })});
+    </script>
+<div class="row">
+    <ul class="nav nav-tabs" role="tablist">
+         
+       <li class="active">
+           	<a  class="tabHeader" href="javascript:void(0);"  tabindex="0" >
+                	FEATURED
+           </a>
+      </li>
+     
+       <li id="discussionstab">
+           <a  class="tabHeader" href="javascript:void(0);"  tabindex="0" >
+               	DISCUSSIONS
+           </a>
+       </li>
+	
+     
+       <li>
+           <a  class="tabHeader" href="javascript:void(0);"  tabindex="0" >
+               	MY FEED
+           </a>
+       </li>
+     
+    </ul>
+    </div>
+   
+ <section>
+     	<div class="myactive">
+            <div class="tab-pane fade active in"  id="featured">
+                 	<ul class="topicList" >
+                        <apex:repeat value="{!featuredtopics}" var="featuredObj">	
+                        <li class="topicItem forceTopicFeaturedTopicItem">
+                                <a class="topicLink" href="javascript:void(0);" >
+                                    	{!featuredObj.topicname}
+                                </a>
+                       	 </li>
+                        </apex:repeat>
+                 </ul>
+                        <div class="loadingIndicator">
+                            <div class="background">
+                            </div>
+                            <span class="label">Loading...</span>
+                 		</div>
+            </div>
+    	 </div>
+     		<div class="myhide">
+                <c:DiscussionsComponent />      
+     		</div>
+  </section>
+</apex:page>

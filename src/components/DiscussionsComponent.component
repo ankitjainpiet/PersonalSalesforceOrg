@@ -1,0 +1,44 @@
+<apex:component controller="QuestionsController">
+    <apex:repeat value="{!questionslist}" var="question">
+        <div style="    padding-left: 288px;padding-top: 62px;">          
+        <apex:image url="{! question.parent['photo']['smallPhotoUrl']}"/> <div style="color:#2574A9;display: inline;">
+        {! question.parent['communityNickname']}
+        </div>  asked a question
+        <br/>
+        {!question.createdDate} 
+          </div>
+
+            <a href="/pageName?id={!question.id}"> 
+           <div   style="width: 756px;color: #333;background-color: rgb(250, 250, 250);padding-left: 300px;padding-top: 50px;">
+            
+        <b>{!question.capabilities.questionAndAnswers.questionTitle}</b>
+            <br/>
+       
+        
+        <br/>
+                   <apex:image url="{!question.capabilities.content.downloadUrl}" style="background-color: rgb(250, 250, 250);
+            padding: 59px;
+            padding-top: 0px;
+            padding-bottom: 0px;"/>  
+           </div></a>
+        <apex:repeat value="{!question.capabilities.questionAndAnswers.bestAnswer.body.messageSegments}" var="msgsegment">
+        	<div style="margin: 20px 14px 14px 14px;width: 631px;margin-left: 299px;background-color: #fafafa;">
+            <div class="questionWithBestAnswerIcon">&#10004;</div>   {!msgsegment.text}
+            </div>
+   			<div style="margin: 20px 14px 14px 14px;width: 631px;margin-left: 299px;"> 
+            <apex:image url="{!question.capabilities.questionAndAnswers.bestAnswerSelectedBy.photo.smallPhotoUrl}" style="width:16px;height:16px"/>
+        by    {!question.capabilities.questionAndAnswers.bestAnswerSelectedBy.displayName}
+		</div>         
+        </apex:repeat>
+    	<apex:repeat value="{!question.capabilities.topics.items}" var="topic">
+           <a href="#">
+            <span style="display:inline;padding: 5px 13px; box-sizing: border-box; border-radius: 40px;color: #696969;padding-left: 351px;">
+               {!topic.name}
+            </span> 
+               </a>
+        </apex:repeat>
+        <br/>
+		
+    </apex:repeat>
+   
+</apex:component>

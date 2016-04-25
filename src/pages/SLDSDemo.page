@@ -1,0 +1,35 @@
+<apex:page controller="CricketTeamController" showHeader="false"
+	standardSTyleSheets="false">
+	<html xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink">
+<apex:stylesheet value="{!URLFOR($Resource.salesforcelight, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<body>
+<div class="slds">
+		<div class="slds-grid slds-wrap">
+			<div class="slds-col" style="background-color:red">header</div>
+			
+		</div>	
+		<div class="slds-grid slds-wrap">
+			<div class="slds-col  slds-medium-size--2-of-3"  style="background-color:#DDD">Main</div>
+			<div class="slds-col slds-medium-size--1-of-3"  style="background-color:blue">Aside</div>
+	
+		</div>	
+		<div class="slds-grid slds-wrap">
+			<!-- 	<div class="slds-col slds-medium-size--1-of-3  slds-large-size--1-of-12" style="background-color:red">Row3 Column 3</div> -->
+			<div class="slds-col  slds-medium-size--1-of-3" style="background-color:blue">Column 4</div>
+			<div class="slds-col  slds-medium-size--1-of-3" style="background-color:brown">Column 5</div>
+			<div class="slds-col  slds-medium-size--1-of-6" style="background-color:black">Column 6</div>
+			<div class="slds-col  slds-medium-size--1-of-6" style="background-color:yellow">Column 7</div>
+	
+		</div>	
+		<div class="slds-grid slds-wrap">
+			<div class="slds-col slds-container--left slds-size--1-of-1 slds-text-heading--label">Enrollment RX Demo Page Heading </div>
+		</div>
+</div>
+</body>
+	</html>
+</apex:page>

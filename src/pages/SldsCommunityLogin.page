@@ -1,0 +1,229 @@
+<apex:page controller="SldsCommunityLoginController"  showHeader="false" standardStyleSheets="false" sidebar="false"  docType="html-5.0">
+
+ <apex:stylesheet value="{!URLFOR($Resource.LightningCSS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <apex:includeScript value="{!URLFOR($Resource.AngularJS15)}" />
+    <style>
+    	a{
+    		text-decoration : none !important;
+    		cursor : pointer;
+    	}
+      #loading-image {
+            position: fixed;
+            top: 40%;
+            left: 47%;
+            width:4%;
+        } 
+        #loading { 
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            position: absolute;
+            display:block;
+            opacity: 0.5;
+            filter: alpha(opacity = 50);
+            -moz-opacity: 0.5;
+            background-color: #fff;
+            text-align: center;
+            z-index: 9005;
+        }
+	    .required{
+	    	color : red;
+	    }
+    </style>
+    <script>
+    var myApp = angular.module('myApp', []);
+        	myApp.service('DataService', function($q) {              
+            	this.loginExternalUser = function (externaluserWrapperstring,pageurl,startURL){
+            		console.log(JSON.stringify(externaluserWrapperstring) + 'externaluserWrapperstring');
+                 	var deferred = $q.defer();
+             		Visualforce.remoting.Manager.invokeAction(
+                		'{!$RemoteAction.SldsCommunityLoginController.loginCommunityExternalUser}',angular.toJson(externaluserWrapperstring),pageurl,startURL,function (result, event) {
+	                	if (event.type == 'exception') {
+		                    console.log('called'+result);  
+		                    deferred.reject(event.message);
+		                } else {
+		                	console.log(result + 'startURL');
+		                	deferred.resolve(result);
+		                	}
+		            }, 
+		            {escape: false}
+		            );
+             		return deferred.promise;
+           		}
+           		this.redirectToSignup = function(){
+           			var deferred = $q.defer();
+             		Visualforce.remoting.Manager.invokeAction(
+                		'{!$RemoteAction.SldsCommunityLoginController.redirectToSignup}',function (result, event) {
+	                	if (event.type == 'exception') {
+		                    console.log('called'+result);  
+		                    deferred.reject(event.message);
+		                } else {
+		                	console.log(result + 'startURL');
+		                	deferred.resolve(result);
+		                }
+		            }, 
+		            {escape: false}
+		            );
+             		return deferred.promise;
+           		
+           		}
+           		this.redirectToForgotpassword = function(){
+           			var deferred = $q.defer();
+             		Visualforce.remoting.Manager.invokeAction(
+                		'{!$RemoteAction.SldsCommunityLoginController.redirectToForgotpassword}',function (result, event) {
+	                	if (event.type == 'exception') {
+		                    console.log('called'+result);  
+		                    deferred.reject(event.message);
+		                } else {
+		                	console.log(result + 'startURL');
+		                	deferred.resolve(result);
+		                }
+		            }, 
+		            {escape: false}
+		            );
+             		return deferred.promise;
+           		
+           		}
+            });
+            myApp.controller('LoginCtrl', ['$scope', 'DataService', function($scope,DataService){  
+           	$scope.isloading = false;
+            $scope.errors = [];
+            $scope.errors.push('');
+            $scope.validateData = function(){
+	           	$scope.errors = [];
+	           	if (($scope.email === null) || angular.isUndefined($scope.email) || ($scope.email.length === 0)) {
+	           		$scope.errors.push('Email is required');
+	           	}
+	           	if($scope.password === null || angular.isUndefined($scope.password) || ($scope.password.length === 0)){
+	           		$scope.errors.push('Password is required');
+	           	}
+           		$scope.isloading = false;
+	           	if($scope.errors.length == 0){
+	           		return true;
+	           	}
+	           	else{
+	           		return false;
+	           	}
+            }
+            $scope.getParameterByName = function(name) {
+						  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+						  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+							  results = regex.exec(location.search);
+						  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+			}
+			$scope.singleerror = '';
+			$scope.redirectToSignup = function(){
+				$scope.isloading = true;
+				DataService.redirectToSignup().then(
+                        function (successfulSearchResult) {
+                            $scope.isloading =false;
+                            $(location).attr('href',successfulSearchResult);
+                        },function (errorSearchResult) {
+                            $scope.singleerror = errorSearchResult;
+                           var singleerror =  $scope.singleerror.replace("[","").replace("]","");
+                            $scope.errors.push(singleerror);
+                            $scope.isloading = false;
+                            console.log($scope.singleerror.replace("[").replace("]") + '$scope.singleerror');
+                        }
+                    )
+			
+			}
+			$scope.redirectToForgotpassword = function(){
+				$scope.isloading = true;
+				DataService.redirectToForgotpassword().then(
+                        function (successfulSearchResult) {
+                            $scope.isloading =false;
+                            $(location).attr('href',successfulSearchResult);
+                        },function (errorSearchResult) {
+                            $scope.singleerror = errorSearchResult;
+                           var singleerror =  $scope.singleerror.replace("[","").replace("]","");
+                            $scope.errors.push(singleerror);
+                            $scope.isloading = false;
+                            console.log($scope.singleerror.replace("[").replace("]") + '$scope.singleerror');
+                        }
+                    )
+			
+			}
+            $scope.loginSubmit = function(){
+            	$scope.isloading = true;
+            	var startURL= $scope.getParameterByName('startURL');
+            	if($scope.validateData()){
+            		var externaluserWrapperstring={
+                    "emailid" : $scope.email,
+                    "password" : $scope.password
+                    }
+            		DataService.loginExternalUser(externaluserWrapperstring,location.toString(),startURL).then(
+                        function (successfulSearchResult) {
+                            $scope.isloading =false;
+                            $(location).attr('href',successfulSearchResult);
+                        },function (errorSearchResult) {
+                            $scope.singleerror = errorSearchResult;
+                           var singleerror =  $scope.singleerror.replace("[","").replace("]","");
+                            if(singleerror.indexOf('de-reference')!= -1){
+                            	singleerror = "Incorrect User name or Password";
+                            }
+                            $scope.errors.push(singleerror);
+                            $scope.isloading = false;
+                            console.log($scope.singleerror.replace("[").replace("]") + '$scope.singleerror');
+                        }
+                    )
+                }               
+           	}
+         }]);
+    </script>
+    <html  xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" ng-app="myApp" ng-controller="LoginCtrl" ng-cloak="ng-cloak">
+        <body style="background-color: #ddd">
+        <div class="slds" >
+        	<apex:pagemessages />
+        	<div class="slds-warning" ng-repeat="error in errors track by $index" style="color: red;width:50%">
+				        	{{error}}
+				
+        	</div>
+	        <div class="slds-scrollable--y">
+	        	
+	        	<div class="slds-form--horizontal" style="padding-top : 7%">
+    				<div class="slds-form-element" style="width: 50%;">
+      					<apex:image url="{!URLFOR($Resource.DealerVuResources,'images/logo1.gif')}" width="149px"/>
+        			</div>
+        			<div class="slds-form-element" style="width: 48%;">
+	        			<div class="slds-text-heading--large">
+	        				Login
+      					</div>
+      				</div>
+    				<div class="slds-form-element">
+      					<label class="slds-form-element__label" for="inputSample2">UserName</label>
+      					<abbr class="required" title="required">*</abbr>
+	      				<div class="slds-form-element__control ">
+	        				<input id="inputSample2"  required="required" class="slds-input slds-size--1-of-3" type="text" placeholder="Placeholder Text" ng-model="email" />
+	      				</div>
+      				</div>
+      				<div class="slds-form-element">
+      					<label class="slds-form-element__label" for="inputSample2">Password</label>
+      					<abbr class="required" title="required">*</abbr>
+	      				<div class="slds-form-element__control ">
+	        				<input id="inputSample2" required="required" class="slds-input slds-size--1-of-3" type="password" placeholder="Placeholder Text" ng-model="password" />
+	      				</div>
+      				</div>
+      				<div class="slds-form-element" style="padding-left: 36%;padding-top: 1%;">
+	      				<div class="slds-grid slds-button-group" role="group">
+	                            <button type="button" class="slds-size--1-of-7 slds-button slds-button--neutral" ng-click="loginSubmit();">Login</button>
+						</div>
+						<div class="slds-grid"    style="padding-left: 9%;">
+	                    
+									<A href="" class="slds-size--1-of-7" ng-click="redirectToSignup();">Register</A>
+								<A href="" class="slds-size--1-of-7" ng-click="redirectToForgotpassword();" style="cursor: pointer;">Forgot Password</A>
+						</div>
+						<!-- <button type="button" class="slds-size--1-of-7 slds-button slds-button--neutral" ng-click="loginSubmit();">Login</button> -->
+	             	</div>
+      			</div>
+      		</div>
+      	</div>
+      	<div class="slds-spinner--medium" id="loading" ng-if="isloading">
+	                <img ng-show="isloading" id="loading-image" src="{!URLFOR($Resource.LightningCSS, '/assets/images/spinners/slds_spinner_brand.gif')}" alt="Loading..." />
+       </div>
+       </body>
+     </html>			
+</apex:page>

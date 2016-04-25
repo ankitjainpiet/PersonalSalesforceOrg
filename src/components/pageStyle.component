@@ -1,0 +1,416 @@
+<apex:component >
+    <style>
+        .navbar-default{
+            background-color: #636466;;
+            border-color: #636466;;
+            background-image: url({!URLFOR($Resource.DealerVuResources,'images/BP_Image.jpg')});
+        }
+        .navbar-header {
+            margin-right: 0;
+        /*  padding-left: 219px; */
+        }
+        input[name=newComment] {    
+		display : none;
+		}  
+        #newCaseButton{
+        display:none;
+        }
+        .announcementpublishingdate{
+        } 
+        .container-fluid>.navbar-header{
+            margin-left: 15%;
+        }
+        input {
+        color: black;
+        }
+        @media (max-width: 1340px) { 
+            .container-fluid>.navbar-header{
+                margin-left: 7%;
+            }
+        }
+  		@media (max-width: 640px) { 
+  		      
+        .suggestedarticleListing{
+        padding-left : 25%;
+        }
+        }
+        @media (min-width: 1380px) { 
+        
+        .suggestedarticleListing{
+        
+        padding-left: 50%;
+        }
+        
+        
+        }
+         .fullwidth{
+             width: 100%;
+        }
+        .no-margin-right{
+            margin-right: 0px;
+        }
+        .td {
+        	min-width: 800px;
+        }
+        .no-padding-left{
+            padding-left: 0px !important;
+        }
+        .no-padding-right{
+            padding-right: 0px !important;
+        }
+        .minheightcontainer{
+        margin-top: 190px;
+        }
+        .logodimensions{
+        width: 254px;
+        
+        }
+        .createcasebuttonCustomFormsPage{
+            width: 167px !important;
+            font-size: 17px !important;
+            text-align: center !important;
+            margin-left: 135px !important;
+            margin-bottom: 13px !important;
+            margin-top: 7px !important;
+         }
+        .createcasefields{
+             margin:0 5px 0 0;
+             font-weight: bold;
+        
+        }
+        .createcaselink{
+            margin-left: 139px;
+            font-size: 22px;
+            text-decoration: underline;
+        }
+        .createcasediv{
+           width: 70%;
+           margin: 20px auto;
+           display :none;
+        
+        }
+        .requesttrainingtext{
+            font-family: OpenSans-light;
+            font-size: 17px;
+        }
+        .margintop4{
+        margin-top: 4%;
+        }
+        .right-text-align{
+        text-align : right;
+        }
+        .searchbarheight{
+        min-height: 52px;
+        }
+        .nameshortaccountmenu{
+             margin-left: 10px; 
+             max-width: 100px;
+             display: inline-block;
+             overflow: hidden;
+             text-overflow: ellipsis;
+             white-space: nowrap;
+        }
+        .mycasestablebackground{
+            background-color: #e3f3ff;
+        }
+        @media (max-width: 340px) { 
+        
+            .customannouncement{
+            height:41px;
+            padding: 0px;
+        }
+        
+        }
+        .mycasestablecolumnbackgound{
+            background-color: #FDB813;
+            padding: 10px;
+        }
+        .myhide{
+        display:none;
+        }
+        
+        .scrollable-menu {
+            height: auto;
+            max-height: 200px;
+            overflow-x: hidden;
+        }
+        .navbar-brand {
+            margin-top: 21px;
+            text-align: center;
+            vertical-align: middle;
+            height: 110px;
+        }
+        .centerheading{
+        text-align: center;
+        }
+        .myparagraph{
+            display: inline;
+        }
+        .searchBtn{
+            background-color: #FDB813 !important;
+            color: #FFFFFF;
+            height: 45px;
+            width: 123px;
+        }
+        a:hover{
+        color: #838383 !important;
+        }
+        .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+        color: #838383 !important;
+        
+        }
+         .underlinetext{
+         text-decoration: underline;
+         display: inline;   
+        }
+        .dropdown {
+            display: inline-table;
+        }
+        
+        .tableheading {
+            background-color: #F2F3F3;
+            color: #000;
+            font-size: .9em;
+            font-weight: bold;
+            padding: 5px 2px 4px 5px;
+        }
+        
+        .navbarsecondlayer {
+            border-top: 1px solid #aaaaaa;
+            border-bottom: 1px solid #aaaaaa;
+            background: #838383;
+            height: 54px;
+            padding: 9px;
+            font-size: 16px;
+            padding-left: 12%;
+        }
+        
+        .mycontainer-fluid {
+            padding-right: 0px;
+            padding-left: 0px;
+        }
+         .modal-header{
+        border-style: hidden !important;
+        
+        }
+        .modal-footer{
+        border-style: hidden !important;
+        
+        }
+        .whitecolor {
+            color: #FFF;
+        }
+        .communitycolor {
+                    background-color: #636466 !important;
+        }   
+        .logogold{
+           color: #FDB813 !important;
+        
+        }
+        .margintop2{
+            margin-top: 2px;
+        }
+        .logogoldbackground{
+          background-color: #FDB813 !important;
+        
+        }
+        
+        .text-medium{
+            font-size: 15px;
+        }
+        .panel {
+            background-color: #999999;
+            width: 358px;
+            height: 260px;
+            border: 1px solid white;
+        }
+        
+        .panel:hover {
+            background-color: #3B8BBF;
+        }
+        .popupLogo{
+        
+            margin-left: 0px;
+        }
+        
+        .caseNumLabel{
+            background-color: #fff;
+            padding: 4px;
+            margin: 0 8px;
+        }
+        .SearchLabel{
+            font-weight: bold;
+            font-size: 15px;
+        }
+         @media(min-width: 993px) and (max-width: 1600px){
+        .collapse {
+   			display: inline;
+   		}
+   		.minheightcontainer {
+ 		   margin-top: 186px;
+		}
+   		}
+   		.listHoverLinks{
+	   		display:none;
+   		}
+		@media(min-width: 640px) and (max-width: 1136px){
+		
+				.iphonesize{
+				    margin-left: 200px;
+				}
+		}   		
+   		@media(min-width: 640px) and (max-width: 1136px){
+	        .collapse {
+	   			display: inline;
+	   		}
+	   		.minheightcontainer {
+			       margin-top: 358px;
+			}
+		}
+		 @media(min-width: 300px) and (max-width: 640px){
+	     	
+	     	
+	     }	
+   		  @media(min-width: 300px) and (max-width: 640px){
+	        .collapse {
+	   			display: inline;
+	   		}
+	   		.minheightcontainer {
+    			margin-top: 390px;
+			}
+			.navbarsecondlayer {
+			 /*    padding-left: 0%; */
+			}
+	   	}
+   		.padding-53{
+   			padding-left: 77px;
+   		}
+        .caseSelect{
+            padding: 2px 5px;
+        }
+        .star-rating{
+        float: right;
+        } 
+        .flatBtn{
+            display: inline-block;
+            position: relative;
+ 			width: 86px;	
+            height: 26px;
+            line-height: 26px;
+            border-radius: 2px;
+            font-size: 0.9em;
+            background-color: #fff;
+            color: #646464;
+            margin: 0 5px;
+            border: none;
+            transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition-delay: 0.2s;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+            outline: none;
+        }
+        .images ul li img {
+            width: 400px;
+            height: 266px;
+        }
+        .images ul li {
+            display: inline-block;
+        }
+        .rating-disabled {
+ 		   cursor: auto;
+		}
+		.clear-rating {
+			display: none !important;
+		}
+       .attachedfiles{
+            text-overflow: ellipsis;
+            word-wrap: break-word;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            width: 98%;
+            background-color: cornflowerblue;
+            margin-bottom: 20px;
+            color: black;
+        } 
+        
+        #LoaderDivForArticle{
+        	display: none;
+        }
+        
+        .scrollable-menu li a{
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+        .customRating{
+        	float: left;
+            padding: 2px 15px;
+            background: #FDB813;
+            color: #fff;
+            margin: -2px 20px 0px 20px;
+            font-size: 13px;
+        }
+        .pager li a{
+        	margin: 0 5px;
+            font-size: 12px;
+        }
+        .roundBtn{
+        	display: inline;
+        	margin: 0 5px;
+    		font-size: 12px;    
+        	padding: 5px 14px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+        	text-decoration: none !important;
+        }
+        .filter-dropdown-menu{
+        	height: 200px;
+        	overflow: auto;
+        }
+        .filter-dropdown-menu li>a{
+        	display: block;
+            padding: 3px 20px;
+            clear: both;
+            font-weight: 400;
+            line-height: 1.42857143;
+            color: #333;
+            white-space: nowrap;
+        	text-decoration: none !important;
+        }
+        
+        .filter-dropdown-menu li .active{
+        	background-color: orange;
+    		color: #fff;
+        }
+        .language-dropdown-menu li .active{
+        	background-color: orange;
+    		color: #fff;
+        }
+        
+        @media(min-width:1500px){
+        	.userMenu{
+        		margin-left: 17%;
+        	}
+        }
+        @media (max-width: 300px){
+			.navbarsecondlayer {
+			    padding-left: 0%;
+			}
+		}	
+        @media(min-width:1200px) and (max-width:1500px){
+        	.userMenu{
+        		margin-left: 10%;
+        	}
+        }
+        @media(min-width:1024px) and (max-width:1280px){
+        	.userMenu{
+        		margin-left: -1%;
+        	}
+        }
+        @media(min-width:1366px) and (max-width:768px){
+        	.userMenu{
+        		margin-left: -1%;
+        	}
+        }
+    </style>
+</apex:component>

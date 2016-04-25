@@ -1,0 +1,85 @@
+<apex:component >
+<style>
+
+@media (min-width: 1200px)
+.chatterfeedshell {
+    width: 1170px;
+}
+@media (min-width: 992px)
+.chatterfeedshell {
+    width: 970px;
+}
+.searchbutton{
+	font-size: 16px  !important;
+	font-weight: lighter  !important;
+}
+@media (min-width: 768px)
+.chatterfeedshell {
+    width: 750px;
+}
+.hidecontainer{
+	display:none;
+
+}
+
+#chatterfeedshell{
+ margin-top: 220px;
+}
+.chatterexpando .feedpage{
+ width: 840px;
+}
+.input-group-btn {
+	font-size: 14px !important;
+}
+.nav-tabs {
+	border-bottom: 1px solid #838383 !important;
+}
+.btn-toolbar:after, .btn-toolbar:before, .clearfix:after, .clearfix:before, .container-fluid:after, .container-fluid:before, .container:after, .container:before, .dl-horizontal dd:after, .dl-horizontal dd:before, .form-horizontal .form-group:after, .form-horizontal .form-group:before, .modal-footer:after, .modal-footer:before, .nav:after, .nav:before, .navbar-collapse:after, .navbar-collapse:before, .navbar-header:after, .navbar-header:before, .navbar:after, .navbar:before, .pager:after, .pager:before, .panel-body:after, .panel-body:before, .row:after, .row:before{
+	content : none !important;
+}
+.padding-200{
+	margin-left: 200px !important;
+}
+.telephonenumbers{
+	margin-left : 126px !important;
+}
+ul li, ol li{
+	margin-left: 0px !important; 
+}
+.publishercontainer .bottomBar{
+	padding: 0px !important;
+}
+.chatterfeedshell {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    margin-left: 277px;
+}
+.chatterfeedshell {
+    width: 470px;
+    background: #f5f5f5;
+    background: -moz-linear-gradient(top,#f5f5f5 0,#fdfdfd 5%,#ffffff 100%);
+    background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f5f5f5),color-stop(5%,#fdfdfd),color-stop(100%,#ffffff));
+    background: -webkit-linear-gradient(top,#f5f5f5 0,#fdfdfd 5%,#ffffff 100%);
+    background: -o-linear-gradient(top,#f5f5f5 0,#fdfdfd 5%,#ffffff 100%);
+    background: -ms-linear-gradient(top,#f5f5f5 0,#fdfdfd 5%,#ffffff 100%);
+    background: linear-gradient(top,#f5f5f5 0,#fdfdfd 5%,#ffffff 100%);
+}
+
+.backgroundcommunitycontainer{ 
+	background-color: #636466 !important;
+	padding-left: 0px !important; 
+	background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#636466),color-stop(5%,#636466),color-stop(100%,#636466 ));
+	
+}
+.full-width{
+	width : 100%;
+
+}
+.sixty{
+width: 60%;
+}
+</style>
+</apex:component>

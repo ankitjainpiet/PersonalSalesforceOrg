@@ -1,0 +1,36 @@
+<apex:component controller="CaseExtension">
+<div class="container">
+     <h4>{!$Label.Current_Cases}</h4>
+   
+    <table class="table"  style="border-color=#B7A752">
+   
+    <tr class="tableheading">
+            <th>{!$Label.Case_Number}</th>
+           <th>{!$Label.Subject}</th>
+           <th>{! $Label.Date_Opened}</th>
+       
+           <th>Priority</th>
+    </tr>
+    <apex:repeat value="{!allcases}" var="case">
+    <tr>
+         <td>
+             {!case.CaseNumber} 
+         </td>
+        <td>
+              {!case.Subject} 
+         </td>
+       
+        <td>
+            <apex:outputText value="{0,date,M/d/yyyy h:mm a}">
+                <apex:param value="{!case.createdDate}" />
+             </apex:outputText>
+        </td>
+        <td>
+            {!case.priority}
+        </td>
+      </tr>
+        </apex:repeat>   
+ </table>   
+    </div>
+   
+    </apex:component>

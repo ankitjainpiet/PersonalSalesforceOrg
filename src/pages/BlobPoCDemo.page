@@ -1,0 +1,154 @@
+<apex:page showHeader="false" sidebar="false"
+    standardstylesheets="false" applyHtmlTag="false" applyBodyTag="false">
+     <c:bootstrapandangularjs />
+     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
+<!--     <apex:includescript value="{!URLFOR($Resource.customjsdebug)}"/> -->
+ <!--   <apex:includescript value="{!URLFOR($Resource.jsPDF)}"/>
+   <apex:includescript value="{!URLFOR($Resource.jspdftable)}"/> -->
+  <!--  <apex:includescript value="{!URLFOR($Resource.tableexportjs,'tableExport.jquery.plugin-master/tableExport.js')}"/>
+   <apex:includescript value="{!URLFOR($Resource.tableexportjs,'tableExport.jquery.plugin-master/jquery.base64.js')}"/>
+   <apex:includescript value="{!URLFOR($Resource.tableexportjs,'tableExport.jquery.plugin-master/jspdf/libs/base64.js')}"/>
+   <apex:includescript value="{!URLFOR($Resource.tableexportjs,'tableExport.jquery.plugin-master/jspdf/libs/sprintf.js')}"/> -->
+   <apex:includescript value="{!URLFOR($Resource.htmltocanvas)}"/>
+   
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.0.16/jspdf.plugin.autotable.js"></script>
+   <html ng-app="blobApp">
+    <head>
+    <Script>
+            var blobApp = angular.module('blobApp', []);
+            blobApp.controller('blobcontroller' ,['$scope',function($scope){
+                $scope.wrapperlist1 = [];
+                $scope.wrapperlist2 = [];
+                
+                $scope.getInitialData = function(){
+                    for(var v=0;v<1000;v++){
+                            $scope.wrapperlist1.push({
+	                        "name" : v + 'test',
+	                        "id" : v,
+	                        "x" : v + 'rt',
+	                        "x0" : v + 'rt',
+	                        "x1" : v + 'rt',
+	                        "x2" : v + 'rt',
+	                        "x3" : v + 'rt',
+	                        "x4" : v + 'rt',
+	                        "x5" : v + 'rt',
+	                        "x6" : v + 'rt',
+	                        "x7" : v + 'rt',
+	                        "x8" : v + 'rt',
+	                        "x9" : v + 'rt',
+	                        "x10" : v + 'rt',
+	                        "x11" : v + 'rt',
+	                        "x12" : v + 'rt',
+	                        "x13" : v + 'rt',
+	                        "x14" : v + 'rt',
+	                        "x15" : v + 'rt',
+	                        })
+                        }
+                    
+                }
+                $scope.getInitialData();
+				/* function tableToJson(table) {
+				    var data = [];
+				
+				    // first row needs to be headers
+				    var headers = [];
+				    for (var i=0; i<table.rows[0].cells.length; i++) {
+				        headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi,'');
+				    }
+				
+				    // go through cells
+				    for (var i=1; i<table.rows.length; i++) {
+				
+				        var tableRow = table.rows[i];
+				        var rowData = {};
+				
+				        for (var j=0; j<tableRow.cells.length; j++) {
+				
+				            rowData[ headers[j] ] = tableRow.cells[j].innerHTML;
+				
+				        }
+				
+				        data.push(rowData);
+				    }       
+				
+				    return data;
+				} */
+                $scope.createPdf= function(){
+            	//	$('#tabletest').tableExport({type:'pdf',escape:'false'});
+            		
+			    var pdf = new jsPDF('p','pt','letter');
+			    /* var specialElementHandlers = {
+			    '#rentalListCan': function (element, renderer) {
+			        return true;
+			        }
+			    }; */
+			
+			   pdf.fromHTML($('#tabletest').get(0) // HTML element
+					, 35  // x coord
+					, .5  // y coord
+					, {
+					      'width': 400 // was 7.5, max width of content on PDF
+					}
+				);
+            
+					 pdf.save( 'filename.pdf');
+	    	    }
+           }]);
+    </Script>
+    
+    </head>
+   
+    <body ng-init="getInitialData();" ng-controller="blobcontroller">
+     <c:CricketHeader />
+        <div class="container" id="tabletest">
+           <!--  <input class="btn btn-default" type="button" value="PDF" ng-click="createPdf()"/>
+           <table class="table  table-hover table-bordered"> 
+                <thead>
+                     <tr> 
+                        <th>id</th> 
+                        <th>Name</th>
+                      	<th>x0</th>
+                      	<th>x1</th>
+                      	<th>x2</th>
+                      	<th>x3</th>
+                      	<th>x4</th>
+                      	<th>x5</th>
+                      	<th>x6</th>
+                      	<th>x7</th>
+                      	<th>x8</th>
+                      	<th>x9</th>
+                      	<th>x10</th>
+                      	<th>x11</th>
+                      	<th>x12</th>
+                      	<th>x13</th>
+                      	<th>x14</th>
+                      	<th>x15</th>
+                      </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in wrapperlist1 track by $index">
+                         <td>{{c.id}}</td>
+                         <td>{{c.name}}</td>
+                         <td>{{c.x0}}</td>	
+         				<td>{{c.x1}}</td>
+         				<td>{{c.x2}}</td>
+         				<td>{{c.x3}}</td>
+         				<td>{{c.x4}}</td>
+         				<td>{{c.x5}}</td>
+         				<td>{{c.x6}}</td>
+         				<td>{{c.x7}}</td>
+         				<td>{{c.x8}}</td>
+         				<td>{{c.x9}}</td>
+         				<td>{{c.x10}}</td>
+         				<td>{{c.x11}}</td>
+         				<td>{{c.x12}}</td>
+         				<td>{{c.x13}}</td>
+         				<td>{{c.x14}}</td>
+         				<td>{{c.x15}}</td>
+         		</tr>
+                </tbody>
+            </table> -->
+        </div>
+    </body>
+   </html>
+</apex:page>

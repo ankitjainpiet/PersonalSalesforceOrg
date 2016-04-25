@@ -1,0 +1,220 @@
+<apex:component controller="ObjectSchemaController" >
+<c:cssandjs />
+<style>
+/* CSS REQUIRED */
+.state-icon {
+    left: -5px;
+}
+.list-group-item-primary {
+    color: rgb(255, 255, 255);
+    background-color: rgb(66, 139, 202);
+}
+
+/* DEMO ONLY - REMOVES UNWANTED MARGIN */
+.well .list-group {
+    margin-bottom: 0px;
+}
+</style>
+<script>
+   function showLoader(){
+            $('#paginate').hide();
+            $('#LoaderDivCaseListing').show();
+        }
+         function hideLoader(){
+            $('#paginate').show();
+            $('#LoaderDivCaseListing').hide();
+        }
+function abc(){
+ $('.list-group.checked-list-box .list-group-item').each(function () {
+        
+        // Settings
+        var $widget = $(this),
+            $checkbox = $('<input type="checkbox" class="hidden" />'),
+            color = ($widget.data('color') ? $widget.data('color') : "primary"),
+            style = ($widget.data('style') == "button" ? "btn-" : "list-group-item-"),
+            settings = {
+                on: {
+                    icon: 'fa fa-check'
+                },
+                off: {
+                    icon: 'fa icon-check-empty'
+                }
+            };
+            
+        $widget.css('cursor', 'pointer')
+        $widget.append($checkbox);
+
+        // Event Handlers
+        $widget.on('click', function () {
+            $checkbox.prop('checked', !$checkbox.is(':checked'));
+            $checkbox.triggerHandler('change');
+            updateDisplay();
+        });
+        $checkbox.on('change', function () {
+            updateDisplay();
+        });
+          
+
+        // Actions
+        function updateDisplay() {
+            var isChecked = $checkbox.is(':checked');
+
+            // Set the button's state
+            $widget.data('state', (isChecked) ? "on" : "off");
+
+            // Set the button's icon
+            $widget.find('.state-icon')
+                .removeClass()
+                .addClass('state-icon ' + settings[$widget.data('state')].icon);
+
+            // Update the button's color
+            if (isChecked) {
+                $widget.addClass(style + color + ' active');
+            } else {
+                $widget.removeClass(style + color + ' active');
+            }
+        }
+
+        // Initialization
+        function init() {
+            
+            if ($widget.data('checked') == true) {
+                $checkbox.prop('checked', !$checkbox.is(':checked'));
+            }
+            
+            updateDisplay();
+
+            // Inject the icon if applicable
+            if ($widget.find('.state-icon').length == 0) {
+                $widget.prepend('<span class="state-icon ' + settings[$widget.data('state')].icon + '"></span>');
+            }
+        }
+        init();
+    });
+    
+    $('#get-checked-data').on('click', function(event) {
+        event.preventDefault(); 
+        var checkedItems = {}, counter = 0;
+        $("#check-list-box li.active").each(function(idx, li) {
+            checkedItems[counter] = $(li).text();
+            counter++;
+        });
+        $('#display-json').html(JSON.stringify(checkedItems, null, '\t'));
+    });
+
+
+}
+$(document).ready(function(){
+abc();
+});
+function getAllFieldsList(name){
+console.log('andar aaya');
+getFieldsList(name);
+abc();
+}
+function getselectedfields(event,objname){
+ event.preventDefault(); 
+   var checkedItems = {}, counter = 0;
+       $("li.active").each(function(idx, li) {
+            checkedItems[counter] = $(li).text();
+            counter++;
+        });
+        console.log(JSON.stringify(checkedItems, null, '\t'));
+ var data = JSON.stringify(checkedItems);
+ $('[id*=hiddenField]').val(data)
+ sendSelectedFields(objname);
+}
+
+</script>
+<apex:form >
+ <apex:actionFunction name="getFieldsList" action="{!findFields}"  reRender="fieldslist,Paginationtable" oncomplete="abc();">
+ <apex:param name="myParam" value="" assignTo="{!selectedsobject}" />
+ </apex:actionFunction> 
+ <apex:actionFunction name="sendSelectedFields" action="{!FetchSelectedFields}" reRender="Paginationtable,outer">
+ <apex:param name="myParam" value="" assignTo="{!selectedsobject}" />
+ 
+ </apex:actionFunction>             
+
+<div class="container">
+		 	<div class="row">
+		 	<div class="col-xs-10">
+		 	<div class="col-xs-4">
+					<select class="selectpicker" style="margin-top: 38%" onchange="getAllFieldsList(this.value);">
+					   <option>No object Selected</option>
+					 
+					 <apex:repeat value="{!sobjnames}" var="sobj">
+					    <option>{! sobj }</option>
+					</apex:repeat>
+					 </select>
+							 	
+		 	</div>
+            <div class="well col-xs-8" style="max-height: 300px;overflow: auto;">
+        		<apex:outputpanel id="fieldslist">
+        		<ul class="list-group checked-list-box">
+                <apex:repeat value="{!fieldnames}" var="field">
+                  <li class="list-group-item">{!field}</li>
+                  </apex:repeat>
+                </ul>
+                </apex:outputpanel>
+            </div>
+        </div>
+                  <apex:commandbutton styleclass="roundBtn" value="Select Fields" onclick="getselectedfields(event,$('.selectpicker :selected').val()); return false;" reRender="Paginationtable,pb" />
+                  
+        
+		 	</div>
+<apex:inputHidden id="hiddenField" value="{!selectedfieldsjsonmap}"/>
+</div> 
+
+</apex:form>
+
+   <div class="container" id="paginate">
+       <apex:form >
+       <apex:outputpanel id="outer" >
+     
+         <apex:outputpanel id="Paginationtable">
+        
+            <table Class="table table-hover">
+
+               <apex:repeat value="{!fieldslist}" var="fieldname">
+		            	<th>{! fieldname} </th>
+		      		
+         	  </apex:repeat>
+         	 		<apex:repeat value="{!caseList}" var="a" >
+				         <tr>
+		         	 	<apex:repeat value="{!fieldslist}" var="fieldname">
+				       	 	
+							<td>{!a[fieldname] }</td>
+				     	 </apex:repeat>
+		   			     </tr>  	 	
+		          		 </apex:repeat>
+          	
+
+             </table>
+                   <div id="LoaderDivCaseListing" class="col-lg-12 col-md-12" style="display:none;">
+                    <img style="margin: 60px auto; display: block;" src="{!URLFOR($Resource.spinner)}" />
+                </div>
+           <apex:panelGrid columns="7" rendered="{! setCon!= Null}">
+              <ul class="pager">
+                <apex:commandButton status="fetchStatus" reRender="Paginationtable" value="|<" action="{!first}" disabled="{!!setCon.hasPrevious}" title="First Page"/>
+                <apex:commandButton status="fetchStatus" reRender="Paginationtable" value="<" action="{!previous}" disabled="{!!setCon.hasPrevious}" title="Previous Page"/>
+                <apex:commandButton status="fetchStatus" reRender="Paginationtable" value=">" action="{!next}" disabled="{!!setCon.hasNext}"  title="Next Page"/>
+                <apex:commandButton status="fetchStatus" reRender="Paginationtable" value=">|" action="{!last}" disabled="{!!setCon.hasNext}"  title="Last Page"/>
+                <apex:outputText >{!(setCon.pageNumber * size)+1-size}-{!IF((setCon.pageNumber * size)>noOfRecords, noOfRecords,(setCon.pageNumber * size))} of {!noOfRecords}</apex:outputText> 
+                <apex:commandButton status="fetchStatus" reRender="Paginationtable" onclick="showLoader();" oncomplete="hideLoaderFind();" value="Refresh" action="{!refresh}" title="Refresh Page"/>
+                   <apex:outputLabel value="{! $Label.Go_To_Page } " styleclass="pull-right">
+                      <apex:inputtext value="{!setCon.pageNumber}"  style="width:40px; text-align:center; font-weight: normal;" onkeypress="goToPage(event,{!setCon.pageNumber});" styleclass="pagenumber"  />&nbsp; {! $Label.out_of }  {! totalPages} 
+                      <apex:commandButton styleClass="roundBtn" value="{! $Label.Go}"  reRender="pb"/>
+                  </apex:outputLabel>
+              <!--   <apex:outputPanel style="color:#4AA02C;font-weight:bold">
+                    <apex:actionStatus id="fetchStatus" startText="Fetching..." stopText=""/>
+                </apex:outputPanel> -->
+                </ul>
+       </apex:panelGrid> 
+      <!--   </apex:pageBlock>
+ -->
+         </apex:outputpanel>
+           </apex:outputpanel>
+     
+    </apex:form>
+    </div>
+</apex:component>

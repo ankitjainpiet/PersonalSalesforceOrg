@@ -1,0 +1,199 @@
+<apex:page showHeader="false" sidebar="false"
+    standardstylesheets="false" applyHtmlTag="false" applyBodyTag="false">
+     <c:bootstrapandangularjs />
+   <Apex:includescript value="{!URLFOR($Resource.jsPDF)}"/>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.0.16/jspdf.plugin.autotable.js"></script>
+   <html ng-app="blobApp">
+    <head>
+    <Script>
+            var blobApp = angular.module('blobApp', []);
+            blobApp.controller('blobcontroller' ,['$scope',function($scope){
+                $scope.wrapperlist1 = [];
+                $scope.wrapperlist2 = [];
+                
+                $scope.getInitialData = function(){
+                    for(var v=0;v<9800;v++){
+                       if(v <=  9800 ){
+	                        $scope.wrapperlist1.push({
+	                        "name" : v + 'test',
+	                        "id" : v,
+	                        "x" : v + 'rt',
+	                        "x" : v + 'rt',
+	                        "x1" : v + 'rt',
+	                        "x2" : v + 'rt',
+	                        "x3" : v + 'rt',
+	                        "x4" : v + 'rt',
+	                        "x5" : v + 'rt',
+	                        "x6" : v + 'rt',
+	                        "x7" : v + 'rt',
+	                        "x8" : v + 'rt',
+	                        "x9" : v + 'rt',
+	                        "x10" : v + 'rt',
+	                        "x11" : v + 'rt',
+	                        "x12" : v + 'rt',
+	                        "x13" : v + 'rt',
+	                        "x14" : v + 'rt',
+	                        "x15" : v + 'rt',
+	                        })
+                        }
+                    }
+                    
+                }
+                $scope.getInitialData();
+                $scope.createPdf = function(){
+                    var firstcomplete = false;
+                    var columns = [
+                        {title: "ID", dataKey: "id"},
+                        {title: "Name", dataKey: "name"},
+                         {title: "x", dataKey: "x"},
+                        {title: "x1Name", dataKey: "x1"},
+                         {title: "x2ID", dataKey: "x2"},
+                        {title: "x3Name", dataKey: "x3"},
+                        {title: "x3Name", dataKey: "x3"},   
+                    	{title: "x3Name", dataKey: "x4"},
+                        {title: "x3Name", dataKey: "x5"},
+                        {title: "x3Name", dataKey: "x6"},
+                        {title: "x3Name", dataKey: "x7"},
+                        {title: "x3Name", dataKey: "x8"},
+                        {title: "x3Name", dataKey: "x9"},
+                        {title: "x3Name", dataKey: "x10"},
+                        {title: "x3Name", dataKey: "x11"},
+                        {title: "x3Name", dataKey: "x12"},
+                        {title: "x3Name", dataKey: "x13"},
+                        {title: "x3Name", dataKey: "x14"},
+                        {title: "x3Name", dataKey: "x15"},
+                    ];
+                    
+                    if(!firstcomplete){
+                    var rows =   $scope.wrapperlist1;
+	                    var doc = new jsPDF('l', 'pt');
+	                    doc.autoTable(columns, rows, {
+	                        theme: 'striped',
+	                        margin: {top: 60},
+	                        beforePageContent: function(data) {
+	                            doc.text("Header", 40, 30);
+	                        },
+	                        afterPageContent: function (data) {
+	                            doc.text('Footer',40,800);
+	                        }
+	                    });
+	                    doc.save("test-1.pdf");
+	                    firstcomplete = true;
+				    }
+                    if(firstcomplete){
+                    delete $scope.wrapperlist1;
+                    for(var v=0;v<200;v++)    
+                    {
+                       	 $scope.wrapperlist2.push({
+	                        "name" : v + 'test',
+	                        "id" : v,
+	                        "x" : v + 'rt',
+	                        "x" : v + 'rt',
+	                        "x1" : v + 'rt',
+	                        "x2" : v + 'rt',
+	                        "x3" : v + 'rt',
+	                        "x4" : v + 'rt',
+	                        "x5" : v + 'rt',
+	                        "x6" : v + 'rt',
+	                        "x7" : v + 'rt',
+	                        "x8" : v + 'rt',
+	                        "x9" : v + 'rt',
+	                        "x10" : v + 'rt',
+	                        "x11" : v + 'rt',
+	                        "x12" : v + 'rt',
+	                        "x13" : v + 'rt',
+	                        "x14" : v + 'rt',
+	                        "x15" : v + 'rt',
+	                        })
+                        
+                    }
+                    var rows =   $scope.wrapperlist2;
+	                    var doc = new jsPDF('l', 'pt');
+	                    doc.autoTable(columns, rows, {
+	                        theme: 'striped',
+	                        margin: {top: 60},
+	                        beforePageContent: function(data) {
+	                            doc.text("Header", 40, 30);
+	                        },
+	                        afterPageContent: function (data) {
+	                            doc.text('Footer',40,800);
+	                        }
+	                    });
+	                    firstcomplete = true;
+	                    doc.save("test-2.pdf");
+                    }
+                    
+                    
+                    /*                     var size= 12;
+                    var verticalOffset = 0.5
+                    console.log(JSON.stringify($scope.wrapperlist));
+                    var arr= $scope.wrapperlist;
+                    var height= 80;
+                    var newpagestarted = false;
+                    var complete = false;
+                    pageHeight= doc.internal.pageSize.height;
+                    
+                    // Before adding new content
+                    y = 20 // Height position of new content
+
+                     angular.forEach(arr, function(value,index) {
+                       pageHeight= doc.internal.pageSize.height;
+                        if (y >= pageHeight)
+                        {
+                          doc.addPage();
+                          y = 0 // Restart height position
+                        }
+                        doc.text(value.Name + '',20,y);
+                        doc.text(value.id  + '',60,y);
+                        y=y + 10;
+                    }); 
+ */                    complete = true;
+                    if(complete){
+                   
+                    }
+                }
+           }]);
+    </Script>
+    
+    </head>
+   
+    <body ng-init="getInitialData();" ng-controller="blobcontroller">
+     <c:CricketHeader />
+        <div class="container">
+            <input class="btn btn-default" type="button" value="PDF" ng-click="createPdf()"/>
+           <table class="table  table-hover table-bordered"> 
+                <thead>
+                     <tr> 
+                        <th>id</th> 
+                        <th>Name</th>
+                      </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in wrapperlist track by $index">
+                         <td>{{c.id}}</td>
+                         <td>{{c.name}}</td>
+                         <td>{{c.x0}}</td>	
+         				<td>{{c.x1}}</td>
+         				<td>{{c.x1}}</td>
+         				<td>{{c.x2}}</td>
+         				<td>{{c.x3}}</td>
+         				<td>{{c.x4}}</td>
+         				<td>{{c.x4}}</td>
+         				<td>{{c.x5}}</td>
+         				<td>{{c.x6}}</td>
+         				<td>{{c.x7}}</td>
+         				<td>{{c.x8}}</td>
+         				<td>{{c.x9}}</td>
+         				<td>{{c.x10}}</td>
+         				<td>{{c.x11}}</td>
+         				<td>{{c.x12}}</td>
+         				<td>{{c.x13}}</td>
+         				<td>{{c.x14}}</td>
+         				<td>{{c.x15}}</td>
+         		</tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+   </html>
+</apex:page>

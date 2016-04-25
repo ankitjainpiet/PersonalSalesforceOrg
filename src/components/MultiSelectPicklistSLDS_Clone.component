@@ -1,0 +1,54 @@
+<apex:component >
+ <html xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+      <apex:stylesheet value="{!URLFOR($Resource.salesforcelight, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+      <div class="slds" ng-app="MyApp" ng-controller="mycontroller" ng-init="getAllPlayers()">
+<div  class="slds-grid slds-col slds-size--1-of-1">
+                                                <div class="slds-picklist--draggable slds-grid" >
+                                                  <div class="slds-form-element">
+                                                    <label class="slds-form-element__label" aria-label="select-1">Players</label>
+                                                    <div class="slds-picklist slds-picklist--multi">
+                                                      <ul class="slds-picklist__options slds-picklist__options--multi shown">
+                                                        <li draggable="true" class="slds-picklist__item" ng-repeat="player in players | orderBy:'value'" ng-click="addSelectedPlayer($index);"  role="option">
+                                                          <span class="slds-truncate" ng-class= "{multiSelectedComp:skill.isSelected}">
+                                                            <span style = "color: #54698d;font-size: 12px;">{{player.Name}} {{player.isSelected}} </span>
+                                                          </span>
+                                                        </li>
+                                                       
+                                                      </ul>
+                                                    </div>
+                                                  </div>
+                                                  <div class="slds-grid slds-grid--vertical">
+                                                      <button class="slds-button slds-button--icon-container" ng-click="movetoRight('WorkOrder')">
+                                                      <svg aria-hidden="true" class="slds-button__icon">
+                                                        <use xlink:href="{!URLFOR($Resource.salesforcelight, '/assets/icons/utility-sprite/svg/symbols.svg#right')}"></use>
+                                                      </svg>
+                                                      <span class="slds-assistive-text">Arrow right</span>
+                                                    </button>
+                                                    <button class="slds-button slds-button--icon-container" ng-click="movetoLeft('WorkOrder')">
+                                                      <svg aria-hidden="true" class="slds-button__icon">
+                                                        <use xlink:href="{!URLFOR($Resource.salesforcelight, '/assets/icons/utility-sprite/svg/symbols.svg#left')}"></use>
+                                                      </svg>
+                                                      <span class="slds-assistive-text">Arrow left</span>
+                                                    </button>
+                                                    
+                                                  </div>
+                                                  <div class="slds-form-element">
+                                                    <span class="slds-form-element__label" aria-label="select-2">&nbsp;</span>
+                                                    <div class="slds-picklist slds-picklist--multi">
+                                                      <ul class="slds-picklist__options slds-picklist__options--multi shown">
+                                                          <li draggable="true" class="slds-picklist__item" ng-repeat="player in selectedpplayers | orderBy" ng-click ="removeSelectedPlayer($index);" role="option">
+                                                          <span class="slds-truncate" ng-class= "{multiSelectedComp:skill.isSelected}">
+                                                            <span>{{player.Name}}</span>
+                                                          </span>
+                                                        </li>
+                                                      </ul>
+                                                    </div>
+                                                  </div>
+                                                  
+                                                </div>
+                                            </div> 
+                                        </div>
+ </html>
+                                        
+</apex:component>

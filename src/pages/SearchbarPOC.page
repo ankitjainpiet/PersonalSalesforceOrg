@@ -1,0 +1,90 @@
+<apex:page showHeader="false" standardStylesheets="false"
+    controller="SearchExtension">
+    <apex:stylesheet value="{!URLFOR($Resource.BootstrapWithSlider, 'BootstrapWithSlider/css/bootstrap.css')}" />
+    <apex:includeScript value="https://code.jquery.com/jquery-2.1.4.min.js" />
+    <style>
+.box {
+    width: 250px;
+    height: 50px;
+}
+
+.searchbox {
+    height: 50px;
+    width: 355px;
+    font-size: 1rem;
+    border-color: black;
+    font-size: 28px;
+}
+
+.searchicon {
+    background-image: url("{!URLFOR($Resource.searchlogo)}");
+}
+</style>
+
+<script>
+    function myFun(category){
+        categoryselected(category);
+    }
+</script>
+
+    <apex:stylesheet value="{!URLFOR($Resource.BootstrapWithSlider,'BootstrapWithSlider/css/bootstrap.css')}" />
+    <body>
+      
+   	  <h1>Congratulations</h1>
+        This is your new Page
+        <apex:form >
+
+            <div
+                style="background-color: lightskyblue; width: 650px; padding: 70px; height: 100px; margin-left: 317px;">
+                <div class="box">
+                    <div class="headertext">
+
+                        <div class="inputbox"
+                            style="width: 197px !important; float: left; margin-top: -23px;">
+                            <apex:inputText styleClass="searchbox form-control"
+                                value="{!query}" html-placeholder="Enter search text" />
+                        </div>
+                        <apex:commandButton action="{!search}"
+                            image="{!URLFOR($Resource.searchlogo)}"
+                            style="width: 50px;margin-left: 304px; margin-top: -33px;height: 24px" />
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div style="padding-left: 329px; padding-top: 12px;" id="input">
+                Filter By 
+                <select name="category" id="categoryselected" onchange="myFun(this.value);">
+                    <knowledge:categoryList categoryVar="category"
+                        categoryGroup="KnowledgeArticlegroup" rootCategory="All"
+                        level="-1">
+                        <option value="{!category.name}">{!category.label}</option>
+                    </knowledge:categoryList>
+                </select>
+            </div>
+            <apex:actionFunction reRender="input,output" name="categoryselected" action="{!UpdateSelectedCategory}" >
+                <apex:param name="myParam" value="" assignTo="{!selectedcategory}"/>
+            </apex:actionFunction>
+        </apex:form>
+
+        <apex:outputPanel id="output">
+
+            <knowledge:articleList articleVar="article"
+                Keyword="{!$CurrentPage.parameters.query}"
+                categories="{!searchCategory }" pageSize="5"
+                pageNumber="{!$CurrentPage.parameters.p}">
+                <div class="search-result" style="padding-left: 299px;">
+                    <h3>
+                        <a
+                            href="{!URLFOR($Action.KnowledgeArticle.View, article.id,['popup' = 'true'])}">
+                            {!article.title} </a>
+                    </h3>
+                    <a href="#" class="search-link"></a>
+                    <p>{! article.summary}</p>
+                </div>
+                <div class="hr-line-dashed"></div>
+            </knowledge:articleList>
+        </apex:outputPanel>
+    </body>
+</apex:page>

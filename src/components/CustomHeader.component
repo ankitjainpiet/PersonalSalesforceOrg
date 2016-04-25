@@ -1,0 +1,249 @@
+<apex:component controller="HeaderComponentController">
+    <apex:stylesheet value="{!URLFOR($Resource.NapiiBranding)}" />
+
+    <apex:stylesheet value="{!URLFOR($Resource.templatecss)}" />
+    <apex:stylesheet value="{!URLFOR($Resource.SiteStyleSheet)}" />
+    <apex:stylesheet value="{!URLFOR($Resource.App)}" />
+    <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <apex:stylesheet value="{!URLFOR($Resource.NapiliStyleSheet)}" />
+ 
+    <apex:includeScript value="{!URLFOR($Resource.jquery)}" />
+    <apex:includeScript value="{!URLFOR($Resource.appjs)}" />
+    <apex:includeScript value="{!URLFOR($Resource.aura_prod)}" />
+    <apex:includeScript value="{!URLFOR($Resource.communities)}" />
+    <apex:includeScript value="{!URLFOR($Resource.directorjs)}" />
+    <apex:includeScript value="{!URLFOR($Resource.stacktracejs)}" />
+    <apex:includeScript value="{!URLFOR($Resource.PicassoRuntime)}" />
+    <apex:includeScript value="{!URLFOR($Resource.PicassoRunTime1)}" />
+    <apex:includeScript value="{!URLFOR($Resource.Picassospa)}" />
+    <apex:includeScript value="{!URLFOR($Resource.Los_Angeles)}" />
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"/>
+    <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
+
+    <script>
+        $(document).ready(function() {
+            $('#clickable').click(function() {
+                $('.navMenu').addClass('visible');
+            })
+            $(".profileName").click(function(){
+                $('.menuList').addClass('visible')
+            }); 
+            $(".menuList").mouseleave(function() {
+                $('.menuList').removeClass('visible');
+            });
+   
+            $("#navigationTopic").mouseleave(function() {
+                $('.navMenu').removeClass('visible');
+            });
+
+        })
+    </script>
+    <div id="header" class="cHeaderPanel">
+        <div class="cHeaderLine">
+            <div class="cBrandingProfile">
+                <div>
+                    <a href="javascript:void(0);" class="cBrandingLogo"> <span
+                        class="assistiveText">Logo</span>
+                    </a>
+                </div>
+            </div>
+            <div class="cSearchPublisher">
+                <div>
+                    <div
+                        class="big-search-container selfServiceSearchWrapper forceCommunityOmniBox">
+                        <div class="image-wrapper">
+                            <div class="no-assigned-image">
+                                <div class="default-bg-overlay"></div>
+                            </div>
+
+                        </div>
+                        <div class="body-search">
+                            <form class="search-wrapper" type="search">
+
+                                <div class="search-container">
+                                    <span class="search-input-group"> <input type="text"
+                                        class="search-input-group" placeholder="Search" /> <span
+                                        class="search-field-group"><label  class="uiLabel"><span class="assistiveText">Search
+                                                    for bikes</span></label>
+                                            <span
+                                            class="search-field uiInput
+                                            uiInputSearch"
+                                            aria-describedby="" placeholder="Search for   bikes"
+                                            type="text"/>
+                                            <button
+                                                class="hide clear default uiBlock uiButton uiInput uiInputSearch"
+                                                accesskey="" type="button">
+                                                <span class="assistiveText">clear</span>
+                                          
+                                            </button> </span>
+                                        <button class="search-button default uiBlock uiButton"
+                                            accesskey="" type="button">
+                                            <span class=" label bBody truncate" dir="ltr">Search</span><span
+                                                title="Search"
+                                                class="forceIcon selfServiceIcon search-button-icon"
+                                                data-key="search" data-icon="" alt="Search"> <span
+                                                class="assistiveText">Search</span>
+                                            </span>
+                                        </button>
+                                        <button class="close-button default uiBlock uiButton"
+                                            accesskey="" type="button">
+                                            <span class=" label bBody truncate" dir="ltr">Close</span>
+                                        </button></span>
+                                    <div class="result-container">
+                                        <div class="switcher">
+                                            <span class="switcher-label">Check out these </span><a
+                                                href="javascript:void(0);"
+                                                class="switcher-option article selected"><span>Articles</span></a><span
+                                                class="separator-label">OR</span><a
+                                                href="javascript:void(0);" class="switcher-option question"><span>Discussions</span></a>
+                                        </div>
+                                        <div class="forceCommunityDeflection">
+
+                                            <div class="uiInput">
+                                                <div class="uiInput uiInputTextForAutocomplete">
+                                                    <input aria-activedescendant="" aria-expanded="false"
+                                                        aria-describedby="" aria-haspopup="true"
+                                                        placeholder="Search Article"
+                                                        class="hidden-autocompleteInput default uiInput uiInputTextForAutocomplete"
+                                                        aria-autocomplete="list" role="combobox" type="text"
+                                                         />
+                                                    <!--render facet: 38:13;a-->
+                                                    <label class="uiLabel-hidden uiLabel"><span
+                                                        class="assistiveText">Search Article</span> <!--render facet: 5:c-->
+                                                        <!--render facet: 6:c--></label>
+                                                </div>
+                                                <!--render facet: 41:13;a-->
+                                                <div
+                                                    class="hidden-autocompleteClass loading invisible uiAbstractList uiAutocompleteList showEmptyContent"
+                                                    role="listbox">
+                                                    <div class="listContent">
+                                                        <ul class="hidden-autocompleteClass loading"
+                                                            role="presentation">
+                                                        </ul>
+                                                        <div class="emptyListContent">
+                                                        </div>
+                                                        <div class="loadingIndicator">
+                                                            <div class="loadingCon siteforceLoadingBalls">
+                                                                <span class="loadingBall first"></span><span
+                                                                    class="loadingBall second"></span><span
+                                                                    class="loadingBall third"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <label class="uiLabel-hidden uiLabel"
+                                                    for="18:13
+                                                    c"><span
+                                                    class="assistiveText">Search Article</span> <!--render facet: 13:c-->
+                                                    <!--render facet: 14:c--></label>
+                                            </div>
+                                        </div>
+                                        <div class="empty-result">
+                                            <span class="forceIcon selfServiceIcon empty-state-icon"
+                                                data-key="search" data-icon=""></span><span
+                                                class="empty-state-panel-label">Search for bikes</span>
+                                        </div>
+                                        <div class="continue-post-wrapper">
+                                            <span class="continue-post-label">Don't see what
+                                                you're looking for?</span><span class="continue-post-action"><a
+                                                class="continueToPost" href="javascript:void(0);">Ask a
+                                                    question</a></span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="zero-state-panel">
+                                        <span title="Search for bikes"
+                                            class="forceIcon selfServiceIcon zero-state-icon"
+                                            data-key="search" data-icon="" alt="Search for bikes"><span
+                                            class="assistiveText">Search for bikes</span></span><span
+                                            class="zero-state-panel-label">Search for bikes</span>
+
+                                    </div>
+
+                                </div>
+                            </form>
+
+                        </div>
+                        <span class="assistiveText">End of Search Dialog</span>
+                    </div>
+
+                </div>
+            </div>
+        
+        <div class="btn-group">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <a class="trigger-link" href="javascript:void(0);"><img
+                                    class=" profileIcon" title="ankit.jain1.438251968099793E12"
+                                    alt="ankit.jain1.438251968099793E12"
+                                    src="/test/profilephoto/72928000000LFLw/T" /><span
+                                    class="profileName">ankit.jain1.438251968099793E12</span><span
+                                    class="triggerDownArrow down-arrow"></span></a>
+                          </button>
+                            <ul  class="dropdown-menu" role="menu">
+                                <!--render facet: 120:111;a-->
+                                <li><a
+                                     href="javascript:void(0);" class="selectable">Home</a></li>
+                                <li><a   href="javascript:void(0);" class="selectable">My
+                                        Profile</a></li>
+                                <li><a
+                                     href="javascript:void(0);" class="selectable">My
+                                        Settings</a></li>
+                                <li><a 
+                                    href="javascript:void(0);" class="selectable">Community
+                                        Management</a></li>
+                                <li><a href="javascript:void(0);" class="selectable">Community
+                                        Setup</a></li>
+                                <li class="contactSupport uiMenuItem"><a
+                                    role="menuitem" href="javascript:void(0);" class="selectable">Contact
+                                        Support</a></li>
+                                <li class="logout uiMenuItem"><a
+                                    role="menuitem" href="javascript:void(0);" class="selectable">Logout</a></li>
+                            </ul>
+                   </div>
+             </div>    
+        <div>
+            <div>
+                <div class="container forceCommunityNavBar">
+                    <nav class="centerSection">
+                        <ul class="navList">
+                            <li class="navItem">
+                                <a title="Home"
+                                href="javascript:void(0);"
+                                class="forceIcon selfServiceIcon navItemContent homeButton"
+                                data-key="home" data-icon="" alt="Home"> <!--render facet: 11:129;a-->
+                                    <span class="assistiveText">Home</span>
+                            	</a>
+                            </li>
+                            <li class="navItem">
+                                                             <div class="btn-group">
+                          
+                                     	   <div class="btn-group">
+                                              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+													<span class="triggerLabel"
+                                                          id="topic">Topics</span><span class="triggerDownArrow"></span></button>
+                                    	 <ul  class="dropdown-menu" role="menu">
+	     	                                      <apex:repeat value="{!navtopics}" var="topicObj"> 
+                                                <li class="navMenuItem uiMenuItem">
+                                                    <a role="menuitem" href="javascript:void(0);" class="selectable">{!topicObj.topicname}</a>
+                                                 </li>
+                                                </apex:repeat>
+                                               </ul>
+                                   		</div>
+                                   
+                	                </div>
+                               </li>
+                            
+                            		<li class="navItem breadcrumbsNav"><div
+                                    class="navItemContent forceTopicTopicBreadcrumbs">
+                                </div></li>
+                        </ul>
+           	        </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</apex:component>

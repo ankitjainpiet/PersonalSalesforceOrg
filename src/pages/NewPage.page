@@ -1,0 +1,8 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+    <c:cssandjs />
+    <c:pageStyle />
+    <c:NewHeader />
+    <c:Body />
+    <c:NewFooter />
+
+</apex:page>

@@ -1,0 +1,28 @@
+<apex:component >
+    <div id="footer" class="communitycolor">
+        <div  style="content: ' ' !important;" class="container no-padding-left no-padding-right full-width">
+            <div class="col-sm-12 col-md-12 pull-right communitycolor no-padding-left no-padding-right" >
+
+                <div class="padding-200 col-sm-5 col-md-3  backgroundcommunitycontainer ">
+                    <apex:image url="{!URLFOR($Resource.DealerVuResources,'images/DealerVUHeaderLogo.PNG')}"
+                        styleClass="navbar-brand no-padding-left" />
+                </div>
+                <div class=" telephonenumbers col-sm-4 pull-right backgroundcommunitycontainer no-padding-right"    style="color: yellow; margin-top: 3%;">
+                    <div class="fullwidth pull-left text-right sixty">
+                        <span class="logogold text-medium">Canada and US: 
+                            <a href="tel:+ 1-855-322-1217"
+                                class="whitecolor">1-855-322-1217  
+                            </a>
+                        </span> 
+                        <br />
+                        <br />
+                         <span class="logogold text-medium">Australia: 
+                             <a href="tel:+ 02 90372450" class="whitecolor">02 90372450
+                             </a>
+                         </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</apex:component>

@@ -1,0 +1,10 @@
+<apex:page showHeader="false" standardStylesheets="false" >
+    <c:cssandjs />
+    <c:pageStyle />
+    <c:CommunityHeader ActiveTab="Home"/>
+    <div class="container" style="min-height:500px">
+    
+        <c:Announcements />
+    </div>
+    <c:CommunityFooter />
+</apex:page>

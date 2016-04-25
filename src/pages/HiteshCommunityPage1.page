@@ -1,0 +1,647 @@
+<apex:page language="en_US" showHeader="true" sidebar="false" docType="html-5.0" standardStylesheets="false" controller="CommunityHomeController" title="BlackPurl Community Home">
+    <apex:stylesheet value="{!URLFOR($Resource.BootstrapWithSlider, 'BootstrapWithSlider/css/bootstrap.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.BootstrapWithSlider, 'BootstrapWithSlider/js/jquery.js') }" />
+    <apex:includeScript value="{!URLFOR($Resource.BootstrapWithSlider, 'BootstrapWithSlider/js/bootstrap.min.js') }" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,800,700,600' rel='stylesheet' type='text/css' />
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>BlackPurl Community Home</title>
+        <script>function setFocusOnLoad(){ /*NOOP*/ }</script>
+        <style>
+            .zen #tabContainer{
+                display: none;
+            }
+            
+            
+            body{
+                font-family: 'Open Sans', sans-serif;
+            }
+            
+            .loginpannel,
+            .contentWrapper{
+                font-family: 'Open Sans', sans-serif;
+            }
+            
+            .contentWrapper{
+                max-width: 1380px;
+                margin: 0 auto;
+                min-height: 800px; 
+                font-family: 'Open Sans', sans-serif;
+            }
+            .contentWrapper .row{
+                margin: 0;
+            }
+            .row .slider,
+            .row .launchdiv{
+                padding: 4px;
+                overflow: hidden;
+                -webkit-transition: width 1s ease-in-out;
+                -moz-transition: width 1s ease-in-out;
+                -o-transition: width 1s ease-in-out;
+                transition: width 1s ease-in-out;
+            }
+            .row img{
+                width: 100%;
+                z-index: 999;
+            }
+             
+            .myslider .carousel-caption{
+                top: 37%;
+                font-size: 22px;
+                right: 30%;
+                left: 30%;
+                text-shadow: none;
+            }
+            .myslider .carousel-caption p{
+             text-transform: uppercase;
+            }
+            .myslider .carousel-caption .seemorebtn{
+                background:#00aeef;
+                border-radius:3px;
+                font-size:13px;
+                padding: 6px 15px;
+                color: #fff;
+                border: none;
+            }
+             .myslider .carousel-control.left{
+                background-image: url("{!URLFOR($Resource.scaledImages, 'left_slide.png')}");
+                background-repeat: no-repeat;
+                background-position: 50% 50%;
+             }
+             .myslider .carousel-control.left:hover{
+                background-image: url("{!URLFOR($Resource.scaledImages, 'left_slide_over.png')}");
+             }
+            .myslider .carousel-control.right{
+                background-image: url("{!URLFOR($Resource.scaledImages, 'right_slide.png')}");
+                background-repeat: no-repeat;
+                background-position: 50% 50%;
+            }
+            .myslider .carousel-control.right:hover{
+                background-image: url("{!URLFOR($Resource.scaledImages, 'right_slide_over.png')}");
+            }
+            .carousel-control{
+                width: 7%;
+            }
+            .launchdiv .Iconimage{
+                position:absolute;
+                left:25%;
+                top:40%;
+                min-width:214px;
+                height:86px;
+                text-align:center;
+                font-size:22px;
+                color:#ffffff;
+                text-transform:uppercase;
+            }
+            .launchdiv .Iconimage img{
+                width:62px;
+            }
+            
+             .launchdiv .Iconimage p{
+                margin: 15px 0;
+            }
+             
+            .bottom_info{
+                margin-top: 9px;
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .content_row {
+                text-align: center;
+                font-size: 27pt;
+                color: #727983;
+                margin-top: 85px;
+                margin-bottom: 85px;
+                font-weight: 300;
+            }
+            .content_row .actionlink {
+                color: #00AEEF;
+                font-size: 14px;
+            }
+            
+            
+            
+            .launchdiv .faq_inside{
+                width: 100%;
+                text-align: center;
+                margin: 0 auto;
+                position: absolute;
+                top: -100%;
+                background-color: #fff;
+                height: 100%;
+               -webkit-transition: top 0.5s; /* Safari */
+                transition: top 0.5s;
+            }
+            .launchdiv:hover .faq_inside{
+                top: 0px;
+               -webkit-transition: top 0.5s; /* Safari */
+                transition: top 0.5s;
+            }
+            .launchdiv .faq_inside h1{
+                font-weight:bold;
+                font-size:22px;
+                padding-bottom: 30px;
+                position: relative;
+                padding-top: 60px;
+                display: block;
+                text-transform: uppercase;
+                color: #000;
+              
+            }
+            .launchdiv .faq_inside h1 span{
+                margin:  0 10px;
+                padding-bottom: 30px;
+                border-bottom: 6px solid #e1e1e1;
+            }
+            .launchdiv .faq_inside h1:after {
+              position: absolute;
+              width: 202px;
+              height: 6px;
+              background-color: #e1e1e1;
+              left: 124px;
+              top: 112px;
+            }
+            .launchdiv .faq_inside p{
+                font-size:16px;
+                color:#727983;
+                padding-top: 24px;
+                text-transform:uppercase;
+                padding-left:50px;
+                padding-right:50px;
+            }
+            
+            .horizontalDiv .Iconimage img{
+                width: 33px;
+            }
+            
+            .horizontalDiv .Iconimage{
+                left: 35%;
+            }
+            .loginpannel{
+                padding-left: 0;
+                padding-right: 0;
+                margin: 0;
+            }
+            
+            .loginpannel{
+                background:#7d7d7e;
+                min-height:276px;
+            }
+            .loginpannel .loginform{
+                margin-left:auto;
+                margin-right:auto;
+                max-width:788px;
+                margin-top:125px;
+                margin-bottom:54px;
+            }
+            .loginpannel .loginform .insstruction_text{
+                color:#fff;
+                text-align:center;
+                padding-top:40px;
+            }
+            .loginpannel .loginform .insstruction_text a{
+                color: #00AEEF;
+            }
+            .loginpannel .loginform .form-group{
+                width:280px;
+                position:relative;
+                margin-left:20px;
+                vertical-align: top;
+            }
+            .loginpannel .loginform .UsernameText{
+                margin-left:0;
+            }
+            .loginpannel .loginform .form-group.btn_container{
+                width:180px;
+            }
+            .loginpannel .loginform .form-group input{
+                width:100%;
+                border-radius:3px;
+                padding-left:30px;
+                font-size:13px;
+            }
+            .loginpannel .loginform .form-group .loginbtn{
+                background:#00AEEF;
+                border-radius:3px;
+                width:180px;
+                height:32px;
+                font-size:13px;
+                color: #fff;
+                border: none;
+                font-family: 'Open Sans', sans-serif;
+                padding: 6px 12px;
+            }
+            .loginpannel .loginform .form-group .loginbtn:hover{
+                background:#fff;
+                color: #00AEEF;
+            }
+            
+            .loginpannel .loginform .form-group i{
+                color:#c6caca;
+                font-size: 21px;
+                position:absolute;
+                left: 9px;
+                top: 6px;
+            }
+            .forgotpwdLink,
+            .forgotpwdLink:hover{
+                color: #00AEEF;
+                line-height: 1.8;
+            }
+            
+            .responsechangeheight .faq_inside h1{
+                padding-top: 190px;
+            }
+            
+            
+            @media(max-width: 1400px){
+                .launchdiv .faq_inside h1{
+                    font-size: 16px;
+                }
+            
+            }
+            @media(max-width: 1024px){
+                .launchdiv .faq_inside h1{
+                    padding-top: 10px;
+                    font-size: 15px;
+                }
+                .responsechangeheight .faq_inside h1{
+                    padding-top: 60px;
+                }
+                .launchdiv .Iconimage{
+                    left: 15%;
+                    top: 30%;
+                }
+                .horizontalDiv .Iconimage{
+                    left: 35%;
+                }
+            }
+           
+            @media(max-width:768px){
+                .loginpannel .loginform{
+                    margin-top: 83px;
+                    max-width: 600px;
+                }
+                .loginpannel .loginform .form-group{
+                    margin-left:0;
+                    margin-bottom:10px;
+                }
+                .loginpannel .loginform .UsernameText{
+                    width: 48%;
+                }
+                .loginpannel .loginform .UserpassText{
+                    width: 48%;
+                    margin-left: 15px;
+                }
+                .loginpannel .loginform .form-group.btn_container{
+                    width: 100%;
+                    text-align: center; 
+                }
+                .launchdiv .faq_inside h1{
+                    padding-top: 33px;
+                }
+                .responsechangeheight .faq_inside h1{
+                    padding-top: 175px;
+                }
+            }
+            
+            @media(min-width:642px) and (max-width:768px){
+                .responsechangeheight{
+                    height:552px;
+                }
+                .responsechangeheight img{
+                    height:100%;
+                }
+                .responsechangeheight .Iconimage img{
+                      max-width: 100%;
+                      height: auto;
+                }
+            }
+            
+            @media(max-width:640px){
+                .loginpannel .loginform .UsernameText,
+                .loginpannel .loginform .UserpassText{
+                    display: inline-block;
+                }
+                .launchdiv .faq_inside h1{
+                    padding-top: 125px;
+                }
+                .responsechangeheight .faq_inside h1{
+                    padding-top: 300px;
+                }
+                .horizontalDiv .faq_inside h1{
+                    padding-top: 60px;
+                }
+            }
+           
+            @media(max-width:640px){
+                .loginpannel .loginform {
+                    margin-top: 39px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    max-width: 360px;
+                }
+                .loginpannel .loginform .UsernameText{
+                    width: 100%;
+                }
+                .loginpannel .loginform .UserpassText{
+                    width: 100%;
+                    margin-left: 0px;
+                    margin-top: 15px;
+                }
+                .myslider .carousel-caption{
+                    top: 35%;
+                    font-size: 18px;
+                }
+                .horizontalDiv>img{
+                    height: 250px;
+                }
+                .horizontalDiv .Iconimage{
+                    left: 27%;
+                }
+                .launchdiv .Iconimage, 
+                .horizontalDiv .Iconimage{
+                    left: 30%;
+                }
+            }
+            @media(max-width:480px){
+                .loginpannel .loginform{
+                    max-width: 270px;
+                }
+                .content_row{
+                    font-size: 27px;
+                }
+                .launchdiv .faq_inside p{
+                    font-size: 14px;
+                }
+                .launchdiv .Iconimage,
+                .horizontalDiv .Iconimage{
+                    left: 25%;
+                }
+                .myslider .carousel-caption{
+                    top:10%;
+                    font-size: 12px;
+                }
+                .launchdiv .faq_inside h1{
+                    padding-top: 90px;
+                }
+                .responsechangeheight .faq_inside h1{
+                    padding-top: 200px;
+                }
+                .horizontalDiv .faq_inside h1{
+                    padding-top: 60px;
+                }
+            }
+            
+            @media(max-width:410px){
+                .launchdiv .Iconimage, 
+                .horizontalDiv .Iconimage{
+                    left: 20%;
+                }
+                .launchdiv .faq_inside h1{
+                    padding-top: 60px;
+                }
+                .responsechangeheight .faq_inside h1{
+                    padding-top: 175px;
+                }
+            }
+            
+             @media(min-width:481px) and (max-width:1380px){
+                .contentWrapper{
+                    border-left: 22px solid #fff;
+                    border-right: 22px solid #fff;
+                }
+             }
+             
+                .errorM3{
+                    border-radius: 0;
+                    border : none;
+                    background: none;
+                    padding: 6px 8px 6px 0px;
+                    margin: 4px 0px;
+                }
+                .errorM3 .msgIcon, .errorSmall {
+                    background-image: none;
+                }
+                table.messageTable tr td:first-child { 
+                    display: none; 
+                }
+                .message .messageText span h4{
+                    display: none;
+                }
+                .messageText {
+                    color: #C81D1D;
+                }
+
+            .modal-dialog{
+                width: 800px;
+            }
+            
+            
+        </style>
+        
+        <script>
+            function sayAlert(){
+                alert(1);
+                loginUser();
+            }
+        
+        </script>
+        
+      <!--  <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        
+          ga('create', 'UA-64393894-1', 'auto');
+          ga('send', 'pageview');
+        
+       </script> -->
+    </head>    
+    
+    <body>
+        <div class="contentWrapper">
+            <div class="row firstrow">
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 col-xxs-12 slider">
+                      <div id="carousel-example-generic" class="carousel slide myslider" data-ride="carousel">
+                          <!-- Indicators -->
+                          <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                          </ol>
+    
+                          <!-- contentWrapper for slides -->
+                          <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                              <img src="{!URLFOR($Resource.scaledImages, 'Retina_size/BLACK_PURL_design_partner_image9.jpg')}" alt="..." />
+                              <a href="{!$Site.Prefix}/apex/Answer_Home_Page?sfdc.tabName=01r28000000KDin" style="text-decoration: none; color: #fff; font-weight: normal;">
+                                  <div class="carousel-caption">
+                                    <p>Participate in the solution you always wanted.</p>
+                                    <a href="{!$Site.Prefix}/apex/Answer_Home_Page?sfdc.tabName=01r28000000KDin" class="btn btn-primary seemorebtn">Get Started</a>
+                                  </div>
+                              </a>
+                            </div>
+                            <div class="item">
+                              <img src="{!URLFOR($Resource.scaledImages, 'Retina_size/BLACK_PURL_design_partner_image1.jpg')}" alt="..." />
+                              <a href="{!$Site.Prefix}/apex/Answer_Home_Page?sfdc.tabName=01r28000000KDin" style="text-decoration: none; color: #fff; font-weight: normal;">
+                                  <div class="carousel-caption">
+                                    <p>A powerful community creating positive change.</p>
+                                    <a href="{!$Site.Prefix}/apex/Answer_Home_Page?sfdc.tabName=01r28000000KDin" class="btn btn-primary seemorebtn">Participate</a>
+                                  </div>
+                              </a>
+                            </div>
+                          </div>
+    
+                          <!-- Controls -->
+                          <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                          </a>
+                          <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                          </a>
+                    </div>
+                </div>
+                <a href="https://bp-comm01-developer-edition.na31.force.com/designpartnercommunity/homesearch">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-xxs-12 launchdiv responsechangeheight" style="padding-bottom: 5px;">
+                        <img src="{!URLFOR($Resource.scaledImages, 'Retina_size/BLACK_PURL_design_partner_image3.jpg')}" />
+                        <div class="Iconimage">
+                            <img src="{!URLFOR($Resource.scaledImages, 'launch.png')}" class="" alt="" />
+                            <p>LAUNCH APPLICATION</p>
+                        </div>
+                        <div class="faq_inside">
+                            <h1><span>Start your journey today</span></h1>
+                            <p>New features to be added every 3 weeks so check back often. </p>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="{!$Site.Prefix}/ideas/ideaList.apexp">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-xxs-12 launchdiv">
+                        <img src="{!URLFOR($Resource.scaledImages, 'Retina_size/BLACK_PURL_design_partner_image4.jpg')}" />
+                        <div class="Iconimage">
+                            <img src="{!URLFOR($Resource.scaledImages, 'hover1.png')}" class="" alt="" />
+                            <p>SHARE YOUR IDEAS</p>
+                        </div>
+                        <div class="faq_inside">
+                            <h1><span>LET YOUR IDEAS SHAPE YOUR FUTURE</span></h1>
+                            <p>You know what you want, let us know so we can make it real.</p>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="{!$Site.Prefix}/apex/Answer_Home_Page?sfdc.tabName=01r28000000KDin">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-xxs-12 launchdiv">
+                        <img src="{!URLFOR($Resource.scaledImages, 'Retina_size/BLACK_PURL_design_partner_image5.jpg')}" />
+                        <div class="Iconimage">
+                            <img src="{!URLFOR($Resource.scaledImages, 'faq.png')}" class="" alt="" />
+                            <p>ASK A QUESTION </p>
+                        </div>
+                        <div class="faq_inside">
+                            <h1><span>Our community is here to help</span></h1>
+                            <p>Your questions are tomorrows solutions. Don't be shy and ask away.</p>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="{!$Site.Prefix}/_ui/core/chatter/ui/ChatterPage">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-xxs-12 launchdiv">
+                        <img src="{!URLFOR($Resource.scaledImages, 'Retina_size/BLACK_PURL_design_partner_image6.jpg')}" />
+                        <div class="Iconimage">
+                            <img src="{!URLFOR($Resource.scaledImages, 'hover2.png')}" class="" alt="" />
+                            <p>ENGAGE YOUR PEERS</p>
+                        </div>
+                        <div class="faq_inside">
+                            <h1><span>Stay in the loop</span></h1>
+                            <p>Get a snapshot of what's new in the community while making new connections. </p>
+                        </div>
+                    </div>
+                </a>
+                <a href="{!$Site.Prefix}/ContactUs">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-xxs-12 launchdiv">
+                        <img src="{!URLFOR($Resource.scaledImages, 'Retina_size/BLACK_PURL_design_partner_image7.jpg')}" />
+                        <div class="Iconimage">
+                            <img src="{!URLFOR($Resource.scaledImages, 'hover4.png')}" class="" alt="" />
+                            <p>Contact US</p>
+                        </div>
+                        <div class="faq_inside">
+                            <h1><span>We're here to help</span></h1>
+                            <p>WE LOOK FORWARD TO HEARING FROM YOU. </p>
+                        </div>
+                    </div>  
+                </a>
+                
+                <a href="#myModal" data-toggle="modal" data-target="#myModal">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 col-xxs-12 launchdiv horizontalDiv">
+                        <img src="{!URLFOR($Resource.scaledImages, 'Retina_size/BLACK_PURL_design_partner_image8.jpg')}" />
+                        <div class="Iconimage">
+                            <img src="{!URLFOR($Resource.scaledImages, 'hover3.png')}" class="" alt="" />
+                            <p>GETTING STARTED</p>
+                        </div>
+                        <div class="faq_inside">
+                            <h1><span>It's easier than you think</span></h1>
+                            <p>This short video will help guide you on how to get the most out of the member community.</p>
+                        </div>
+                    </div>
+                </a>
+                
+            </div>
+            
+            <div class="bottom_info row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="content_row col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+                <p>
+                    Welcome to the BlackPurl Member Community, a place where your ideas come to life. 
+                 </p>
+                 <!-- <a href="#" class="actionlink">ACTION <i class="fa fa-angle-double-right"></i></a> -->
+                </div>
+            </div>
+            
+            <div class="clearfix"></div>
+            
+         </div>  
+         
+         <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Getting Started with BlackPurl Community</h4>
+                  </div>
+                  <div class="modal-body">
+                     <iframe src="https://www.youtube.com/embed/LzGxL2GaglQ" allowfullscreen="true" frameborder="0" height="400" width="100%"></iframe>     
+                  </div>
+                </div>
+            </div>
+         </div>
+        
+         <apex:outputPanel rendered="{!(ISPICKVAL($User.UserType,'Guest'))}">
+            <div class="row col-lg-12 col-md-12 second_row loginpannel">
+                <apex:form styleClass="form-inline loginform">
+                      <apex:pageMessages id="error"/>
+                      <div class="form-group UsernameText">
+                        <apex:inputText value="{! username }" styleClass="form-control" id="exampleInputEmail" html-placeholder="Username" />
+                        <!-- <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Username" />  -->
+                        <i class="fa fa-user"></i>
+                      </div>
+                      <div class="form-group UserpassText">
+                        <apex:inputSecret value="{! password }" styleClass="form-control" id="exampleInputPass" html-placeholder="Password"  />
+                       <!--  <input type="Password" class="form-control" id="exampleInputEmail1" placeholder="Password" /> -->
+                        <i class="fa fa-lock"></i>
+                        <a href="{!$Site.Prefix}/CommunityForgotPassword" class="forgotpwdLink">Forgot Password ?</a>
+                      </div>
+                      <div class="form-group btn_container">
+                        
+                        <apex:commandButton action="{!login}" value="Log In" styleClass="btn btn-primary loginbtn"/>
+                        <!-- <button type="submit" class="btn btn-primary loginbtn">Log In</button> -->
+                      </div>
+                      <p class="insstruction_text">Would you like to be part of our BlackPurl Member Community? <a href="{!$Site.Prefix}/CommunityRegister">SIgn up here <i class="fa fa-angle-double-right"></i></a></p>
+                </apex:form>
+            </div>
+         </apex:outputPanel>
+    </body>
+
+</html>
+</apex:page>

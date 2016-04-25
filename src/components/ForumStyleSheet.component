@@ -1,0 +1,39 @@
+<apex:component >
+<style>
+.userMenu {
+    margin-left: 15% !important;
+}
+h1{
+	    font-size: 36px  !important;
+	    margin: .67em 0;
+}
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px !important;
+    line-height: 1.42857143;
+    color: #333;
+} 
+.searchBtn {
+	font-size: 16px  !important;
+	font-weight: lighter  !important;
+}  
+p {
+    margin: 0 0 10px;
+} 
+.csMini .threecolumn {
+    background: none;
+}
+.threecolumn .centerContent, .threecolumn .leftContent{
+padding: 0px !important;
+}
+ul li, ol li {
+	margin-left : 0px !important;
+}
+.uiLabel{
+display : block;
+}
+.serviceCommunitySearchBox .searchbutton {
+    margin: -1px;
+}
+</style>
+</apex:component>

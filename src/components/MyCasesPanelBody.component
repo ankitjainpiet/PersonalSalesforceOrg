@@ -1,0 +1,7 @@
+<apex:component controller="CaseExtension">
+	<div class="container">
+	<c:AllPanelComponent CreateMyCaseVisible="true" UserGuideVisible="true"  CustomFormsandTrainingVisible="true"  />
+	
+
+	</div>
+</apex:component>

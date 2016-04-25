@@ -1,0 +1,135 @@
+<apex:component >
+   <apex:attribute name="firstcolumntext" type="string"  description="This is the value for the component." />
+   <apex:attribute name="secondcolumntext" type="string"  description="This is the value for the component." />
+   <style>
+      .overflowclass {
+      overflow: scroll;
+      }
+      .selected{
+      /* background-color: #1E90FF; */
+      }
+      .multiselectoption{
+          display: block;
+   		 padding: 8px 12px;
+      }
+      .centeralignupdown{
+      margin-top: 100px;
+      }
+      .centeralignupdownordering{
+      margin-top: 100px;
+      }
+      .showclass{
+      	display:none !important;
+      }
+      .hideclass{
+      	display:inline-block !important;
+      }
+     
+      @media only screen and (min-width: 240px) and (max-width: 640px){
+      .updownclass{
+      width: 100%;
+      }
+      .hideclass{
+      	display:none !important;
+      }
+      .showclass{
+      	display : inline  !important;
+      }
+      .centeralignupdown{
+      margin-top: 0px;
+      }
+      } 
+   </style>
+   <html xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+      <apex:stylesheet value="{!URLFOR($Resource.salesforcelight, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+      <div class="slds" ng-app="MyApp" ng-controller="mycontroller"
+         ng-init="setInitialValue()">
+         <div class="slds-form-element">
+      <div  class="slds-grid slds-col slds-wrap">
+              
+           		 <div class="slds-picklist--draggable slds-grid">
+               
+             	
+				  <div class="slds-form-element">
+						  <label class="slds-form-element__label" for="selectSample1">Select Label</label>
+						  <div class="slds-form-element__control">
+						    <div class="slds-picklist slds-picklist--multi">              
+						      <select id="selectSample1" class="slds-picklist__options slds-picklist__options--multi  shown slds-scrollable--y "  options-class="slds-picklist__item multiselectoption" multiple="multiple" ng-model="playerselected">
+						       <option class="slds-picklist__item multiselectoption"   ng-class="{selected : playerselected.indexOf(player) != -1}"    ng-repeat="player in players track by $index | orderBy:'seqno'"  ng-init="setPlayerItemPos(player, $index)" value="{{player.Name}}">{{player.Name}}</option>
+ 						      </select>
+						    </div>
+						  </div>
+        	         
+        	         
+        	       
+            </div>
+         </div>
+          <div class="slds-grid slds-grid--vertical updownclass showclass">
+               <button class="slds-button slds-button--icon-container" ng-click="removeSelectedPlayers();">
+                  <svg aria-hidden="true" class="slds-button__icon">
+                     <use
+                        xlink:href="{!URLFOR($Resource.salesforcelight,'/assets/icons/utility-sprite/svg/symbols.svg#up')}"></use>
+                  </svg>
+                  <span class="slds-assistive-text">Arrow up</span>
+               </button>
+               <button class="slds-button slds-button--icon-container" ng-click="addSelectedPlayers();">
+                  <svg aria-hidden="true" class="slds-button__icon">
+                     <use
+                        xlink:href="{!URLFOR($Resource.salesforcelight,'/assets/icons/utility-sprite/svg/symbols.svg#down')}"></use>
+                  </svg>
+                  <span class="slds-assistive-text">Arrow down</span>
+               </button>
+          </div>
+         
+         
+         
+         <div class="slds-grid slds-grid--vertical updownclass centeralignupdown hideclass">
+            <button class="slds-button slds-button--icon-container" ng-click="removeSelectedPlayers();">
+               <svg aria-hidden="true" class="slds-button__icon">
+                  <use
+                     xlink:href="{!URLFOR($Resource.salesforcelight,'/assets/icons/utility-sprite/svg/symbols.svg#left')}"></use>
+               </svg>
+               <span class="slds-assistive-text">Arrow left</span>
+            </button>
+            <button class="slds-button slds-button--icon-container" ng-click="addSelectedPlayers()">
+               <svg aria-hidden="true" class="slds-button__icon">
+                  <use
+                     xlink:href="{!URLFOR($Resource.salesforcelight,'/assets/icons/utility-sprite/svg/symbols.svg#right')}"></use>
+               </svg>
+               <span class="slds-assistive-text">Arrow right</span>
+            </button>
+         </div>
+         <div class="slds-form-element">
+						  <label class="slds-form-element__label" for="selectSample1">{!secondcolumntext} </label>
+						  <div class="slds-form-element__control">
+						    <div class="slds-picklist slds-picklist--multi">
+						      <select id="selectSample1" class="slds-picklist__options slds-picklist__options--multi  shown slds-scrollable--y " multiple="multiple" ng-model="selectedplayer">
+						        <option class="slds-picklist__item multiselectoption"    ng-repeat="player in selectedpplayers track by $index  | orderBy:'seqno'" value="{{player.Name}}">{{player.Name}}</option>
+						      </select>
+						    </div>
+						  </div>
+
+                
+            </div>
+            <div class="slds-grid slds-grid--vertical centeralignupdownordering ">
+               <button class="slds-button slds-button--icon-container" ng-click="reorderingUp();">
+                  <svg aria-hidden="true" class="slds-button__icon">
+                     <use
+                        xlink:href="{!URLFOR($Resource.salesforcelight,'/assets/icons/utility-sprite/svg/symbols.svg#up')}"></use>
+                  </svg>
+                  <span class="slds-assistive-text">Arrow up</span>
+               </button>
+               <button class="slds-button slds-button--icon-container" ng-click="reorderingdown();">
+                  <svg aria-hidden="true" class="slds-button__icon">
+                     <use
+                        xlink:href="{!URLFOR($Resource.salesforcelight,'/assets/icons/utility-sprite/svg/symbols.svg#down')}"></use>
+                  </svg>
+                  <span class="slds-assistive-text">Arrow down</span>
+               </button>
+            </div>
+         </div>
+      </div>
+     </div>
+   </html>
+</apex:component>
