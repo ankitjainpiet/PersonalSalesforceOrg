@@ -9,6 +9,10 @@ metadataFormatVersion=33.0
 namespacePrefix=
 packageName=unpackaged
 preferToolingDeployment=true
+<<<<<<< HEAD
 projectIdentifier=IDE7579906230648455536
+=======
+projectIdentifier=IDE6061019096965006492
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
 readTimeout=400
 username=ankit.jain@metacube.com

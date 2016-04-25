@@ -136,6 +136,10 @@
 			              addToArray=false;
 			          }
 			      }
+<<<<<<< HEAD
+=======
+			      console.log(selection  + 'selection ');
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
 			      if(addToArray || input[i] === selection || input[i] === selection.sourcefield){
 			        newInput.push(input[i]);
 			      }
@@ -177,7 +181,13 @@
 	          	"targetfield" : ""
 	          	}
 	            $scope.search = function (row) {
+<<<<<<< HEAD
 	                if(angular.isDefined(row.name) && angular.isDefined($scope.lookupstring)){
+=======
+	            	console.log(row.name);
+	            	console.log($scope.lookupstring);
+                    if(angular.isDefined(row.name) && angular.isDefined($scope.lookupstring)){
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
                        return (angular.lowercase(row.name).indexOf($scope.lookupstring || '') !=-1 || angular.uppercase(row.name).indexOf($scope.lookupstring || '') !=-1);
                     }
                 }
@@ -229,7 +239,12 @@
                 $scope.getFields = function(){
 	                DataService.getFields($scope.searchingobject).then(
 		                        function (successfulSearchResult) {
+<<<<<<< HEAD
 		                        	$scope.isloading =false;
+=======
+		                        	console.log(JSON.stringify(successfulSearchResult) + 'successfulSearchResult');
+		                            $scope.isloading =false;
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
 		                            $scope.lookupobjectfields  = successfulSearchResult;
 		                        },function (errorSearchResult) {
 		                            responseData = errorSearchResult;
@@ -238,6 +253,10 @@
                 
                 }
                 $scope.disable = function(obj){
+<<<<<<< HEAD
+=======
+                console.log(JSON.stringify(obj))
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
                 	obj.isDisabled=true;
                 	obj.sourcefieldisUsed= true;
                 	
@@ -279,6 +298,10 @@
                 angular.forEach($scope.mappings, function(value) {
                 	value.sourceobject = $scope.searchingobject;
                 	$scope.fields.isUsed = true;
+<<<<<<< HEAD
+=======
+                	console.log(value.sourcefield + '$scope.fields');
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
                 	value.targetobject = $scope.fields.objectName;
                 	value.sourcefield = value.sourcefield.fieldAPIName;
                 	value.targetfield = value.destinationfields.fieldname;
@@ -289,6 +312,10 @@
                 $scope.save = function(){
                 $scope.validatemappings();
                 $scope.isloading =true;
+<<<<<<< HEAD
+=======
+                console.log($scope.valid + "$scope.valid ");
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
                 if($scope.valid == true){
                 $scope.setData();
 				$scope.wrapperstring = {

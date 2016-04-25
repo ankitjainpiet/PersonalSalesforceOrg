@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <apex:component >
+=======
+<apex:component>
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
    <apex:attribute name="firstcolumntext" type="string"  description="This is the value for the component." />
    <apex:attribute name="secondcolumntext" type="string"  description="This is the value for the component." />
    <style>

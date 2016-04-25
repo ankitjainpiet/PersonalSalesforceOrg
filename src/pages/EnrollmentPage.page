@@ -12,7 +12,11 @@
 <body>
 	<div class="container" ng-controller="mycontroller">
 	
+<<<<<<< HEAD
 	<apex:pagemessages />
+=======
+	<apex:pagemessages/>
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
 		<div id='errors'>
 		</div>
 		<div class="success">

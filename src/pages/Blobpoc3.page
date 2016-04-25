@@ -27,7 +27,11 @@
     height:300px;
 }
     </style>
+<<<<<<< HEAD
     <c:bootstrapandangularjs />
+=======
+    <c:bootstrapandangularjs/>
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
     <Script>
             var blobApp = angular.module('blobApp', ['ui.bootstrap','ngGrid']);
             blobApp.controller('blobcontroller' ,['$scope',function($scope){
