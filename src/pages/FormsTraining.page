@@ -1,0 +1,13 @@
+<apex:page showHeader="false" sidebar="false"
+	standardStylesheets="false" docType="html-5.0"> 
+
+    <c:cssandjs />
+    <c:pageStyle />
+    <c:NewHeader ActiveTab="FormsTraining" />
+ <div class="container" style="min-height:500px" >
+<h1 class="centerheading">{! $Label.Custom_Forms_and_Training} </h1>
+ <!-- <c:AllPanelComponent RequestTrainingVisible="true" CustomFormsVisible="true"  BackToHomePageVisible="true"  />
+ -->
+  </div>
+ <c:NewFooter />
+</apex:page>

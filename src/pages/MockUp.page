@@ -1,0 +1,100 @@
+<apex:page controller="CasesController" sidebar="false" showheader="false" showchat="false" standardStylesheets="false" title="DealerVu Community" cache="false">
+    <c:cssandjs />
+    <c:pageStyle />
+	<script>
+function suggestarticles(newcasesubj ){
+	
+
+	suggestarticle(newcasesubj); 
+}
+function innersearch(){
+$("#suggestedarticle").hide();
+$("#searchbar").show();
+}
+function removefilter(){
+$("#suggestedarticle").show();
+$("#searchbar").hide();
+$("#searchbar :text").val('');
+clearfilter();
+}
+</script>
+
+    <c:CommunityHeader ActiveTab="RequestTraining"/>
+
+    <div class="container" style="min-height:500px">
+
+	<div class="row createcase" >
+		<div class="col-md-5">
+			<div class="createcase createcasediv" style="display: block">
+				<button type="button" class="flatBtn" value="Back To Case Listing"
+					style="width: 200px; margin: 15px 0;" onclick="showtablegrid();">
+					<span>Go
+						To  Training Queue   <i class="fa fa-arrow-right"></i></span>
+				</button>
+
+				<div>
+					<apex:outputPanel rendered="{!$User.CommunityNickname != ''}">
+						<p>
+							<span class="createcasefields">{!$Label.Name}</span> <span>{!$User.CommunityNickname}</span>
+						</p>
+
+					</apex:outputPanel>
+					<apex:outputPanel rendered="{!$User.Email != ''}">
+						<p>
+							<span class="createcasefields">{!$Label.Email}</span> <span>{!$User.Email}</span>
+						</p>
+					</apex:outputPanel>
+					<apex:outputPanel rendered="{! user.Phone != ''}">
+						<p>
+							<span class="createcasefields">{!$Label.Phone_Number}</span> <span>{!
+								user.Phone}</span>
+						</p>
+
+					</apex:outputPanel>
+				</div>
+				<apex:form >
+
+					<div class="form-group">
+						<label for="exampleInputPassword1">Case Subject</label>
+						<apex:inputText value="{!newcase.subject}"
+							style="margin-top: 8px;width: 100%" styleClass="form-control"
+							onblur="suggestarticles(this.value);" />
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">Description</label>
+
+
+						<apex:inputTextarea id="newDesc" value="{!newcase.description}"
+							rows="4" cols="15" style="width: 100%;color: black" />
+					</div>
+					<div class="form-group">
+						<label for="exampleInputFile">Attach File</label>
+						<apex:inputFile value="{!myattachment.body}" id="casefile"
+							filename="{!myattachment.name}" onchange="showattachedfiles();"></apex:inputFile>
+						<div class="attachmentheading" style="display: none">
+							<h4>Attachments</h4>
+						</div>
+						<div class="attachedfiles"
+							style="display: none; background-color: white;">
+							<span id="attachment"></span> <i class="fa fa-times"
+								onclick='removeFile()' style="cursor: pointer;"></i>
+
+						</div>
+
+
+					</div>
+
+					<apex:commandButton value="{!$Label.Submit}" action="{!save}"
+						styleClass="btn btn-default createcasesubmitbutton" />
+
+					<button type="button" class="btn btn-default searchbutton"
+						onclick="showtablegrid();">{!$Label.Cancel}</button>
+				</apex:form>
+			</div>
+			</div>
+	</div>
+			
+</div>
+
+
+</apex:page>

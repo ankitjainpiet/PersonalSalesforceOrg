@@ -1,0 +1,80 @@
+<apex:component controller="AnnouncementController" allowdml="true">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+    <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+        
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        $('[id*=startDatepicker]').datepicker({showAnim: 'drop', dateFormat: 'dd/mm/yy' });
+        $('[id*=endDatepicker]').datepicker({showAnim: 'drop' , dateFormat: 'dd/mm/yy' }); 
+        $('[id*=publishingDatepicker]').datepicker({showAnim: 'drop' , dateFormat: 'dd/mm/yy' });
+        
+      });
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip({
+            placement : 'top'
+        });
+    });
+    function showtablegrid(){
+            $(".createcase").hide();
+            $(".outerdiv").show();
+        }
+        $(document).ready(function(){
+            $(".createcasebutton").click(function(){
+                $(".createcase").show();
+                $(".outerdiv").hide();
+                    
+            });
+            
+        
+        })
+    
+    </script>
+    <div class="container">
+        <div class="outerdiv">
+        <div class="page-header" style="background-color: #626262;">
+            <div class="customannouncement logogoldbackground   col-lg-4 col-md-4 col-sm-12 col-xs-12"
+                style="width: 100%;">
+                <div class="col-lg-12 col-md-12 mycasestablecolumnbackgound">
+                                <span class="SearchLabel">{!$Label.Feature_Articles}</span>
+<!--                   <button type="button" style="width:223px !important" class="flatBtn  createcasebutton createcasebuttonCustomFormsPage" value="{!$Label.Create_New_Case }">
+                     Create New Announcement 
+                     
+                    </button>
+ -->   
+                </div>
+
+            </div>
+        </div>
+
+        <div class="table-responsive pull-left">
+        <apex:outputPanel id="announcementtable">
+
+            <br/>
+            <table class="table table-bordered pull-left" data-height="299">
+                <col width="15%" />
+                <col width="85%" />
+                <tbody>
+                    <apex:repeat value="{!announcementlist}" var="announcement1">
+                        <tr>
+                            <td><span class="announcementpublishingdate"> <apex:outputText value="{0,date, d  MMMM   yyyy}">
+                                        <apex:param value="{!announcement1.LastPublishedDate}" />
+                                    </apex:outputText>
+
+
+                            </span></td>
+                            <td><h4 class="margintop2">{!announcement1.title}</h4>
+                                <p>{!announcement1.summary}</p></td>
+                        </tr>
+                    </apex:repeat>
+                
+                </tbody>
+            </table>
+            </apex:outputPanel>
+        </div>
+        
+        </div>
+     
+    </div>
+</apex:component>

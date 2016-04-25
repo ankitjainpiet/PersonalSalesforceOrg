@@ -1,0 +1,148 @@
+<apex:component controller="CricketTeamController">
+<script>
+            var myApp = angular.module('MyApp', []);
+			           
+             myApp.service('myService',function ($q) {
+               this.getAllPlayers = function(typeofList){
+               var deferred = $q.defer();
+                      
+                       Visualforce.remoting.Manager.invokeAction(
+                           '{!$RemoteAction.CricketTeamController.getPlayersList}',
+                           function (result, event) {
+                           if (event.type == 'exception') {
+                               deferred.reject(JSON.parse('[]'));
+                           } else {
+                           			//$(".success").html("<strong>Record inserted successfully</strong>");
+                                  deferred.resolve(result);
+                                  
+                           }
+                       }, {
+                           escape : false
+                       });
+                       return deferred.promise;
+               
+               
+               }
+               this.submitmyteam  =    function(allist,selecteditems){
+               			var deferred = $q.defer();
+                       Visualforce.remoting.Manager.invokeAction(
+                           '{!$RemoteAction.CricketTeamController.reviewMyTeam}',angular.toJson(allist),angular.toJson(selecteditems),
+                           function (result, event) {
+                           if (event.type == 'exception') {
+                               deferred.reject(JSON.parse('[]'));
+                           } else {
+                           			//$(".success").html("<strong>Record inserted successfully</strong>");
+                                  deferred.resolve(result);
+                                  
+                           }
+                       }, {
+                           escape : false
+                       });
+                       return deferred.promise;
+               
+               
+               }
+               
+ 
+               this.getSelectedPlayers = function($q){
+               var deferred = $q.defer();
+                      
+                       Visualforce.remoting.Manager.invokeAction(
+                           '{!$RemoteAction.CricketTeamController.getPlayersList}',
+                           function (result, event) {
+                           if (event.type == 'exception') {
+                               deferred.reject(JSON.parse('[]'));
+                           } else {
+                           			//$(".success").html("<strong>Record inserted successfully</strong>");
+                                  return  result;
+                           }
+                       }, {
+                           escape : false
+                       });
+                       return deferred.promise;
+               
+               
+               }
+              
+            });
+              myApp.controller('mycontroller' ,['$scope','$http','myService',function($scope,$http,myService){
+              $scope.players=[];
+              $scope.playerjson= {"Name" : "","isSelected" : false};
+         	  $scope.selectedpplayers=[];
+         	  $scope.setInitialValue = function(leftsidelist,selectedlist){
+	         	   $scope.players= angular.copy(leftsidelist);
+	         	   $scope.selectedpplayers = angular.copy(selectedlist);
+         	  
+         	  }
+         	 
+         		$scope.getAllPlayers = function(){
+         		myService.getAllPlayers().then(function (data) {
+                    	console.log(data);
+                       angular.forEach(data,function(value,index){
+                      		 $scope.players.push({"id":  value.Id,"Name" : " " + value.Name,"isSelected" : false });
+                       });
+      				    });
+                       $scope.players = [];
+         		}
+ 				
+ 			
+ 				$scope.addSelectedPlayers = function(){
+ 				  var playercopy=[];
+ 				  playercopy =   angular.copy($scope.players);
+ 				 var i=0;
+ 				 for(i=0;  i<$scope.players.length;i++){
+					var player = $scope.players[i];	 
+					if(player.isSelected){
+ 						player.isSelected = false;
+ 						$scope.selectedpplayers.unshift(player);
+ 						$scope.players.splice(i,1);
+ 						 i--;
+ 					}
+ 				 
+ 				 }
+ 		                 
+                 console.log(JSON.stringify($scope.selectedpplayers));	
+ 				}
+ 				
+ 				$scope.removeSelectedPlayers = function(){
+ 				 var playerscopy=[];
+ 				 var playerscopy = angular.copy($scope.selectedpplayers);
+ 				 var idx=-9;
+ 				 for(idx=0; idx<$scope.selectedpplayers.length; idx++){
+					var player = $scope.selectedpplayers[idx];	 
+				
+ 					if(player.isSelected){
+ 						player.isSelected = false;
+ 						$scope.players.unshift(player);
+ 						console.log(JSON.stringify($scope.selectedpplayers) + "after");	
+ 						console.log(player.Name + "selected player")
+ 			
+ 						$scope.selectedpplayers.splice(idx,1);
+ 						 idx--;
+ 						console.log($scope.selectedpplayers.indexOf(player) + "after111");	
+
+ 					}
+ 					
+ 				}
+ 				}
+ 				
+ 				$scope.addSelectedPlayer= function(idx){
+ 					$scope.selectedpplayers.push($scope.players[idx]);
+ 					$scope.players.splice(idx,1);
+ 				}
+ 				$scope.removeSelectedPlayer= function(index){
+ 					$scope.players.push($scope.selectedpplayers[index]);
+ 					$scope.selectedpplayers.splice(index,1);
+ 				
+ 				}
+ 				$scope.getInitialData = function(){
+ 				$scope.getAllPlayers();
+ 				$scope.getSelectedPlayers();
+ 				}        		
+         		$scope.submitTeam = function(){
+               			myService.submitmyteam($scope.players,$scope.selectedpplayers);
+              		
+              	}}]);
+
+</script>
+</apex:component>

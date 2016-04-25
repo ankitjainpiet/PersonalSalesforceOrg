@@ -1,0 +1,13 @@
+<apex:page showHeader="false" sidebar="false"
+	standardStylesheets="false" docType="html-5.0"> 
+     <c:cssandjs />
+    <c:pageStyle />
+    <c:NewHeader ActiveTab="CreateCase"/>
+    <c:MyCurrentCasesComponent />
+    <c:MyCasesResolvedCases />
+   <!--  <c:MyCasesPanelBody /> -->
+	    	<c:AllPanelComponent CreateMyCaseVisible="true" />
+	
+	<c:NewFooter />
+
+</apex:page>

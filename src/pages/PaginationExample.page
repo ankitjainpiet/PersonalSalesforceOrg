@@ -1,0 +1,4 @@
+<apex:page controller="CasesController">
+<c:PaginationExample objectName="Case"  attributeName="Id" recordPerPage="3" widthofTable="100"/>
+
+</apex:page>

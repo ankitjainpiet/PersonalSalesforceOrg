@@ -1,0 +1,12 @@
+<apex:page docType="html-5.0" standardController="Sample__c"  extensions="SampleExtension">
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  This is your new Page
+  <!-- End Default Content REMOVE THIS -->
+  <apex:form >
+  <Apex:pageBlock >
+  <apex:inputField value="{!Sample__c.name}" />
+  <Apex:commandButton value="Save"  action="{!quicksave}"  />
+  </Apex:pageBlock>
+  </apex:form>
+</apex:page>

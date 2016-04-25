@@ -1,0 +1,25 @@
+<apex:page standardController="Sample__c"  extensions="SampleExtension" showHeader="false">
+<apex:stylesheet value="{!URLFOR($Resource.BootstrapWithSlider, 'BootstrapWithSlider/css/bootstrap.css')}"  /> 
+  <c:CustomHeaderComponent ></c:CustomHeaderComponent>
+  <body>
+  <apex:pageBlock >
+  <apex:pageBlockSection id="input">
+  <apex:form >
+   Name
+  <apex:inputField value="{!Sample__c.Name}" html-placeholder="Name" />
+  <apex:commandButton value="Save" action="{!quicksave}" reRender="input,output" status="status"/>
+  </apex:form>
+  </apex:pageBlockSection>
+  <apex:actionStatus startText="Updating" id="status" /> 
+   <apex:outputPanel id="output">
+  <apex:pageBlockSection rendered="{!Sample__c.Name != '' }">
+     {!greeting}
+
+          <apex:outputField value="{!Sample__c.Name}"  />
+   
+  </apex:pageBlockSection>
+</apex:outputPanel>
+  
+  </apex:pageBlock>
+  </body>
+</apex:page>

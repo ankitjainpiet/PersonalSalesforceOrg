@@ -1,0 +1,14 @@
+<apex:component >
+	<apex:attribute name="announcement" type="AnnouncementObject__c"
+		description="This is the value for the component."  required="true" />
+		
+   
+  
+	  
+	<script>
+	
+  
+  
+	</script>
+	
+</apex:component>

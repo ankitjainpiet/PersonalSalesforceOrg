@@ -1,0 +1,12 @@
+<apex:page showHeader="false" standardStylesheets="false"  title="DealerVu Community-UserGuide"> 
+
+    <c:cssandjs />
+    <c:pageStyle />
+    <c:CommunityHeader ActiveTab="UserGuide" />
+ <div class="container" style=" min-height: 500px;">
+<c:ArticleFilterComponent />
+</div>
+ 
+<c:CommunityFooter />
+
+</apex:page>

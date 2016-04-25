@@ -1,0 +1,58 @@
+<apex:page showHeader="false" sidebar="false"
+	standardStylesheets="false" docType="html-5.0"> 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet"/>
+
+
+	<c:cssandjs />
+	<c:pageStyle />
+	  	<script>
+	function showtablegrid(){
+			$(".createcase").hide();
+			$(".container").closest.show();
+		}
+		function navigateTocreateCase(){
+		 location.href = "{!$Page.MyCases}?createcase=true&trainingcase=true"; 
+		}
+		function createCase(){
+			$(".createcase").show();
+			$(".container").closest.hide();
+		}
+		$(document).ready(function(){
+			var url = location.search;
+			var qs = url.split('?')[1];
+			var parts = qs.split('&');
+			var arr = [];
+			
+			$.each(parts, function() {
+			    var val = this.split('=')[1];
+			    console.log(val + "val");
+			    arr.push(val);
+			});
+		  //var queryString = location.search.split('createcase=')[1] ? location.search.split('createcase=')[1] : 'false'
+			if( $.inArray('true',arr) != -1){
+			createCase();
+			}
+			else{
+			console.log('else case');
+			}
+		})
+		
+		</script>
+	<c:CommunityHeader ActiveTab="RequestTraining" />
+	<div class="container"   style="margin-bottom: 278px;">
+	<div class="logogoldbackground   col-lg-4 col-md-4 col-sm-12 col-xs-12 fullwidth">
+                <span class="SearchLabel">{!$Label.Request_Training } </span>
+                
+			  <button type="button"  onclick="navigateTocreateCase();" class="flatBtn  createcasebutton createcasebuttonCustomFormsPage" value="{!$Label.Create_New_Case }">
+                     {!$Label.Create_New_Case} 
+                     
+                    </button>
+            </div>
+			
+			<p style="margin: 65px 0 0 0;">
+			{!$Label.Request_Training_text}
+		</p>
+	</div>
+  <c:CommunityFooter />
+
+</apex:page>

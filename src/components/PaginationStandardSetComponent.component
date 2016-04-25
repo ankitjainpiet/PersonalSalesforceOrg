@@ -1,0 +1,48 @@
+<apex:component controller="ObjectSchemaController">
+   <script>
+   function showLoader()){
+            $('#paginate').hide();
+            $('#LoaderDivCaseListing').show();
+        }
+         function hideLoader(){
+            $('#paginate').show();
+            $('#LoaderDivCaseListing').hide();
+        }
+   </script>
+   <div class="container" id="paginate">
+       <apex:form >
+        <apex:pageBlock id="pb">
+            <apex:pageBlockTable value="{!caseList}" var="a" styleClass="table table-hover">
+                <apex:column value="{!a.id}"/>
+               <!--  <apex:repeat value="{!fieldnames}" var="field">
+                       
+           
+                </apex:repeat> -->
+                 <div id="LoaderDivCaseListing" class="col-lg-12 col-md-12" style="display:none;">
+                    <img style="margin: 60px auto; display: block;" src="{!URLFOR($Resource.spinner)}" />
+                </div>
+            </apex:pageBlockTable>
+            <apex:outputpanel rendered="{!setCon !=Null}" id="Paginationtable">
+            <apex:panelGrid columns="7">
+              <ul class="pager">
+                <apex:commandButton status="fetchStatus" reRender="pb" value="|<" action="{!setCon.first}" onclick="showLoader();" oncomplete="hideLoader();" disabled="{!!setCon.hasPrevious}" title="First Page"/>
+                <apex:commandButton status="fetchStatus" reRender="pb" value="<" action="{!setCon.previous}" onclick="showLoader();" oncomplete="hideLoader();" disabled="{!!setCon.hasPrevious}" title="Previous Page"/>
+                <apex:commandButton status="fetchStatus" reRender="pb" value=">" action="{!setCon.next}" disabled="{!!setCon.hasNext}"  onclick="showLoader();" oncomplete="hideLoader();" title="Next Page"/>
+                <apex:commandButton status="fetchStatus" reRender="pb" value=">|" action="{!setCon.last}" disabled="{!!setCon.hasNext}" onclick="showLoader();" oncomplete="hideLoader();" title="Last Page"/>
+                <apex:outputText >{!(setCon.pageNumber * size)+1-size}-{!IF((setCon.pageNumber * size)>noOfRecords, noOfRecords,(setCon.pageNumber * size))} of {!noOfRecords}</apex:outputText>
+                <apex:commandButton status="fetchStatus" reRender="pb" onclick="showLoader();" oncomplete="hideLoaderFind();" value="Refresh" action="{!refresh}" title="Refresh Page"/>
+                   <apex:outputLabel value="{! $Label.Go_To_Page } " styleclass="pull-right">
+                      <apex:inputtext value="{!setCon.pageNumber}"  style="width:40px; text-align:center; font-weight: normal;" onkeypress="goToPage(event,{!setCon.pageNumber});" styleclass="pagenumber"  />&nbsp; {! $Label.out_of }  {! totalPages} 
+                      <apex:commandButton styleClass="roundBtn" value="{! $Label.Go}"  reRender="pb"/>
+                  </apex:outputLabel>
+              <!--   <apex:outputPanel style="color:#4AA02C;font-weight:bold">
+                    <apex:actionStatus id="fetchStatus" startText="Fetching..." stopText=""/>
+                </apex:outputPanel> -->
+                </ul>
+            </apex:panelGrid>
+            </apex:outputpanel>
+        </apex:pageBlock>
+    </apex:form>
+    </div>
+
+</apex:component>

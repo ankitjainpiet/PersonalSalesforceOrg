@@ -1,0 +1,230 @@
+<apex:component controller="SearchController">
+      <apex:stylesheet value="{!URLFOR($Resource.DealerVUResource,'css/star-rating.css')}"/>  
+<script>
+
+function createchecksign(spanid){
+console.log(spanid);
+$("#"  + spanid).append("<i class='fa fa-check-square'></i>");
+}
+
+    function updateselectedDealerVuModule(dealervumodule, label){
+        console.log(dealervumodule);
+        showLoaderFind();
+        $('#input-2c').rating('refresh', {disabled: true, showClear: false, showCaption: true});
+        updateDealerVUModule(dealervumodule, label);
+        if($('#DealerVuModuleFilter li a').hasClass( "active" )){
+            $('#DealerVuModuleFilter li a').removeClass( "active" );
+		}
+        $(this).addClass("active");
+    }
+    function resetFilter(){
+	   showLoaderFind();
+	   reset();     
+    }
+    function updateselectedJobRole(jobrole, label){
+        console.log(jobrole);
+        showLoaderFind();
+        $('#input-2c').rating('refresh', {disabled: true, showClear: false, showCaption: true});
+        updateJobRole(jobrole, label);
+        if($('#JobRoleFilter li a').hasClass( "active" )){
+            $('#JobRoleFilter li a').removeClass( "active" );
+		}
+        $(this).addClass("active");
+        
+    }
+    function updateselectedLanguage(language, label){
+        console.log(language);
+        showLoaderFind();
+        $('#input-2c').rating('refresh', {disabled: true, showClear: false, showCaption: true});
+        updateLanguage(language, label);
+        if($('#LanguageFilter li a').hasClass( "active" )){
+            $('#LanguageFilter li a').removeClass( "active" );
+		}
+        $(this).addClass("active");
+        
+    }
+    
+   function showLoaderFind(){
+        console.log("aaya")
+            $('#resultdiv').hide();
+            $('#LoaderDivArticleListing').show();
+        }
+
+        function hideLoaderFind(){
+            $('#resultdiv').show();
+            $('#LoaderDivArticleListing').hide();
+        }
+
+</script>
+ <Apex:form >
+			<apex:actionFunction name="updateDealerVUModule" action="{!FilterArticles}"  reRender="articleListing,FilterHeader" oncomplete="hideLoaderFind();">
+			            <apex:param name="myParam1" value="" assignTo="{!selectedDealerVuModule}" />
+                		<apex:param name="myParam2" value="" assignTo="{!DealerVuModuleLabel}" />
+		 	</apex:actionFunction>
+		 	<apex:actionFunction name="updateLanguage" action="{!FilterArticles}"  reRender="articleListing,FilterHeader" oncomplete="hideLoaderFind();">
+			            <apex:param name="myParam1" value="" assignTo="{!selectedLanguage}" />
+                		<apex:param name="myParam2" value="" assignTo="{!LanguageLabel}" />
+		 	</apex:actionFunction>
+		 	
+     		<apex:actionFunction name="updateJobRole" action="{!FilterArticles}"  reRender="articleListing,FilterHeader" oncomplete="hideLoaderFind();">
+			            <apex:param name="myParam1" value="" assignTo="{!selectedJobRole}" />
+                		<apex:param name="myParam2" value="" assignTo="{!JobRoleLabel}" />
+		 	</apex:actionFunction>
+		 	<apex:actionFunction name="reset" action="{!resetFilter}"  reRender="articleListing,FilterHeader" oncomplete="hideLoaderFind();">
+		 	</apex:actionFunction>
+		 	
+	<div class="customannouncement logogoldbackground   col-lg-4 col-md-4 col-sm-12 col-xs-12 fullwidth" >
+		 
+        <apex:outputPanel id="FilterHeader">
+			<div class="col-lg-12 col-md-12 mycasestablecolumnbackgound">
+                <div class="col-lg-4 col-md-4" style="padding: 5px;">
+               		<span class="SearchLabel">{!$Label.Articles_and_User_Guides}</span>
+                </div>
+                <div class="col-lg-8 col-md-8" style="text-align: right;">
+                    <div class="btn-group">
+                        <button type="button" class="{!IF(JobRoleLabel != 'Job Role' , 'btn btn-primary', 'btn btn-default')}">{!JobRoleLabel}</button> 
+                        <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle" style="height: 34px;"><span class="caret"></span></button>
+                        <ul class="dropdown-menu filter-dropdown-menu" id="JobRoleFilter">
+                            <li><a href="#" class="{!IF(OriginalselectedJobRole == 'JOB_ROLE' || OriginalselectedJobRole == 'JOB_ROLE__c' , 'active', '')}"  onclick="updateselectedJobRole('JOB_ROLE__c', 'Job Role')">  No Filter</a>  </li>
+                              
+                                  <apex:repeat value="{!categoryToSubCategoryMapJobRole}" var="Jobkey">
+										<li><a href="#">{! Jobkey }</a></li>  
+									
+									 <apex:repeat value="{! categoryToSubCategoryMapJobRole[Jobkey]}" var="value1">
+						 	       	<!-- 	CLC object -->
+						 	        	<li><a href="#">{! value1.label }</a></li>  
+									         <apex:repeat value="{! value1.childCategories}" var="val2">
+									         
+						 			         	<li><a href="#"  style="padding-left: 38px;" class="OriginalselectedJobRole == val2.name , 'active', '')}"   onclick="updateselectedJobRole('{!val2.name}', '{!val2.label}')" >{! val2.label }</a></li> 
+			
+ 
+ 						 			         <!-- 	<li><a href="#">{! val2.childCategories }</a></li> --> 
+										         
+									         </apex:repeat>
+									         
+							         </apex:repeat>
+         					</apex:repeat>
+<!--                               <knowledge:categoryList categoryGroup="DealerVu_JobRole"
+									rootCategory="JOB_ROLE" categoryVar="category" level="-1">
+                            	<li><a href="#" class="{!IF(OriginalselectedJobRole == category.name , 'active', '')}"  onclick="updateselectedJobRole('{!category.name}', '{!category.label}')">{!category.label}</a></li>
+                            </knowledge:categoryList>
+ -->                        </ul>
+                    </div>
+                
+                     <div class="btn-group">
+                        <button type="button" class="{!IF(DealerVuModuleLabel != 'DealerVu Module' , 'btn btn-primary', 'btn btn-default')}">{!DealerVuModuleLabel}</button>
+                        <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle" style="height: 34px;"><span class="caret"></span></button>
+                        <ul class="dropdown-menu filter-dropdown-menu" id="DealerVuModuleFilter">
+                            <li><a href="#" class="{!IF(OriginalselectedDealerVuModule == 'MODULE' || OriginalselectedDealerVuModule == 'MODULE__c' , 'active', '')}"  onclick="updateselectedDealerVuModule('MODULE__c', 'DealerVu Module')"> No Filter</a></li>
+                            <apex:repeat value="{!categoryToSubCategoryMap}" var="key">
+										<li><a href="#">{! key }</a></li>  
+									
+									 <apex:repeat value="{! categoryToSubCategoryMap[key]}" var="value1">
+						 	       	<!-- 	CLC object -->
+						 	        	<li><a href="#">{! value1.name }</a></li>  
+									         <apex:repeat value="{! value1.childCategories}" var="val2">
+									         
+						 			         	<li><a href="#">{! val2.label }</a></li> 
+						 			         	 <apex:repeat value="{! val2.childCategories }" var="childcat">
+						 			         	 <li><a href="#" style="padding-left: 38px;"  class="{!IF(OriginalselectedDealerVuModule == val2.name , 'active', '')}"   onclick="updateselectedDealerVuModule('{!childcat.name}', '{!childcat.label}')">{! childcat.label}</a></li> 
+										        
+						 			         	 </apex:repeat>
+						 			         <!-- 	<li><a href="#">{! val2.childCategories }</a></li> --> 
+										         
+									         </apex:repeat>
+									         
+							         </apex:repeat>
+         					</apex:repeat>
+                            
+<!--                             <knowledge:categoryList categoryGroup="DealerVu_Module"
+											rootCategory="MODULE" categoryVar="category" level="-1">
+                            	<li><a href="#"   class="{!IF(OriginalselectedDealerVuModule == category.name , 'active', '')}"   onclick="updateselectedDealerVuModule('{!category.name}', '{!category.label}')">{!category.label}</a></li>
+                            </knowledge:categoryList>
+ -->                    
+     </ul>
+                    </div>
+                
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">{!LanguageLabel}</button>
+                        <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle" style="height: 34px;"><span class="caret"></span></button>
+                        <ul class="dropdown-menu  language-dropdown-menu" id="LanguageFilter">
+                            <li><a href="#"  class="{!IF(selectedLanguage == 'en_US' , 'active', '')}" onclick="updateselectedLanguage('en_US', 'English')">English</a></li>
+							<li><a href="#"  class="{!IF(selectedLanguage == 'fr' , 'active', '')}"  onclick="updateselectedLanguage('fr', 'French')">French</a></li>		
+                        </ul>
+                    </div>
+                
+                    <div class="btn-group">
+                        <button type="button"  onclick="resetFilter();" class="flatBtn">{!$Label.Reset}</button>
+                    </div>
+                </div>                                                                                                                   
+			</div>
+           </apex:outputPanel>
+		</div>
+		</apex:form>
+    		
+	<div id="resultdiv" style="border: 1px solid; max-height: 110px;min-width: 100%; min-height: 460px;overflow: scroll; float: left; margin-bottom: 40px;">
+		<apex:outputPanel id="articleListing">
+		<apex:panelGroup id="theSearchResults">
+				<br/>
+			 <apex:outputPanel rendered="{!articlewrapper.size = 0}">
+                        <div class="noResult col-lg-12 col-md-12">
+                            <h4>
+                                {!$Label.No_Article_Found} 
+                            </h4>
+                        </div>
+             </apex:outputPanel>
+                   	
+			<apex:repeat value="{!articlewrapper}" var="article" >
+				
+				<div class="media" style="float: left; margin-left: 6%;">
+					<div class="media-left">
+						<ul class="dropdown-menu scrollable-menu">
+
+						</ul>
+						<div class="media-object"
+							style="background: url('{!URLFOR($Resource.DealerVuResources,'images/console_sprite.png')}') no-repeat scroll -145px 6px; border: 1px solid #ccc; border-radius: 2px; height: 15px; width: 15px; float: left;"
+							alt="..."></div>
+					</div>
+					<div class="media-body"> 
+						<h5 class="media-heading" style="font-family: 'Helvetica Neue',Helvetica ,Arial;font-size: 17px">{! article.title}</h5>
+				    
+<!-- 					    <input id="input-2c" class="rating" min="0" max="5" step="0.5" value="{!article.rating}" disabled="true" data-size="xs"
+					            data-glyphicon="false" data-rating-class="rating-fa" style="float:right"/>
+ -->
+ 					<div style="padding-left: 700px">
+			 				<i class="{! IF(article.rating <= 0,'fa fa-star-o ','fa fa-star-o logogold')}"></i>
+			 				<i class="{! IF(article.rating <= 1,'fa fa-star-o ','fa fa-star-o logogold ' )}"></i> 		
+			 				<i class="{! IF(article.rating <= 2,'fa fa-star-o ','fa fa-star-o logogold ')}"></i>
+ 							<i class="{! IF(article.rating <= 3,'fa fa-star-o ','fa fa-star-o logogold' )}"></i>
+ 							<i class="{! IF(article.rating <= 4   ,'fa fa-star-o ','fa fa-star-o logogold ')}"></i>
+ 						</div>
+ 							<h6 class="media-heading">{!article.summary}<br/></h6>
+					
+					</div>
+                    <ul style="color: #afb5b9; font-size: .833em;">
+                        <li style="float: left">{! article.articlenumber} </li>
+                        <li style="float: left; margin-left: 25px">{!$Label.Last_Published_Date}
+                            <span style="padding-left:3px;">  
+                                <apex:outputText value="{0,date,d/M/yyyy}">
+                                    <apex:param value="{! article.LastPublishingDate }" />
+                                </apex:outputText>
+                            </span>
+                        </li>
+<!--                         <li class="customRating">
+                            {!article.rating} / 5
+                        </li>
+ -->
+                     </ul>
+					
+                </div>
+		</apex:repeat>	
+	
+	</apex:panelGroup>
+	</apex:outputPanel>
+	
+	</div>
+	            <div id="LoaderDivArticleListing" class="col-lg-12 col-md-12" style="display:none;min-height:450px">
+                    <img src="{!URLFOR($Resource.spinner)}" style="margin: 60px auto;display: block;" />
+                </div>
+
+</apex:component>

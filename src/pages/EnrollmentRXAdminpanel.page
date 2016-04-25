@@ -1,0 +1,346 @@
+<apex:page controller="ENrollmentRxAdminpanelExecutorController" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+	<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<head>
+			<!--  Meta tags -->
+			<meta charset="utf-8" />
+	    	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	  		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	  		
+	    	<!-- Lightning Design System -->
+	      	<apex:stylesheet value="{!URLFOR($Resource.SLDS0121, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+	    
+	    	<!-- Bootstrap SF1 -->
+	    	<apex:stylesheet value="{!URLFOR($Resource.bootstrap, 'bootstrap-3.3.6/css/bootstrap.css')}" />
+	    	<apex:stylesheet value="{!URLFOR($Resource.RichTextEditor, 'angular-wysiwyg-master/dist/style.css')}" />
+	    	<apex:stylesheet value="{!URLFOR($Resource.Portal_Font_Awsome, 'css/font-awesome.css')}" />
+	    	
+	    	<!-- Including JQuery & Bootstrap JS -->
+	    	<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js" />
+	    	<apex:includeScript value="https://code.jquery.com/ui/1.11.4/jquery-ui.js" />
+	    	<apex:includeScript value="{!URLFOR($Resource.bootstrap, 'bootstrap-3.3.6/js/bootstrap.min.js')}"/>
+	    	
+	    	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'/>
+			
+			<!-- Introducing Angular -->
+			<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js" />
+			<apex:includeScript value="{!URLFOR($Resource.RichTextEditor, 'angular-wysiwyg-master/dist/bootstrap-colorpicker-module.js')}" />
+			<apex:includeScript value="{!URLFOR($Resource.RichTextEditor, 'angular-wysiwyg-master/dist/angular-wysiwyg.js')}" />
+			<script>
+			 var myApp = angular.module('myApp', []);
+			  myApp.service('DataService', function($q) {              
+	            this.getLookUpDetails = function (fieldstoretreieve, searchstring,searchingfield, searchingobjectjson,id){
+	                             var deferred = $q.defer();
+						        Visualforce.remoting.Manager.invokeAction(
+					                '{!$RemoteAction.ENrollmentRxAdminpanelExecutorController.getLookUpDetails}',searchstring,searchingfield,searchingobjectjson,function (result, event) {
+					                if (event.type == 'exception') {
+					                    console.log('called');  
+					                    deferred.reject(result);
+					                } else {
+					                	console.log('data is ' + result);
+					                    deferred.resolve(JSON.parse(result));
+					                }
+					            }, 
+					            {escape: false}
+					            );
+            		return deferred.promise;
+	            }
+	            this.getData = function (targetfieldnames, searchingobjectjson,id){
+	                             var deferred = $q.defer();
+						        Visualforce.remoting.Manager.invokeAction(
+					                '{!$RemoteAction.ENrollmentRxAdminpanelExecutorController.getFieldstoPopulate}',targetfieldnames,searchingobjectjson,id,function (result, event) {
+					                if (event.type == 'exception') {
+					                    console.log('called');  
+					                    deferred.reject(result);
+					                } else {
+					                	console.log('data is ' + result);
+					                    deferred.resolve(JSON.parse(result));
+					                }
+					            }, 
+					            {escape: false}
+					            );
+            		return deferred.promise;
+	            }
+	            this.save = function(objectwrapper,pageurl,id,selectedlookup,sourceobject){
+	            	var deferred = $q.defer();
+						        Visualforce.remoting.Manager.invokeAction(
+					                '{!$RemoteAction.ENrollmentRxAdminpanelExecutorController.save}',objectwrapper,pageurl,id,selectedlookup,sourceobject,function (result, event) {
+					                if (event.type == 'exception') {
+					                    deferred.reject(result);
+					                } else {
+					                    deferred.resolve(JSON.parse(result));
+					                }
+					            }, 
+					            {escape: false}
+					            );
+            		return deferred.promise;
+	            }
+	        });
+			 myApp.controller('mainAppCtrl', ['$scope','DataService', function($scope,DataService){  
+	            $scope.lookupstring= "";
+	            $scope.contacts = [{}];
+	            $scope.isloading = false;
+	            $scope.selectedvalue ={};
+	            $scope.editmodebol= true;
+	            $scope.search = function (row) {
+	            	console.log(row.name);
+	            	console.log($scope.lookupstring);
+                    if(angular.isDefined(row.name) && angular.isDefined($scope.lookupstring)){
+                       return (angular.lowercase(row.name).indexOf($scope.lookupstring || '') ==0 || angular.uppercase(row.name).indexOf($scope.lookupstring || '') ==0);
+                    }
+                }
+	            $scope.editMode = function(){
+	                $scope.editmodebol= true;
+	            }
+	            $scope.empty = true;
+	            $scope.isEmpty = function (obj) {
+	            	if(angular.isUndefined(obj)){
+	            	$scope.empty =  true;
+	            	}
+	                for (var i in obj) {
+	                    if (obj.hasOwnProperty(i)){ 
+	                        $scope.empty =  false;
+	                    }
+	                }
+	            }   
+			 $scope.selectLookup = function(obj){
+                    $scope.lookupstring = ""; 
+                    $scope.selectedvalue =  obj;
+                    $("#lookup").removeClass('slds-theme--warning');
+                    $("#error").text('');
+                    $("#lookup").removeClass('slds-show');
+                    $("#search-icon_div").hide();
+                    $("#lookup").removeClass('slds-show');
+                    $("#lookup").addClass('slds-hide');
+                    var sldspill__container = $(".slds-pill_container");
+                    angular.element(sldspill__container).removeClass('slds-hide');
+                    angular.element(sldspill__container).addClass('slds-show');
+                    $(".slds-lookup__menu").removeClass('slds-show');
+                    $(".slds-lookup__menu").addClass('slds-hide');
+                    $scope.contacts=[];
+                    $scope.accountid = $scope.selectedvalue.id;
+                
+                }
+                $scope.retrieveData = function(){
+                	DataService.getData($scope.fieldstoretreieve,$scope.searchingobjectjson,$scope.accountid).then(
+	                        function (successfulSearchResult) {
+	                        	$scope.fielddatalist  = successfulSearchResult;
+	                        	 $scope.templisttoshow = [];
+	                        	$scope.isloading =false;
+	                        },function (errorSearchResult) {
+	                            responseData = errorSearchResult;
+	                        }
+	                    )
+                }    
+                $scope.removeSelection = function(){
+                    $("#lookup").removeClass('slds-hide');
+                    $("#lookup").removeClass('slds-theme--warning');
+                    $("#lookup").addClass('slds-show');
+                    $(".slds-pill_container").removeClass('slds-show');
+                    var search_icon_dom = $("#search-icon_div");
+                    $("#search-icon_div").show();
+                    $(".slds-lookup__menu").addClass('slds-show');
+                    $(".slds-lookup__menu").removeClass('slds-hide');
+                    $(".slds-pill_container").addClass('slds-hide');
+                    $scope.selectedvalue = {};
+                    $scope.contacts=[];
+                    $scope.billingcity='';
+                }
+                 $scope.getParameterByName = function(name) {
+                    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                        results = regex.exec(location.search);
+                    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+           	}
+                $scope.clearerror = function(){
+                    $("#lookup").removeClass('slds-theme--warning');
+                }
+                $scope.objecttosearch = 'Account';
+                $scope.fieldstoretreieve = '{!fieldstoretrieve}'
+                $scope.targetfieldnames = '{!targetfieldnames}';
+                $scope.searchstring = $scope.lookupstring;
+                $scope.searchingfield= '{!searchingfield}';
+                $scope.searchingobjectjson= '{!searchingobject}';
+                $scope.id = $scope.getParameterByName('id');
+                $scope.fieldnames = [];
+                $scope.templisttoshow = [];
+                var arr=  $scope.fieldstoretreieve.split(",");
+                
+                for(var v = 0 ;v< arr.length;v++){
+                	$scope.templisttoshow.push({
+                		"fieldname" : arr[v],
+                		"fielddata" : ""
+                	});
+                }
+                $scope.save = function(){
+                $scope.isloading =true;
+                console.log($scope.targetfieldnames + "$scope.targetfieldnames");
+                var targetfiedlarr = $scope.targetfieldnames.split(",");
+                var i = 0;
+                $scope.sourcefields=[];
+                for(var v = 0 ;v< $scope.fielddatalist.length;v++){
+                	$scope.sourcefields.push({
+                		"fieldname" : targetfiedlarr[i],
+                		"fielddata" : $scope.fielddatalist[v].fielddata
+                	});
+                	i++;
+                }
+                $scope.sourceobject= '{!searchingobject}'
+                		DataService.save(angular.toJson($scope.sourcefields),location.toString(),$scope.id,angular.toJson($scope.selectedvalue),$scope.sourceobject).then(
+		                        function (successfulSearchResult) {
+		                        	console.log(JSON.stringify(successfulSearchResult) + 'successfulSearchResult');
+		                            $scope.isloading =false;
+		                           $(location).attr('href',successfulSearchResult);
+		                            $(".error").text('');
+		                        },function (errorSearchResult) {
+		                            responseData = errorSearchResult;
+		                        }
+		                    )
+                }
+                $scope.getLookupDetails= function(event){
+                    $scope.lookupdatalist=[];
+                    $scope.selectedvalue = {};
+                    $("#lookup").removeClass('slds-theme--warning');
+                    if($scope.lookupstring ==''){
+                        $("#lookup").addClass('slds-theme--warning');
+                    }
+                    else{
+                      console.log('in service call getLookupDetails controller');
+                    	console.log($scope.isEmpty($scope.selectedvalue));
+                    	DataService.getLookUpDetails( $scope.fieldstoretreieve,$scope.lookupstring,$scope.searchingfield, $scope.searchingobjectjson,$scope.id).then(
+	                        function (successfulSearchResult) {
+	                        	$scope.lookupdatalist  = successfulSearchResult;
+	                        	$scope.isloading =false;
+	                        },function (errorSearchResult) {
+	                            responseData = errorSearchResult;
+	                        }
+	                    )
+	                }    
+                 }
+               }
+    		]);       
+			</script>	
+		</head>
+		
+		     <div class="slds" ng-app="myApp" ng-controller="mainAppCtrl">
+	           <!--  <div class="slds-grid slds-nowrap slds-align-right" style="float:right">
+        	        <div class="slds-col">
+            	        <div class="slds-button-group" role="group">
+                            <button type="button" class="slds-button slds-button--neutral" ng-if="!editmodebol" ng-click = "editMode();" >Edit</button>
+                            <button type="button" class="slds-button slds-button--neutral"  ng-if="editmodebol"  ng-click="uploadFile();">Save</button>
+                            <button type="button" class="slds-button slds-button--neutral"  ng-if="editmodebol"  ng-click="cancel();">Cancel</button>
+                    	</div>
+                	</div>
+            	</div> -->
+            	<div class="slds-form--horizontal">
+    				<div class="slds-form-element">
+            	  <div class="slds-form-element__control">
+			       	<div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                	<div class="slds-col slds-size--1-of-2 slds-small-size--1-of-1 slds-large-size--1-of-2"  ng-if="!editmodebol">
+                    	<div class="slds-grid">
+                        	<div class="slds-size--1-of-6" ng-if="!editmodebol">
+                            	Account  : 
+                         	</div>
+                        	<div class="slds-col " ng-if="!editmodebol">
+                            	<span class="slds-icon_container ">
+                                	<svg aria-hidden="true" class="slds-icon slds-icon-text-default slds-icon--small">
+                                            	<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                        	</svg>
+                            	</span>
+                            	<span class=""  ng-if="iconurl== ''">
+                                     No COntact to display
+                            	</span>
+                        	</div>            
+                    	</div>
+                	</div>
+                 	<div class="slds-col slds-size--1-of-2 slds-small-size--1-of-1 slds-large-size--1-of-2"  ng-show="editmodebol">
+                    	<div class="slds-lookup" data-select="single" data-scope="single" data-typeahead="false">
+                        	<div class="slds-form-element slds-size--1-of-2">
+                            	<label class="slds-form-element__label" for="lookup">Account</label>
+                           	<div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right" style="padding-left: 7px;">
+                                	<svg aria-hidden="true" class="slds-input__icon" id="search-icon_div">
+                                    	<use xlink:href="{!URLFOR($Resource.LightningCSS,'/assets/icons/utility-sprite/svg/symbols.svg#search')}"></use>
+                                	</svg>
+                                	<div class="slds-pill_container slds-hide">
+                                    	<a href="" class="slds-pill">
+                                        	<span class="slds-icon_container ">
+                                                <svg aria-hidden="true" class="slds-icon slds-icon-standard-account slds-icon--small">
+												  <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+												</svg>
+                                                <span class="slds-pill__label">{{selectedvalue.name}}</span>
+                                        	</span>
+                                        	<button class="slds-button slds-button--icon-bare slds-pill__remove"  ng-click="removeSelection();">
+                                                <svg aria-hidden="true" class="slds-button__icon">
+                                                    <use xlink:href="{!URLFOR($Resource.LightningCSS,'/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+                                                </svg>
+                                                <span class="slds-assistive-text">Remove</span>
+                                        	</button>
+                                    	</a>
+                                	</div>
+                                	<input id="lookup" placeholder="Enter the  name" class="slds-input  slds-small-size--1-of-1  slds-medium-size--1-of-1 slds-large-size--1-of-1" type="text" aria-autocomplete="list" role="combobox" aria-expanded="true" aria-activedescendant="" ng-keypress="getLookupDetails();"  ng-model="lookupstring" ng-click="clearerror();" /> 
+                            	</div>
+                            	<div class="slds-lookup__menu" role="listbox" ng-hide="lookupstring == ''">
+                            		<div class="slds-lookup__item" ng-class="{'slds-hide' : lookupstring == '' }">
+                                    	<button class="slds-button">
+                                        	<svg aria-hidden="true" class="slds-icon slds-icon-text-default slds-icon--small">
+                                            	<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                        	</svg>
+                                        	&quot;{{lookupstring}}&quot; in Contact 
+                                 	   </button>
+                                	</div>
+                                	<ul class="slds-lookup__list" role="presentation" ng-show="lookupstring != ''">
+                                    	<div class="slds-scrollable--x">
+				                            <table class="slds-table slds-table--bordered">
+				                                <thead>
+				                                    <tr class="slds-text-heading--label">
+				                                        <th scope="col"><span class="slds-truncate">Name</span></th>
+				                                    </tr>       
+				                                </thead>
+				                                <tbody>
+			                                    <tr class="ng-scope" ng-repeat="obj in lookupdatalist">
+				                                        <td >
+				                                            <a href="" id="s0" ng-click="selectLookup(obj);retrieveData();" role="option">
+				                                                {{obj.name}}
+				                                            </a>
+				                                        </td>
+				                                </tr>
+				                                </tbody>                            
+				                            </table>
+			                        	</div>
+                                    	<div class="slds-lookup__item" ng-show="lookupdatalist.length == 0 && empty">
+                                        	<button class="slds-button">
+                                            	<svg aria-hidden="true" class="slds-icon slds-icon-text-default slds-icon--small">
+                                                	<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                            	</svg>
+                                            	No records to display
+                                        	</button>
+                                    	</div>
+                                	</ul>
+                            	</div>
+                        	</div>
+                  	</div>
+			</div>
+		</div>
+		</div>
+		</div>
+      	<div class="slds-form-element slds-size--1-of-2 slds-small-size--1-of-1 slds-large-size--1-of-2" ng-repeat="field in fielddatalist" style="margin-left: 21%;">
+		   <label class="slds-form-element__label" for="inputSample2">{{field.fieldname}}</label>
+		   <div class="slds-form-element__control">
+		     <input id="inputSample2" class="slds-input" type="text" placeholder="Placeholder Text" disabled="disabled" ng-model="field.fielddata"/>
+		   </div>
+		 </div>
+		 <div class="slds-form-element slds-size--1-of-2 slds-small-size--1-of-1 slds-large-size--1-of-2" ng-repeat="field in templisttoshow" style="margin-left: 21%;">
+		   <label class="slds-form-element__label" for="inputSample2">{{field.fieldname}}</label>
+		   <div class="slds-form-element__control">
+		     <input id="inputSample2" class="slds-input" type="text" placeholder="Placeholder Text" disabled="disabled" ng-model="field.fielddata"/>
+		   </div>
+		 </div>
+		 <div class="slds-form-element slds-form-element__control">
+			<button class="slds-button slds-button--brand ng-binding" ng-click="save();">Save</button>   
+	    </div>	   	
+        </div>
+       </div>
+		                     <!-- <c:ENrollmentRXAdminComponent/> -->
+      
+		
+		</html>
+</apex:page>

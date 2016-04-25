@@ -1,0 +1,42 @@
+<apex:page sidebar="false" showHeader="false"  showchat="false"  standardStylesheets="false" title="DealerVu Community-Forum"  cache="false">
+   <c:cssandjs />
+    <c:pageStyle />
+<c:ForumStyleSheet />
+ 
+    <c:CommunityHeader activeTab="Home"/>
+
+
+
+    <div class="csMini"> 
+        <div class="threecolumn"> 
+        <div> 
+            <chatteranswers:guestsignin /> 
+            <chatteranswers:aboutme communityId="09a2800000085mn" /> 
+            <chatteranswers:datacategoryfilter communityId="09a2800000085mn"/> 
+        </div> 
+        <div class="mainContent"> 
+            <div class="lowerMainContent" id="lowerMainContent"> 
+            <div id="rightContent" class="rightContent"></div> 
+            <div id="centerContent" class="container centerContent" style="margin-top: -18%;"> 
+                <chatteranswers:searchask communityId="09a2800000085mn"/> 
+                <chatteranswers:feedfilter /> 
+                <chatteranswers:feeds communityId="09a2800000085mn"/> 
+            </div> 
+         </div> 
+      </div> 
+      <div class="clearingBox"></div>
+      </div> 
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+<c:CommunityFooter />
+</apex:page>

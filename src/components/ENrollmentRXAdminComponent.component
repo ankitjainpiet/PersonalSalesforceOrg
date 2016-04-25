@@ -1,0 +1,512 @@
+<apex:component controller="EnrollementRXController">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<head>
+			<!--  Meta tags -->
+			<meta charset="utf-8" />
+	    	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	  		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	  		
+	    	<!-- Lightning Design System -->
+	      	<apex:stylesheet value="{!URLFOR($Resource.SLDS0121, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+	    
+	    	<!-- Bootstrap SF1 -->
+	    	<apex:stylesheet value="{!URLFOR($Resource.bootstrap, 'bootstrap-3.3.6/css/bootstrap.css')}" />
+	    	<apex:stylesheet value="{!URLFOR($Resource.RichTextEditor, 'angular-wysiwyg-master/dist/style.css')}" />
+	    	<apex:stylesheet value="{!URLFOR($Resource.Portal_Font_Awsome, 'css/font-awesome.css')}" />
+	    	
+	    	<!-- Including JQuery & Bootstrap JS -->
+	    	<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js" />
+	    	<apex:includeScript value="https://code.jquery.com/ui/1.11.4/jquery-ui.js" />
+	    	<apex:includeScript value="{!URLFOR($Resource.bootstrap, 'bootstrap-3.3.6/js/bootstrap.min.js')}"/>
+	    	
+	    	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'/>
+			
+			<!-- Introducing Angular -->
+			<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js" />
+			<apex:includeScript value="{!URLFOR($Resource.RichTextEditor, 'angular-wysiwyg-master/dist/bootstrap-colorpicker-module.js')}" />
+			<apex:includeScript value="{!URLFOR($Resource.RichTextEditor, 'angular-wysiwyg-master/dist/angular-wysiwyg.js')}" />
+			<style> 
+		        #loading-image {
+		            position: fixed;
+		            top: 40%;
+		            left: 47%;
+		            width:4%;
+		        } 
+		        #loading { 
+		            width: 100%;
+		            height: 100%;
+		            top: 0px;
+		            left: 0px;
+		            position: absolute;
+		            display:block;
+		            opacity: 0.5;
+		            filter: alpha(opacity = 50);
+		            -moz-opacity: 0.5;
+		            background-color: #fff;
+		            text-align: center;
+		            z-index: 9005;
+		        }
+		        @media only screen and (min-width:160px) and (max-width: 800px){
+					.scrollable-x{
+						max-width: 100%;
+					    overflow: hidden;
+					    overflow-x: auto;
+					}
+				}
+    		</style>
+			<script>
+			 var myApp = angular.module('myApp', []);
+			  myApp.service('DataService', function($q) {              
+	            this.getLookUpFields = function (targetobject){
+	                             var deferred = $q.defer();
+						        Visualforce.remoting.Manager.invokeAction(
+					                '{!$RemoteAction.EnrollementRXController.getLookUpFields}',targetobject,function (result, event) {
+					                if (event.type == 'exception') {
+					                    deferred.reject(result);
+					                } else {
+					                	deferred.resolve(JSON.parse(result));
+					                }
+					            }, 
+					            {escape: false}
+					            );
+            		return deferred.promise;
+	            }
+	           this.getFields = function (targetobject){
+	                             var deferred = $q.defer();
+						        Visualforce.remoting.Manager.invokeAction(
+					                '{!$RemoteAction.EnrollementRXController.getFields}',targetobject,function (result, event) {
+					                if (event.type == 'exception') {
+					                    deferred.reject(result);
+					                } else {
+					                    deferred.resolve(JSON.parse(result));
+					                }
+					            }, 
+					            {escape: false}
+					            );
+            		return deferred.promise;
+	            }
+	            this.save = function(objectwrapper,pageurl){
+	            	var deferred = $q.defer();
+						        Visualforce.remoting.Manager.invokeAction(
+					                '{!$RemoteAction.EnrollementRXController.save}',objectwrapper,pageurl,function (result, event) {
+					                if (event.type == 'exception') {
+					                    deferred.reject(result);
+					                } else {
+					                    deferred.resolve(JSON.parse(result));
+					                }
+					            }, 
+					            {escape: false}
+					            );
+            		return deferred.promise;
+	            }
+	        });
+ 	        myApp.filter('exclude', [function () {
+			  return function(input,select,selection,scope){
+			  var newInput = [];
+			   if(angular.isUndefined(select)){
+			   	select = [];
+			   }
+			   if(angular.isDefined(input) && angular.isDefined(select)){
+			    for(var i = 0; i < input.length; i++){
+			      var addToArray=true;
+			      for(var j=0;j<select.length;j++){
+			      	  if(select[j].destinationfields == input[i]){
+			              addToArray=false;
+			          }
+			      }
+			      if(addToArray || input[i] === selection || input[i] === selection.destinationfields){
+			        newInput.push(input[i]);
+			      }
+		      	}
+			    } 
+			    return newInput;
+			  };
+			}]);
+			myApp.filter('excludesource', [function () {
+			  return function(input,select,selection,scope){
+			  var newInput = [];
+			   if(angular.isUndefined(select)){
+			   	select = [];
+			   }
+			   if(angular.isDefined(input) && angular.isDefined(select)){
+			    for(var i = 0; i < input.length; i++){
+			      var addToArray=true;
+			      for(var j=0;j<select.length;j++){
+			      	  if(select[j].sourcefield == input[i]){
+			              addToArray=false;
+			          }
+			      }
+			      console.log(selection  + 'selection ');
+			      if(addToArray || input[i] === selection || input[i] === selection.sourcefield){
+			        newInput.push(input[i]);
+			      }
+		      	}
+			    } 
+			    return newInput;
+			  };
+ 			}]);
+		 myApp.controller('mainAppCtrl', ['$scope','DataService', function($scope,DataService){  
+	            $scope.isEmpty = function (obj) {
+	                for (var i in obj) {
+	                    if (obj.hasOwnProperty(i)){ 
+	                        return false;
+	                    }
+	                    return true;
+	                }
+            	} 
+	            $scope.lookupstring= "";
+	            $scope.contacts = [{}];
+	            $scope.isloading = false;
+	            $scope.selectedvalue ={};
+	            $scope.editmodebol= true;
+	          	$scope.objectList = [];
+	          	$scope.fieldsdisplay = function(){
+	          	if(angular.isDefined($scope.fields)){
+	          		$scope.fieldstoshow = $scope.fields.fieldList;
+		          	angular.forEach($scope.fieldstoshow, function(field){
+	                	field.isUsed = false;
+	                })	 		
+	          	}
+	          	}
+	          	$scope.objectList = {!objectFieldListString};
+	          	$scope.fields = $scope.objectList[0];
+	          	$scope.mappings = [];
+	          	$scope.mappingobj={
+	          	"sourceobject" : $scope.fields.objectName,
+	          	"targetobject" : $scope.searchingobject,
+	          	"sourcefield" : "",
+	          	"targetfield" : ""
+	          	}
+	            $scope.search = function (row) {
+	            	console.log(row.name);
+	            	console.log($scope.lookupstring);
+                    if(angular.isDefined(row.name) && angular.isDefined($scope.lookupstring)){
+                       return (angular.lowercase(row.name).indexOf($scope.lookupstring || '') !=-1 || angular.uppercase(row.name).indexOf($scope.lookupstring || '') !=-1);
+                    }
+                }
+				
+	            $scope.editMode = function(){
+	                $scope.editmodebol= true;
+	            }
+	            $scope.isEmpty = function (obj) {
+	                for (var i in obj) {
+	                    if (obj.hasOwnProperty(i)){ 
+	                        return false;
+	                    }
+	                    return true;
+	                }
+	            }   
+			 $scope.selectLookup = function(obj){
+                    $scope.lookupstring = ""; 
+                    $scope.selectedvalue =  obj;
+                    $("#lookup").removeClass('slds-theme--warning');
+                    $("#error").text('');
+                    $("#lookup").removeClass('slds-show');
+                    $("#search-icon_div").hide();
+                    $("#lookup").removeClass('slds-show');
+                    $("#lookup").addClass('slds-hide');
+                    var sldspill__container = $(".slds-pill_container");
+                    angular.element(sldspill__container).removeClass('slds-hide');
+                    angular.element(sldspill__container).addClass('slds-show');
+                    $(".slds-lookup__menu").removeClass('slds-show');
+                    $(".slds-lookup__menu").addClass('slds-hide');
+                    $scope.contacts=[];
+                }
+                $scope.removeSelection = function(){
+                    $("#lookup").removeClass('slds-hide');
+                    $("#lookup").removeClass('slds-theme--warning');
+                    $("#lookup").addClass('slds-show');
+                    $(".slds-pill_container").removeClass('slds-show');
+                    var search_icon_dom = $("#search-icon_div");
+                    $("#search-icon_div").show();
+                    $(".slds-lookup__menu").addClass('slds-show');
+                    $(".slds-lookup__menu").removeClass('slds-hide');
+                    $(".slds-pill_container").addClass('slds-hide');
+                    $scope.selectedvalue = {};
+                    $scope.contacts=[];
+                }
+                $scope.clearerror = function(){
+                    $("#lookup").removeClass('slds-theme--warning');
+                }
+                $scope.lookupobjects  =  [];
+                $scope.getFields = function(){
+	                DataService.getFields($scope.searchingobject).then(
+		                        function (successfulSearchResult) {
+		                        	console.log(JSON.stringify(successfulSearchResult) + 'successfulSearchResult');
+		                            $scope.isloading =false;
+		                            $scope.lookupobjectfields  = successfulSearchResult;
+		                        },function (errorSearchResult) {
+		                            responseData = errorSearchResult;
+		                        }
+		                    )
+                
+                }
+                $scope.disable = function(obj){
+                console.log(JSON.stringify(obj))
+                	obj.isDisabled=true;
+                	obj.sourcefieldisUsed= true;
+                	
+                }
+                $scope.enable= function(obj){
+                	
+                	obj.isDisabled=false;
+                }
+                $scope.valid = true;
+                $scope.validatemappings = function(){
+                	angular.forEach($scope.mappings, function(value) {
+					  if(value.sourcefield == '' || angular.isUndefined(value.sourcefield)){
+					  	$scope.valid = false;
+					  	console.log("error sourcefield");
+					  }
+					  if($scope.fields.objectName == ''  || angular.isUndefined($scope.fields.objectName)){
+					  $scope.valid = false;
+					  console.log("error fields");
+					  }
+					  if(angular.isUndefined($scope.searchingobject)){
+					  	$scope.valid = false;
+					  	 console.log("error searchingobject");
+					  
+					  }
+					  if(angular.isDefined($scope.searchingobject)){
+						  if($scope.searchingobject == ''  || angular.isUndefined($scope.searchingobject)){
+						  $scope.valid = false;
+						  console.log("error searchingobject");
+						  }
+					}
+					if(value.destinationfields == '' || angular.isUndefined(value.destinationfields)){
+					  	$scope.valid = false;
+					  	console.log("error destinationfields");
+					 }
+						
+					})
+                }
+                $scope.setData = function(){
+                angular.forEach($scope.mappings, function(value) {
+                	value.sourceobject = $scope.searchingobject;
+                	$scope.fields.isUsed = true;
+                	console.log(value.sourcefield + '$scope.fields');
+                	value.targetobject = $scope.fields.objectName;
+                	value.sourcefield = value.sourcefield.fieldAPIName;
+                	value.targetfield = value.destinationfields.fieldname;
+                	value.targetfieldtype=value.destinationfields.fieldtype;
+                	
+                })
+                }
+                $scope.save = function(){
+                $scope.validatemappings();
+                $scope.isloading =true;
+                console.log($scope.valid + "$scope.valid ");
+                if($scope.valid == true){
+                $scope.setData();
+				$scope.wrapperstring = {
+                	"targetobject" : $scope.fields.objectName,
+                	"searchingobject" : $scope.searchingobject,
+                	"searchingfield" : $scope.selectfields.fieldname,
+                	"mapping" : $scope.mappings
+                }
+                 console.log(angular.toJson($scope.wrapperstring));
+                
+                 $scope.valid = true;
+                 DataService.save(angular.toJson($scope.wrapperstring),location.toString()).then(
+		                        function (successfulSearchResult) {
+		                        	console.log(JSON.stringify(successfulSearchResult) + 'successfulSearchResult');
+		                            $scope.isloading =false;
+		                           $(location).attr('href',successfulSearchResult);
+		                            $(".error").text('');
+		                        },function (errorSearchResult) {
+		                            responseData = errorSearchResult;
+		                        }
+		                    )
+                
+                }
+                else{
+                   $scope.isloading =false;
+                	$(".error").text('Source field and Target field are manditory');
+                }
+                }
+                $scope.add = function(){
+                /* if(angular.isDefined($scope.fieldstoshow)){
+                	console.log($scope.mappings + "$scope.mappings");
+                	angular.forEach($scope.mappings, function(valuemappings){
+                	 		angular.forEach($scope.fieldstoshow, function(value,index){
+                	 	if(value.fieldName ==  valuemappings.sourcefield.fieldName){
+               				 	
+               				 	//$scope.fieldstoshow.splice(value,1);
+               				 	console.log(JSON.stringify($scope.fieldstoshow) + "fieldstoshow");
+               				 	console.log("MATCH" + JSON.stringify(value));
+	            	 	}
+                	 })
+                	 })
+                } */
+                $(".error").text('');
+	            $scope.mappings.push({
+		          	"sourceobject" : "",
+		          	"targetobject" : "",
+		          	"sourcefield" : "",
+		          	"targetfield" : "",
+		          	"isDisabled" : false,
+		          	"targetfieldtype" : ""
+		          	})
+	          	}
+	          
+                $scope.clearmapping = function(){
+                	$scope.mappings = [];
+                	$scope.mappings.push({
+		          	"sourceobject" : "",
+		          	"targetobject" : "",
+		          	"sourcefield" : "",
+		          	"targetfield" : "",
+		          	"targetfieldtype" : "",
+		          	"isDisabled" : false
+		          	});
+                }
+                
+                $scope.remove = function (index){
+                if($scope.mappings.length-1 > 0){
+                $scope.mappings.splice(index,1);
+                $(".error").text("");
+                }
+                else{
+                	$(".error").text("Minimum 1 mapping is required");
+                
+                }
+                }
+                 $scope.add();
+                $scope.getLookUpFields= function(event){
+                    $scope.contacts=[];
+                    $scope.selectedvalue = {};
+                    DataService.getLookUpFields($scope.fields.objectName).then(
+	                        function (successfulSearchResult) {
+	                        	console.log(JSON.stringify(successfulSearchResult) + 'successfulSearchResult');
+	                            $scope.isloading =false;
+	                            $scope.lookupobjects  = successfulSearchResult;
+	                        },function (errorSearchResult) {
+	                            responseData = errorSearchResult;
+	                        }
+	                    )
+	             }
+               }
+    		]);       
+			</script>	
+		</head>
+	<div class="slds" ng-controller="mainAppCtrl" ng-app="myApp" style="padding: 2%;">
+		<div class="slds-form--horizontal slds-size--3-of-4">
+			<div class="error" style="text-align: center;">
+			</div>
+			<div class="slds-form-element">
+		    <label class="slds-form-element__label" for="select-01">Target Object</label>
+		    <div class="slds-form-element__control">
+		      <div class="slds-select_container">
+		        <select class="slds-select" id="objectList" name="objectList" ng-model="fields"  ng-options="object.objectName for object in objectList" ng-change="getLookUpFields();fieldsdisplay();clearmapping();" >
+				<option value="" ng-if="false"></option>
+				</select>
+		      </div>
+		    </div>
+		    </div>
+			<div class="slds-form-element">
+		    <label class="slds-form-element__label" for="select-01">Select Search object</label>
+		    <div class="slds-form-element__control">
+		      <div class="slds-select_container">
+		        <select class="slds-select" id="searchingobjectList" name="objectList" ng-model="searchingobject" ng-options="item for item in lookupobjects" ng-change="getFields();clearmapping();" >
+				<option value="" ng-if="false"></option>
+				</select>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="slds-form-element">
+		    <label class="slds-form-element__label" for="select-01">Select Search Field </label>
+		    <div class="slds-form-element__control">
+				 <select class="slds-select" id="fieldList" name="lookupobjectfieldList" ng-model="selectfields"  ng-options="item.fieldname for item in  lookupobjectfields" ng-change="" >
+													<option value="" ng-if="false"></option>
+				</select>
+				
+		    </div>
+		  </div>
+		  <div class="slds-form-element">
+		  <div class="slds-form-element scrollable-x">
+		           <label class="slds-form-element__label" for="select-01">Define mapping</label>
+					<table class="slds-form-element__control slds-table slds-table--bordered">
+						<thead>
+							<tr class="slds-text-heading--label">
+								<th scope="col">
+									<span class="slds-truncate">Sr. No</span>
+								</th>
+								<th scope="col">
+									<span class="slds-truncate">Destination Object</span>
+								</th>
+								<th scope="col">
+									<span class="slds-truncate">Select Field</span>
+								</th>
+								<th scope="col">
+									<span class="slds-truncate">Source Object</span>
+								</th>
+								<th scope="col">
+									<span class="slds-truncate">Select Field</span>
+								</th>
+								
+								<th scope="col">
+									<span class="slds-truncate">Action</span>
+								</th>
+								</tr>
+						</thead>
+						<tbody>
+							<tr class="slds-hint-parent ng-scope" ng-repeat=" obj in mappings track by $index">
+								<td class="ng-binding">
+									{{$index + 1}}
+								</td>
+								
+								<td>
+									{{fields.objectName}}
+								</td>
+								<td>
+									<select class="slds-select" id="fieldList" name="fieldList" ng-model="obj.sourcefield" ng-disabled="obj.isDisabled" ng-if="!field.isUsed" ng-options="field.fieldName for field in fieldstoshow| excludesource:mappings:obj:this" ng-change=""  style="width: inherit;max-width: 198px;min-width: 82px;">
+													<option value="" ng-if="false"></option>
+									</select>
+								</td>
+								<td>
+										{{searchingobject}}
+								</td>	
+								<td>
+								<select class="slds-select" id="fieldList" name="lookupobjectfieldList" ng-init="obj" ng-model="obj.destinationfields" ng-disabled="obj.isDisabled"  ng-options="item.fieldname for item in  lookupobjectfields | exclude:mappings:obj:this"  ng-change="" style="width: inherit;max-width: 198px;min-width: 82px;">
+													<option value="" ng-if="false"></option>
+								</select>
+								</td>
+								<td class="slds-size-medium--1-of-1">
+								<button class="slds-button" ng-click="enable(obj);">
+								<span class="slds-icon_container">
+								  <svg aria-hidden="true" class="slds-icon slds-icon--small slds-icon-text-default slds-icon-action-edit">
+								    <use xlink:href="{!URLFOR($Resource.LightningCSS)}/assets/icons/action-sprite/svg/symbols.svg#edit"></use>
+								  </svg>
+								  <span class="slds-assistive-text">Edit</span>
+								</span>
+								</button>
+								<button class="slds-button" ng-click="remove($index);">
+								<span class="slds-icon_container">
+								  <svg aria-hidden="true" class="slds-icon slds-icon--small slds-icon-text-default slds-icon-action-remove">
+								    <use xlink:href="{!URLFOR($Resource.LightningCSS)}/assets/icons/action-sprite/svg/symbols.svg#remove"></use>
+								  </svg>
+								  <span class="slds-assistive-text">Remove</span>
+								</span>
+								</button>
+								<!-- <button class="slds-button ng-scope" ng-click="($index);" ng-if="$index != lookupRecordCriteriaList.length-1"><span class="glyphicon glyphicon-remove"></span></button>
+								 -->
+								 </td>
+								<td>
+									<!-- ngIf: ($index != modelCriteriaList.length-1) -->
+								</td>
+							</tr><!-- end ngRepeat: modelCriteria in modelCriteriaList -->
+						</tbody>
+					</table>
+				</div>
+		 		<button class="slds-button slds-button--brand ng-binding" ng-click="disable(mappings[mappings.length -1]); add();">Add Another</button>
+		  </div>
+		<div class="slds-form-element slds-form-element__control">
+			<button class="slds-button slds-button--brand ng-binding" ng-click="save();">Save</button>   
+	    </div>			
+	</div>
+	<div class="slds-spinner--medium" id="loading" ng-if="isloading">
+	                <img ng-show="isloading" id="loading-image" src="{!URLFOR($Resource.LightningCSS, '/assets/images/spinners/slds_spinner_brand.gif')}" alt="Loading..." />
+  	</div>	
+	</div>
+	</html>
+</apex:component>

@@ -1,0 +1,71 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" title="Custom Forms" controller="CustomFormsController">
+  <c:cssandjs />
+  	<script>
+	function showtablegrid(){
+			$(".createcase").hide();
+			$(".container").closest.show();
+		}
+		function navigateTocreateCase(){
+		 location.href = "{!$Page.MyCases}?createcase=true"; 
+		}
+		function createCase(){
+			$(".createcase").show();
+			$(".container").closest.hide();
+		}
+		$(document).ready(function(){
+			
+		  var queryString = location.search.split('createcase=')[1] ? location.search.split('createcase=')[1] : 'false'
+			if(queryString == "true"){
+			createCase();
+			}
+		})
+		
+		</script>
+  <c:pageStyle />
+  <c:CommunityHeader ActiveTab="CustomForms"/>
+    <div class="container" style="margin-bottom: 30px;">
+    <div class="outerdiv">
+         <div class="customannouncement logogoldbackground   col-lg-4 col-md-4 col-sm-12 col-xs-12 fullwidth">
+                <div>
+                    <span class="SearchLabel">{!$Label.Custom_Forms}</span>
+                      
+                        <button type="button"  onclick="navigateTocreateCase();" class="flatBtn  createcasebutton createcasebuttonCustomFormsPage" value="{!$Label.Create_New_Case }">
+                     {!$Label.Create_New_Case} 
+                     
+                    </button>
+                </div>
+
+            </div>
+        
+    
+        <p style="padding-top: 65px;">{!$Label.Custom_Reports_and_Form_text}
+            <apex:outputPanel rendered="{! user.LanguageLocaleKey != 'fr' }">
+      		
+           {!$Label.If_you_have_custom_forms_you_would_like_to_add_to_your_system_there_are_three_ty}:  
+           </apex:outputPanel>
+        </p>
+        <div class="underlinetext">{!$Label.PDF_Forms} </div> – 
+        <p class="myparagraph"> {!$Label.printer_ready_pdf} 
+        	<apex:outputPanel rendered="{! user.LanguageLocaleKey != 'fr' }">
+      			<br/>{! $Label.Select}  <b> {! $Label.Create_Case } </b> {! $Label.below_and_upload_your_blank_pdf_on_the_create_case_screen }  
+        	</apex:outputPanel>
+        </p>
+        <br/><br/>
+        <div class="underlinetext"> {! $Label.Pre_Printed_Forms} </div> – 
+        <p class="myparagraph">{!$Label.Please_mail_DealerVu_four_blank_copies_of_your_form_s_for_programming_and_testi}</p>
+        
+        <address>
+            <br/><b>{! $Label.Courier_the_forms_to} :</b><br/>
+            FCI - Forms Department<br/>
+            200-1120 Hamilton Street<br/>
+            Vancouver, BC <br/>
+            V6B 2S2<br/>
+        </address>
+    
+        <div class="underlinetext">{! $Label.Custom_Reports }</div> – 
+        <p class="myparagraph">{! $Label.DealerVu_can_program_custom_reports_Select_Create_Case_below_and_describe_the}</p>
+        <br/>
+    </div>
+    </div>
+    <c:CommunityFooter />
+</apex:page>

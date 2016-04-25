@@ -1,0 +1,83 @@
+<apex:component controller="HeaderComponentController">
+    <apex:attribute name="ActiveTab" type="String"
+        description="This is the value for the component." default="false" />
+
+    <nav class="navbar navbar-default navbar-fixed-top"> 
+        <div class="container mycontainer-fluid">
+            <div class="customheader navbar-header ">
+                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>
+                    <a class="navbar-brand no-padding-top" href="{!URLFOR($Page.CommunityHome)}">
+			                <apex:image url="{!URLFOR($Resource.DealerVuResources,'images/logo1.gif')}"
+			                    styleClass="img-responsive logodimensions  iphonesize"   width="149px" style="margin-top: 12px"/>
+                    </a>
+            </div>
+            <div class="collapse navbar-collapse"
+                id="bs-example-navbar-collapse-1">
+                <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 margintop4">
+                    <Apex:form >
+                    <div class="input-group">
+
+                        <apex:inputText styleClass="form-control searchbarheight"
+                            html-placeholder="{!$Label.searchplaceholder}"  value="{!query}"  /> <span
+                            class="input-group-btn">
+        				 <apex:commandbutton value="{!$Label.Search}" styleClass="searchBtn btn btn-default searchbarheight" action="{!searchArticle}" style="background: none;color: white !important;" />
+                   
+                        </span>
+                    </div>
+                    </apex:form>
+                </div>
+                <ul class="nav navbar-nav userMenu margintop4 iphonesize">
+                    <li class="dropdown" style="margin-right: -169px;">
+                        <a href="#" class="whitecolor  dropdown-toggle communitycolor"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            style="min-width: 0px;background-color: transparent !important">
+                            <apex:image url="{!IF(user.smallphotourl !='',user.smallphotourl ,URLFOR($Resource.DealerVuResources,'images/default-user-icon-profile.png'))}" width="30px"
+                                    height="30px" styleClass="pull-left">
+                                    <span  class="nameshortaccountmenu">{!$User.CommunityNickname}</span>
+                                    <span class="caret pull-right" style="margin-top: 9px; margin-left: 8px;"></span>
+                                </apex:image>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">{!$User.CommunityNickname}</a></li>
+                            <li><a href="#">{!$User.email}</a></li>
+                            <li role="separator" class="divider"></li>
+                            <apex:outputpanel rendered="{! user.accountId != '' }">
+				        		   <li><a href="{!$Site.prefix}/{! user.accountId }" style="color: #333;padding: 3px 20px;">{! $Label.My_Account}</a></li>
+				           </apex:outputpanel>
+                            <li><apex:outputlink value="{!$Site.prefix}/{!user.Id}" target="_blank">{! $Label.My_Profile }</apex:outputlink></li>
+                            <li><a href="{!$Site.prefix}/{!user.Id}" target="_blank">{! $Label.My_Settings  }</a></li>
+                            <li><a href="{!URLFOR($Page.MyCases)}">{!$Label.My_Cases }</a></li>
+                            <li><a href="{!$Site.prefix}/secur/logout.jsp">{! $Label.Logout }</a></li>
+
+                        </ul></li>
+                </ul>
+
+
+            </div>
+        </div>
+        <div class="row collapse navbar-collapse" id="bs-example-navbar-collapse-2 no-margin-right no-padding-right">
+            <div class="container navbarsecondlayer navbar-header fullwidth">
+                <ul class="nav nav-tabs padding-53" style="padding-left: 53px">
+                      <li class="{!IF(ActiveTab == 'Home', 'active', 'none')}"><a href="{!URLFOR($Page.CommunityHome)}"  class="whitecolor">{!$Label.Home}</a></li>
+                      <li class="{!IF(ActiveTab == 'UserGuide', 'active', 'none')}"><a href="{!URLFOR($Page.UserGuides)}" class="whitecolor">{!$Label.User_Guides}</a></li>
+                      <li class="{!IF(ActiveTab == 'RequestTraining', 'active', 'none')}"><a  href="{!URLFOR($Page.PurchaseTraining)}" class="whitecolor" >{!$Label.Training}</a></li>
+                  
+                      <li class="{!IF(ActiveTab == 'CustomForms', 'active', 'none')}"><a  href="{!URLFOR($Page.CustomForms)}" class="whitecolor">{! $Label.Custom_Forms} </a></li>
+                      <li class="{!IF(ActiveTab == 'MyCases', 'active', 'none')}"><a href="{!URLFOR($Page.MyCases)}" class="whitecolor" >{!$Label.My_Cases }</a></li>
+    
+                </ul>
+           </div>
+        </div>
+    </nav>
+    <div class="container hidecontainer minheightcontainer">
+        <b><h1 class="centerheading">{!
+                $Label.DealerVU_Customer_Knowledge_Center}</h1></b>
+         <p class="centerheading">{! $Label.Use_the_tabs_above_or_the_search_bar_at_the_top_of_the_page_to_navigate_the_Dea}</p>
+    </div>
+
+</apex:component>

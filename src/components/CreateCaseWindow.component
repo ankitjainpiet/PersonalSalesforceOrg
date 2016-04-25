@@ -1,0 +1,164 @@
+<apex:component controller="CasesController" allowdml="true">
+    <style>
+        /* Styling for the standard button */
+        .ChooseFileContainer {
+        position:relative;
+        display:inline;
+        }
+        /*Styling for the custom button that would overlay on top of the standard choose file button */
+        .OverlayButton {
+        position:absolute;
+        left:5px;
+        right:0;
+        } 
+        </style>
+    <script>
+        
+        $(document).ready(function(){
+            $('#CustomChooseFileButton').click( function(e) {
+                                           $("[id*='casefile']").click();}
+            );
+             // script to hide the blinking cursor
+                            $('#CustomChooseFileButton').change( function(e) {
+                                              console.log('inside');
+                                              showattachedfiles();
+                             });                 
+                                    
+             });
+            
+        
+        function suggestarticles(newcasesubj ){
+            showLoader();
+            suggestarticle(newcasesubj); 
+        }
+        function showLoader(){
+            console.log('show Loader called');
+            $('#suggestArticleResultDiv').hide();
+            $('#LoaderDivForArticle').show();
+        }
+    
+        function hideLoader(){
+            console.log('hide Loader');
+            $('#suggestArticleResultDiv').show();
+            $('#LoaderDivForArticle').hide();
+        }
+    
+        function innersearch(){
+            $("#suggestedarticle").hide();
+            $("#searchbar").show();
+        }
+        function removefilter(){
+            showLoader();
+            $("#suggestedarticle").show();
+            $("#searchbar").hide();
+            $("#searchbar :text").val('');
+            clearfilter();
+        }
+</script>
+    <div class="row createcase" style="display:none">
+        <div class="col-md-5 col-sm-5 col-lg-5">
+            <div class="createcase createcasediv">
+                <button type="button" class="flatBtn" value="Back To Case Listing"
+                    style="width: 200px; margin: 15px 0;" onclick="showtablegrid();">
+                    <i class="fa fa-arrow-left"></i> <span style="margin-left: 10px;">{! $Label.Back_To_Case_Listing }</span>
+                </button>
+
+                <div>
+                    <apex:outputPanel rendered="{!$User.CommunityNickname != ''}">
+                        <p>
+                            <span class="createcasefields">{!$Label.Name}</span> <span>{!$User.CommunityNickname}</span>
+                        </p>
+
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!$User.Email != ''}">
+                        <p>
+                            <span class="createcasefields">{!$Label.Email}</span> <span>{!$User.Email}</span>
+                        </p>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{! user.Phone != ''}">
+                        <p>
+                            <span class="createcasefields">{!$Label.Phone_Number}</span> <span>{!
+                                user.Phone}</span>
+                        </p>
+
+                    </apex:outputPanel>
+                </div>
+                <apex:form >
+
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">{!$Label.Case_Subject}</label>
+                        <apex:inputText value="{!newcase.subject}"
+                            style="margin-top: 8px;width: 100%" styleClass="form-control"
+                            onblur="suggestarticles(this.value);"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Description</label>
+
+
+                        <apex:inputTextarea id="newDesc" value="{!newcase.description}"
+                            rows="4" cols="15" style="width: 100%;color: black" />
+                    </div>
+                                        
+                    
+                    
+                    
+                    
+                    <div class="form-group">
+                        <label for="exampleInputFile">{!$Label.Attach_File}</label>
+                        <div class = "ChooseFileContainer">
+                            <apex:inputFile fileName="{!myattachment.name}" value="{!myattachment.body}"  style="padding-left:65px;display:none" id="casefile"  />
+                            <input id="CustomChooseFileButton" type="text" readOnly="true" size="23" name="CustomChooseFileButton" value="Upload Object Names File"   class="OverlayButton btn" />
+                         </div>
+                            
+                        <div class="attachmentheading" style="display: none">
+                            <h4>Attachments</h4>
+                        </div>
+                        <div class="attachedfiles"
+                            style="display: none; background-color: white;">
+                            <span id="attachment"></span> <i class="fa fa-times"
+                                onclick='removeFile()' style="cursor: pointer;"></i>
+
+                        </div>
+
+
+                    </div>
+
+                    <apex:commandButton value="{!$Label.Submit}" action="{!save}"
+                        styleClass="btn btn-default createcasesubmitbutton" />
+
+                    <button type="button" class="btn btn-default searchbutton"
+                        onclick="showtablegrid();">{!$Label.Cancel}</button>
+                </apex:form>
+            </div>
+            </div>
+
+            
+    <div class="col-md-7 col-sm-7 col-lg-7"  style="padding-top: 90px;">
+        <div id="suggestedarticle  col-sm-5 col-lg-5" class="createcasefields suggestedarticleListing">{! $Label.Suggested_Articles}  &nbsp; &nbsp; <i class="fa fa-search"  onclick="innersearch();"></i>  </div>
+        <div id="searchbar" style="display:none;" class="createcasefields suggestedarticleListing"><input type="text" onchange="suggestarticles(this.value);" placeholder="Enter Search query " /><i class="fa fa-times" onclick="removefilter();"></i></div>
+        <div id="suggestArticleResultDiv" class="scrollable-menu" style="max-height:374px">
+            <apex:form >
+                <apex:actionFunction reRender="suggestedarticles"
+                    name="suggestarticle" oncomplete="hideLoader()">
+                    <apex:param name="myParam" value="" assignTo="{!searchsubject}" />
+                </apex:actionFunction>
+                    <apex:actionFunction reRender="suggestedarticles"
+                    name="clearfilter" oncomplete="hideLoader()">
+                    <apex:param name="myParam" value="" assignTo="{!searchsubject}" />
+                </apex:actionFunction>
+                
+                <apex:outputpanel id="suggestedarticles" styleclass="suggestedarticleListing">
+                    <c:SuggestedArticleComp searchsubject="{!searchsubject}" />
+                </apex:outputpanel>
+            </apex:form>
+        </div>
+        
+        <div id="LoaderDivForArticle" class="suggestedarticleListing col-lg-12 col-md-12">
+           <img src="{!URLFOR($Resource.spinner)}" />
+       </div>
+    </div>
+ </div>
+
+  
+        
+</apex:component>

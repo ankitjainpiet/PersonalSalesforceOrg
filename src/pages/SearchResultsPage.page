@@ -1,0 +1,13 @@
+<apex:page showHeader="false" standardStylesheets="false"> 
+
+    <c:cssandjs />
+    <c:pageStyle />
+    <c:CommunityHeader />
+ <div class="container" style=" min-height: 500px;">
+<h4><b>	{! $Label.Here_are_the_results_of_your_keyword_search_Use_the_search_bar_above_to_sear} </b> </h4>
+<c:ArticleFilterComponent />
+</div>
+ 
+<c:CommunityFooter />
+
+</apex:page>

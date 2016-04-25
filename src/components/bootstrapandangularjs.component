@@ -1,0 +1,7 @@
+<apex:component >
+<apex:includeScript value="{!URLFOR($Resource.DealerVuResources,'js/jquery.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DealerVuResources,'js/bootstrap.min.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.DealerVuResources,'css/bootstrap.min.css')}"/>  
+    <apex:stylesheet value="{!URLFOR($Resource.DealerVuResources,'css/fontawesome.css')}"/>  
+	<apex:includeScript value="{!URLFOR($Resource.Angularjs)}"/>
+</apex:component>

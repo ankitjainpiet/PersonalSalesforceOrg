@@ -1,0 +1,40 @@
+<apex:component controller="ComponentController">
+    <apex:attribute name="objectName" description="Sobject Name" type="String" required="true" assignTo="{!objectType}"/>
+    <apex:attribute name="attributeName"  description="field name" type="String" required="true" assignTo="{!fieldName}"/>
+    <apex:attribute name="recordPerPage"  description="Number Of Record Per Page" type="Integer" required="true" assignTo="{!LimitSize}"/>
+    <apex:attribute name="widthofTable"  description="Use for the width of table" type="Integer" required="true" assignTo="{!tableWidth}"/>
+    <apex:form > 
+     <apex:pageblock mode="edit">
+        <apex:pageblockSection title="{!objectType}">
+         <apex:outputPanel id="details">   
+          <apex:pageMessages ></apex:pageMessages> 
+            <apex:pageBlockTable value="{!recordList}" var="obj" style="width:{!tableWidth}px">
+               <apex:repeat value="{!fieldList}" var="attr" >
+                <apex:column value="{!obj[attr]}">
+                 <apex:facet name="header"> 
+                    <apex:outputpanel >             
+                        <apex:commandlink style="text-decoration:none" onclick="fadeout();" oncomplete="fadein();"  action="{!sort}"  value="{!attr}" reRender="details">
+                          <apex:param name="param1" value="{!attr}" assignTo="{!sortedColumn}"/>
+                        </apex:commandlink>  
+                   </apex:outputpanel>      
+                 </apex:facet>   
+                </apex:column>                                                           
+               </apex:repeat> 
+            </apex:pageBlockTable><br/>
+            
+            <apex:outputPanel style="width:{!tableWidth}px">
+                  <apex:commandButton value="First Page" onclick="fadeout();" oncomplete="fadein();" reRender="details" action="{!FirstPage}" disabled="{!prev}"/>
+                  <apex:commandButton value="Previous" onclick="fadeout();" oncomplete="fadein();" reRender="details" action="{!previous}" disabled="{!prev}"/>
+                  <apex:commandButton value="Next" onclick="fadeout();" oncomplete="fadein();" reRender="details" action="{!next}" disabled="{!nxt}"/>
+                  <apex:commandButton value="Last Page" onclick="fadeout();" oncomplete="fadein();" reRender="details" action="{!LastPage}" disabled="{!nxt}"/>
+                  
+                  <apex:outputLabel value="Go To Page " style="float:right;">
+                      <apex:inputtext value="{!pageNo}" style="width:20px;"/>
+                      <apex:commandButton value="Go" action="{!go}" reRender="details"/>
+                  </apex:outputLabel>
+          </apex:outputPanel>  
+          </apex:outputPanel>
+       </apex:pageblockSection>     
+     </apex:pageblock>
+    </apex:form>          
+</apex:component>

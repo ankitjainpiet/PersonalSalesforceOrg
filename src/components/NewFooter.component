@@ -1,0 +1,28 @@
+<apex:component >
+	<div id="footer">
+		<div class="container communitycolor" style="width: 100%;">
+			<div class="col-sm-11 pull-right">
+
+				<div class="col-sm-2 col-md-2 col-lg-1">
+					<apex:image url="{!URLFOR($Resource.DealerVuResources,'images/DealerVUHeaderLogo.PNG')}"
+						styleClass="navbar-brand" />
+				</div>
+				<div class="col-sm-4 pull-right" 	style="color: yellow; margin-top: 3%; padding-left: 52px;">
+					<div style="text-align: right; float: left">
+						<span class="logogold text-medium">Canada and US: 
+							<a href="tel:+ 1­855­322­1217"
+								class="whitecolor">1­855­322­1217
+							</a>
+						</span> 
+						<br />
+						<br />
+						 <span class="logogold text-medium">Australia: 
+							 <a href="tel:+ 02 90372450" class="whitecolor">02 90372450
+							 </a>
+						 </span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</apex:component>

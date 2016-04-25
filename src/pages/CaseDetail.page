@@ -1,0 +1,30 @@
+<apex:page sidebar="false" standardController="Case" showheader="false" showchat="false" standardStylesheets="true" title="DealerVu Community" cache="false">
+    <c:cssandjs />
+    <c:pageStyle />
+    <script>
+    function navigate(){
+			$(location).attr("href","{!URLFOR($Page.UserGuides)}");
+			$(event).preventDefault();	
+	}
+    
+    $(document).ready(function(){
+    	$(".dataCol a").each(function( index ) {
+	  	  $( this ).attr("href","#");
+		});    
+        //$("input[name=searchArticles]").attr("onclick" ,navigate());
+    	$("input[name=searchArticles]").attr("href","{!URLFOR($Page.UserGuides)}");
+    	
+    })
+	
+    </script>
+    <c:StandardpageStyle />
+    <c:CommunityHeader ActiveTab="MyCases"/>
+	
+	<div class="container" style="min-height:500px;">
+ 	
+
+ 	   		<apex:detail subject="{!case.Id}" relatedList="true" showChatter="true" title="false"/> 
+   </div>
+    <c:CommunityFooter />
+   
+</apex:page>

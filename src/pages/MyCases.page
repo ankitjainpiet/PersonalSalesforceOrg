@@ -1,0 +1,9 @@
+<apex:page sidebar="false" showheader="false" showchat="false" standardStylesheets="false" title="DealerVu Community">
+    <c:cssandjs />
+    <c:pageStyle />
+    <c:CommunityHeader ActiveTab="MyCases"/>
+    <div class="container">
+       <c:MyCasesComp /> 
+    </div>
+    <c:CommunityFooter />
+</apex:page>

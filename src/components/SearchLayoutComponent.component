@@ -1,0 +1,198 @@
+<apex:component controller="SearchFilterController">
+     <apex:attribute name="recordPerPage"  description="Number Of Record Per Page" type="Integer" default="10" assignTo="{!LimitSize}"/>
+    <script>
+        
+        
+      
+        function getCases(){
+            showLoaderFind();
+            getCasesByType();
+        }
+        
+        
+        function goToPage(event,max){
+            if(event.keyCode == 13){
+                if(event.target.value > max ){
+                    $(".pagenumber").val(max);
+                    showLoaderFind();
+                    goTo();
+                    $(".pagenumber").focus();
+                }
+                else{
+                showLoaderFind();
+                goTo();
+                }
+            }   
+        }
+        
+        function showLoaderFind(){
+            $('#resultDiv').hide();
+            $('#LoaderDivCaseListing').show();
+        }
+        function searchbykeypress(event,value){
+                $("#removebutton").show();
+                $("removebuttonsearchSubject").show();
+               if(event.keyCode == 13){
+                    showLoaderFind();
+                    searchArticleByCaseNumber(value);
+                }
+                if(event.keyCode == 8 ){
+                showLoaderFind();
+                getCasesByType($( ":selected" ).attr('value'));
+                }
+        }
+        function hideLoaderFind(){
+            $('#resultDiv').show();
+            $('#LoaderDivCaseListing').hide();
+        }
+
+        $(document).ready(function(){       
+            var url = location.search;
+            if(url !=''){
+                var qs = url.split('?')[1];
+                var parts = qs.split('&');
+                var arr = [];
+                
+                $.each(parts, function() {
+                    var val = this.split('=')[1];
+                    arr.push(val);
+                });
+              //var queryString = location.search.split('createcase=')[1] ? location.search.split('createcase=')[1] : 'false'
+                if( $.inArray('true',arr) != -1){
+                createCase();
+                }
+        }
+        })
+    </script>
+    <div class="container">
+      <div class="outerdiv">
+   
+        <apex:form styleClass="tablegrid">
+            <apex:actionFunction name="getCasesByType" action="{!clear}"  reRender="input,output,pagenumber" oncomplete="hideLoaderFind();">
+            </apex:actionFunction> 
+              <apex:actionFunction name="goTo" action="{!go}"  reRender="input,output,pagenumber" oncomplete="hideLoaderFind();">
+            </apex:actionFunction> 
+    
+            <apex:actionFunction name="searchArticleByCaseNumber" action="{!searchArticle}"  reRender="input,output,pagenumber"  oncomplete="hideLoaderFind();">
+              <apex:param name="myParam" value="" assignTo="{!searchCaseNumber}" />
+            </apex:actionFunction>    
+            <apex:outputPanel id="input">    
+            <div class="col-lg-12 col-md-12 col-sm-12 mycasestablecolumnbackgound" >
+                <div class="col-lg-3 col-md-4 col-sm-12 caseFilter">
+                 </div>
+                
+                <div class="col-lg-8 col-md-8 col-sm-12 pull-right">
+                    <span class="caseNumLabel">
+                      Case Subject
+                    </span>
+ 				
+                    <apex:inputText value="{!searchSubject}" id="searchSubject">
+                    </apex:inputText>
+                   <span id="removebuttonsearchSubject" style="display:none;margin-left: -22px;">
+                    <i class="fa fa-times" onclick="getCases($(':selected').attr('value'));"></i>
+                    </span>
+                   
+                   <span class="caseNumLabel">
+                        {!  $Label.Case_Number}
+                    </span>
+ 				
+                   <apex:inputText value="{!searchCaseNumber}" id="caseNumber" onkeypress="searchbykeypress(event,this.value);" onkeydown="searchbykeypress(event,this.value);" onfocus="this.select();" >
+                    </apex:inputText>
+            
+                   <span id="removebutton" style="display:none;margin-left: -22px;">
+                    <i class="fa fa-times" onclick="getCases($(':selected').attr('value'));"></i>
+                    </span>
+                    <apex:commandButton action="{!searchArticle}" onclick="showLoaderFind();" oncomplete="hideLoaderFind();" value="{! $Label.Find }" reRender="input,output,pagenumber" styleClass="flatBtn" style="margin-left:15px;"  />
+                    <apex:outputPanel rendered="{!searchCaseNumber != '' || searchSubject != '' }">
+                         <button type="button" onclick="getCasesByType(); return false;" class="flatBtn" style="width: 76px !important;">{! $Label.Clear }</button>
+                         
+                    </apex:outputPanel>
+                </div>
+                <div class="clearfix"></div>
+                
+            </div>
+            </apex:outputPanel>
+            
+            <div id="caseListing">
+            <apex:outputPanel id="output">
+                <div id="resultDiv" style="min-height:422px">
+                    <apex:outputPanel rendered="{!allcases.size = 0}">
+                        <div class="noResult col-lg-12 col-md-12 col-sm-12">
+                            <h4>
+                              {! $Label.No_case_Found }  
+                            </h4>
+                        </div>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!allcases.size > 0}">
+                        <table class="table table-hover" style="float:left">
+                            <col width="15%" />
+                            <col width="43%" />
+                            <col width="10%" />
+                            <col width="14%" />
+                        
+                            <tr class="tableheading">
+                                <th>{! $Label.Case_Number}</th>
+                                <th>{! $Label.Subject}</th>
+                                <th>{! $Label.Status}</th>
+                        
+                            </tr>
+                            <apex:repeat value="{!recordList}" var="case">
+                                <tr>
+                                    <td><a  href="{!URLFOR($Page.CaseDetail)}?Id={!case.Id}" target="_blank"  id="theCommandLink">{!case.CaseNumber}</a></td>
+                                    <td>{!case.Subject}</td>
+                                    <td>{!case.status}</td>
+                                </tr>
+                            </apex:repeat>
+                        </table>
+                    </apex:outputPanel>
+                </div>
+                <div id="LoaderDivCaseListing" class="col-lg-12 col-md-12" style="display:none;min-height:422px">
+                    <img style="margin: 60px auto; display: block;" src="{!URLFOR($Resource.spinner)}" />
+                </div>
+            </apex:outputPanel>
+             
+            <div class="row">
+            
+            <apex:outputPanel id="pagenumber"  rendered="{!allcases.size >0}">
+                <ul class="pager">
+                     <li class="previous">
+                        <apex:commandLink onclick="showLoaderFind();" oncomplete="hideLoaderFind();" reRender="output,pagenumber" action="{!FirstPage}" style="{!IF(prev,'display:none','display:inline')}"  value="{! $Label.First }" />
+                    </li>
+                   
+                <li class="previous">
+                        <apex:commandLink onclick="showLoaderFind();" oncomplete="hideLoaderFind();" reRender="output,pagenumber" action="{!previous}" style="{!IF(prev,'display:none','display:inline')}"  value="{! $Label.Previous}" />
+                    </li>
+                    
+                    <li class="previous">
+                        <apex:commandLink onclick="showLoaderFind();" oncomplete="hideLoaderFind();" reRender="output,pagenumber" action="{!next}" style="{!IF(nxt,'display:none','display:inline')}"  value="{! $Label.Next }" />
+                    </li>
+                    
+                    <li class="previous">
+                        <apex:commandLink onclick="showLoaderFind();" oncomplete="hideLoaderFind();" reRender="output,pagenumber" action="{!lastPage}" style="{!IF(nxt,'display:none','display:inline')}"  value="{! $Label.Last }" />
+                    </li>
+                 
+                  
+                    <apex:outputLabel value="{! $Label.Go_To_Page } " style="float:right;">
+                      &nbsp;  
+                      <apex:inputtext value="{!pageNo}"  style="width:40px; text-align:center; font-weight: normal;" onkeypress="goToPage(event,{!LastPageno});" styleclass="pagenumber"  />&nbsp; {! $Label.out_of } {!LastPageno} &nbsp;
+                      
+                      <apex:commandLink styleClass="roundBtn" value="{! $Label.Go}" action="{!go}" reRender="output,pagenumber"/>
+                    
+                  </apex:outputLabel>
+                </ul>   
+          </apex:outputPanel>
+          </div>  
+        </div>
+        
+        
+    
+
+
+        </apex:form>
+
+
+
+    </div>
+    <c:CreateCaseWindow />
+    </div>
+</apex:component>

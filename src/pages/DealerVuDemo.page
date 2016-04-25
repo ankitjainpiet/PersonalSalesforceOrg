@@ -1,0 +1,86 @@
+<apex:page showHeader="false" sidebar="false"
+    standardstylesheets="false" controller="DealerVuController">
+    
+    <html ng-app="MyApp" ng-init="getInitialData();" ng-controller="mycontroller">
+    <Script>
+     var myApp = angular.module('MyApp', []);
+                       
+             myApp.service('myService',function ($q) {
+                this.getInitData = function() {
+                       var deferred = $q.defer();
+                      
+                       Visualforce.remoting.Manager.invokeAction(
+                           '{!$RemoteAction.DealerVuController.getInitialData}',
+                           function (result, event) {
+                           if (event.type == 'exception') {
+                               deferred.reject(JSON.parse('[]'));
+                           } else {
+                                  deferred.resolve(JSON.parse(result));
+                           }
+                       }, {
+                           escape : false
+                       });
+                       return deferred.promise;
+                   }
+       
+            });
+           myApp.controller('mycontroller' ,['$scope','$http','myService',function($scope,$http,myService){
+             $scope.contactwrapperlist = [];
+            $scope.getInitialData = function(){
+            
+                myService.getInitData().then(
+                                function (successfulSearchResult) {
+                                    console.log(JSON.stringify(successfulSearchResult) + 'successfulSearchResult');
+                                    $scope.isloading =false;
+                                    console.log(JSON.stringify(successfulSearchResult[0]) + 'checkkk');
+                                    	$scope.contactwrapperlist = successfulSearchResult;
+                                	
+                                },function (errorSearchResult) {
+                                    responseData = errorSearchResult;
+                                }
+                            )
+            }
+           
+           }]);
+   </Script>
+    
+<head>
+<c:bootstrapandangularjs />
+    <c:CricketHeader />
+</head>
+<table class="table  table-hover table-bordered"> 
+    <thead>
+         <tr> 
+            <th>ContactState</th> 
+            <th>ContactName</th>
+            <th>ContactMobilePhone</th>
+            <th>ContactMailingCity</th>
+            <th>ContactId</th>
+            <th>ContactFirstName</th>
+            <th>ContactCountry</th>
+            <th>AccountNumber</th>
+            <th>AccountBillingCountry</th>
+            <th>AccountBillingCity</th>
+             
+          </tr>
+   </thead>
+    <tbody>
+        <tr ng-repeat="c in contactwrapperlist track by $index">
+             <td>{{c.ContactState}}</td>
+             <td>{{c.ContactName}}</td>
+             <td>{{c.ContactMobilePhone}}</td>
+			<td>{{c.ContactMailingCity}}</td>
+			<td>{{c.ContactId}}</td>
+			<td>{{c.ContactFirstName}}</td>
+			<td>{{c.ContactCountry}}</td>
+			<td>{{c.AccountNumber}}</td>
+			<td>{{c.AccountBillingCountry}}</td>
+			<td>{{c.AccountBillingCity}}</td>
+       </tr>
+      </tbody>
+ </table>
+
+
+
+</html>
+</apex:page>
