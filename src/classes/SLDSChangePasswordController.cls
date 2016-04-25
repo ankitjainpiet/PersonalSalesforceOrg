@@ -16,4 +16,8 @@ public with sharing class SLDSChangePasswordController {
          String oldpassword{set;get;}
         
 	} 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da

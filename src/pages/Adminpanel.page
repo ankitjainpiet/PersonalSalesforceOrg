@@ -1,6 +1,10 @@
 <apex:page showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
 <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 	
+<<<<<<< HEAD
 <c:ENrollmentRXAdminComponent />
+=======
+<c:ENrollmentRXAdminComponent/>
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
 </html>
 </apex:page>

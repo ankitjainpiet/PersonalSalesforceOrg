@@ -134,4 +134,8 @@ errorMsg += 'There is error of' + validationErrorMsg;
    //============================================================================
    //Method: getUniqueKeyError
    //Desc: Method to return meaningful error messages generated due to Unique key field 
+<<<<<<< HEAD
    //Args : String - error - error message produced by salesforce
+=======
+   //Args : String - error - error message produced by salesforce
+>>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
