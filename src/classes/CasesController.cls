@@ -1,5 +1,4 @@
 public class CasesController {
-    
     private integer totalRecs = 0;
        public String  searchsubject{set;get;}
     // offset size
