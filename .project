@@ -2,9 +2,6 @@
 <projectDescription>
 <<<<<<< HEAD
 	<name>PerosnaLorganization</name>
-=======
-	<name>PersonalOrg</name>
->>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,11 +11,9 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
-<<<<<<< HEAD
 	</buildSpec>
 	<natures>
 		<nature>com.salesforce.ide.nature.default</nature>
-=======
 		<buildCommand>
 			<name>com.salesforce.ide.builder.online</name>
 			<arguments>
@@ -28,6 +23,5 @@
 	<natures>
 		<nature>com.salesforce.ide.nature.default</nature>
 		<nature>com.salesforce.ide.nature.online</nature>
->>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
 	</natures>
 </projectDescription>

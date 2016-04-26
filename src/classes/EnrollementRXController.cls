@@ -101,17 +101,11 @@ public with sharing class EnrollementRXController {
     			for(String field : objFieldMap.keySet()) {
     				if(objFieldMap.get(field).getDescribe().isAccessible()) { // Checking if Object is Accessible
     					// Add Field to the Object Related list
-<<<<<<< HEAD
 						if(!objFieldMap.get(field).getDescribe().getName().contains('Address') ){
 						fieldList.add(new FieldObjectWrapper(objFieldMap.get(field).getDescribe().getLabel(), objFieldMap.get(field).getDescribe().getName(), 
 										(String.valueOf(objFieldMap.get(field).getDescribe().getType()) == 'TEXTAREA' && objFieldMap.get(field).getDescribe().isHtmlFormatted() ? RICH_TEXT_AREA : String.valueOf(objFieldMap.get(field).getDescribe().getType())), 
 										false, (String.valueOf(objFieldMap.get(field).getDescribe().getType()) == 'PICKLIST' && objFieldMap.get(field).getDescribe().isDependentPicklist()), (String.valueOf(objFieldMap.get(field).getDescribe().getType()) == 'PICKLIST' && objFieldMap.get(field).getDescribe().isDependentPicklist() ? String.valueOf(objFieldMap.get(field).getDescribe().getController()) : null), false, objFieldMap.get(field).getDescribe().isCalculated()));
 						}
-=======
-						fieldList.add(new FieldObjectWrapper(objFieldMap.get(field).getDescribe().getLabel(), objFieldMap.get(field).getDescribe().getName(), 
-										(String.valueOf(objFieldMap.get(field).getDescribe().getType()) == 'TEXTAREA' && objFieldMap.get(field).getDescribe().isHtmlFormatted() ? RICH_TEXT_AREA : String.valueOf(objFieldMap.get(field).getDescribe().getType())), 
-										false, (String.valueOf(objFieldMap.get(field).getDescribe().getType()) == 'PICKLIST' && objFieldMap.get(field).getDescribe().isDependentPicklist()), (String.valueOf(objFieldMap.get(field).getDescribe().getType()) == 'PICKLIST' && objFieldMap.get(field).getDescribe().isDependentPicklist() ? String.valueOf(objFieldMap.get(field).getDescribe().getController()) : null), false, objFieldMap.get(field).getDescribe().isCalculated()));
->>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
     				}
     			}
     		}
@@ -157,11 +151,8 @@ public with sharing class EnrollementRXController {
     			for(String field : objFieldMap.keySet()) {
     				if(objFieldMap.get(field).getDescribe().isAccessible()) { // Checking if Object is Accessible
     					for(Schema.SObjectType reference : objFieldMap.get(field).getDescribe().getReferenceTo()) {
-<<<<<<< HEAD
     						if(reference.getDescribe().getName() != objectName && !reference.getDescribe().getName().contains('Address')){
-=======
     						if(reference.getDescribe().getName() != objectName){
->>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
     							
     							rleatedobjectnames.add(reference.getDescribe().getName());
     						}
@@ -184,11 +175,8 @@ public with sharing class EnrollementRXController {
 		if(objFieldMap != null && !objFieldMap.isEmpty()) {
     			for(String field : objFieldMap.keySet()) {
     				if(objFieldMap.get(field).getDescribe().isAccessible()) { // Checking if Object is Accessible
-<<<<<<< HEAD
     						if(objFieldMap.get(field).getDescribe().getName() != objectName && !objFieldMap.get(field).getDescribe().getName().contains('Address')){
-=======
     						if(objFieldMap.get(field).getDescribe().getName() != objectName){
->>>>>>> c9ae441995b5eadb029ce72dd456e341b9e959da
     							fieldnames.add(objFieldMap.get(field).getDescribe().getName());
     							FieldNameTypeWrapper fieldnameobj = new FieldNameTypeWrapper();
     							fieldnameobj.fieldname = objFieldMap.get(field).getDescribe().getName();

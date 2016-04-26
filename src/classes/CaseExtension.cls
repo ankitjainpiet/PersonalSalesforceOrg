@@ -1,5 +1,4 @@
 public class CaseExtension {
-
     public List<Case> allresolvedcases { get; set; }
         
     
